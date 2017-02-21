@@ -1,0 +1,43 @@
+package im.testclient;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.util.Date;
+import java.util.Scanner;
+
+import com.google.gson.Gson;
+import im.protoc.Request;
+
+public class TestTCP {
+	public static void main(String[] args) throws IOException {
+			Gson gson=new Gson();
+			Socket socket=new Socket("127.0.0.1",3000);
+			InputStream in=socket.getInputStream();
+			OutputStream out=socket.getOutputStream();
+			Request content=new Request();
+			content.setContent("你好");
+			content.setFrom("zhanglong1");
+			content.setTimestamp(new Date().getTime());
+			content.setTo("zhanglong0");
+			content.setUid("12e7fc998");
+			content.setType("text");
+			String send=gson.toJson(content);
+			System.out.println(send);
+			send+="\r\n";
+			out.write(send.getBytes());
+			byte[] by=new byte[in.available()];
+			in.read(by);
+			System.out.println(new String(by));
+			Scanner scan=new Scanner(System.in);
+			scan.nextLine();
+			out.close();
+			in.close();
+			socket.close();
+			//System.out.println(new String(by));
+	}
+	public byte[] getSendBlock(short length,byte[] data){
+		return null;
+	}
+}
