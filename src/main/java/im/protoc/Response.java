@@ -3,8 +3,7 @@ package im.protoc;
 import java.io.Serializable;
 
 /**
- * 消息响应抽象  只要将信息成功放入Queue中即表示消息投递成功，可响应为成功，否则报错
- * 可用其他序列化工具替代
+ * 通用消息响应
  * @author Misnearzhang
  *
  */
@@ -17,7 +16,7 @@ public class Response implements Serializable{
 	private String uid;//UUID 128bit
 	private String msgId;
 	private int status; //200:success  500 : system error 403:sign error  etc.
-	private String des;//
+	private String des;// describe
 	private Long timestamp;
 	
 	
