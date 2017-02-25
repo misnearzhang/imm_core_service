@@ -1,25 +1,16 @@
 package im.core.executor;
 
-import im.core.queue.MQueue;
-import im.protoc.Request;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * 线程模型2
  * @author Misnearzhang
  *
  */
-public class WorkThread implements Runnable{
+public class WorkThread {
 
-	private ExecutorService executor=Executors.newCachedThreadPool();
-	public void run() {
-		// TODO Auto-generated method stub
-		while(true){
-			Request req = MQueue.get();
-			executor.execute(new Processor2(req));
-		}
-	}
+	private static BlockingQueue<Runnable> queue=new ArrayBlockingQueue<Runnable>(1000000);
+	public static ThreadPoolExecutor executor=new ThreadPoolExecutor(20,50,10, TimeUnit.SECONDS,queue);
+
 
 }

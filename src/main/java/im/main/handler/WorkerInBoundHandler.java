@@ -6,7 +6,8 @@ import java.util.UUID;
 import com.google.gson.Gson;
 
 import im.core.container.Container;
-import im.core.queue.MQueue;
+import im.core.executor.Task;
+import im.core.executor.WorkThread;
 import im.protoc.Request;
 import im.protoc.Response;
 import im.utils.CommUtil;
@@ -39,7 +40,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 			request = CommUtil.varify(message);
 			if (request != null) {
 				// 消息有效 放入消息队列并发送响应给用户
-				MQueue.put(request);
+				WorkThread.executor.execute(new Task(request));
 				response.setUid(request.getUid());
 				response.setDes("OK");
 				response.setStatus(200);
