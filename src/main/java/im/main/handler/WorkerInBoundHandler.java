@@ -15,6 +15,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.IdleStateEvent;
 
 public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	
@@ -93,5 +94,16 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		System.out.println(ctx.hashCode()+"正在下线...");
 		super.channelInactive(ctx);
 	}
-	
+
+
+	@Override
+	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+		if (evt instanceof IdleStateEvent){
+			//心跳处理
+			System.out.println("心跳检测到了");
+			buf.clear();
+			buf=Unpooled.copiedBuffer((gson.toJson("Hearbeat   please ignore")).getBytes());
+			ctx.writeAndFlush(buf);
+		}
+	}
 }
