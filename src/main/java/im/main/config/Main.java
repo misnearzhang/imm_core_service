@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class Main {
 	public static void main(String[] args) {
-		IRequestService requestService=(IRequestService) SpringContext.ac.getBean("requestService");
+		/*IRequestService requestService=(IRequestService) SpringContext.ac.getBean("requestService");
 		Request request=new Request();
 		request.setContent("uysd");
 		request.setUid("4567890-");
@@ -20,6 +20,6 @@ public class Main {
 		request.setType("1");
 		request.setSign("dfghjk");
 		requestService.addRequest(CommUtil.Protoc2POJO(request));
-		System.out.println("");
+		System.out.println("");*/
 	}
 }

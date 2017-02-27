@@ -19,10 +19,10 @@ public class CommUtil {
 	public static RequestPOJO Protoc2POJO(Request request){
 		RequestPOJO requestpojo=new RequestPOJO();
 		requestpojo.setMessage_content(request.getContent());
-		requestpojo.setMessage_from(request.getFrom());
+		requestpojo.setMessage_from(request.getContent());
 		requestpojo.setMessage_sign(request.getSign());
 		requestpojo.setMessage_timestamp(request.getTimestamp());
-		requestpojo.setMessage_to(request.getTo());
+		requestpojo.setMessage_to(request.getContent());
 		requestpojo.setMessage_type(request.getType());
 		requestpojo.setMessage_uid(request.getUid());
 		return requestpojo;

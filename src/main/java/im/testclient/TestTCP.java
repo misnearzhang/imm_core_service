@@ -12,7 +12,7 @@ import im.protoc.Request;
 
 public class TestTCP {
 	public static void main(String[] args) throws IOException {
-			Gson gson=new Gson();
+			/*Gson gson=new Gson();
 			Socket socket=new Socket("127.0.0.1",3000);
 			InputStream in=socket.getInputStream();
 			OutputStream out=socket.getOutputStream();
@@ -34,7 +34,7 @@ public class TestTCP {
 			scan.nextLine();
 			out.close();
 			in.close();
-			socket.close();
+			socket.close();*/
 			//System.out.println(new String(by));
 	}
 	public byte[] getSendBlock(short length,byte[] data){

@@ -78,8 +78,8 @@ public class Server {
 					ch.pipeline().addLast(new LineBasedFrameDecoder(1024*5));
 //					ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(10*1024*1024, 0, 2));
 //					ch.pipeline().addLast(new StringDecoder());
-//					ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
-//							180, 0, 0));
+					ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
+							0, 0, 180));
 					ch.pipeline().addLast(new WorkOutBoundHandler());
 					ch.pipeline().addLast(new WorkerInBoundHandler());
 //					ByteBuf delimiter=Unpooled.copiedBuffer("".getBytes());
@@ -118,7 +118,6 @@ public class Server {
 				executor.execute(new Processor());//业务处理线程池
 			}*/
 			new Server().bind(3000);
-			new Thread(new WorkThread()).start();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
