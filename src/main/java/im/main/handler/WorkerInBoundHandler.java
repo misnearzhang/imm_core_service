@@ -27,14 +27,20 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		Container.addChannel(ctx.channel());
 		i=Container.getCount();
 		Container.addOrReplace("zhanglong"+i, ctx.channel().id());
+		Request request=new Request();
+		request.setUid("123");
+		request.setTimestamp(System.currentTimeMillis());
+		request.setType("system");
+		request.setContent("hello");
 		buf.clear();
-		buf=Unpooled.copiedBuffer(("wellcome  zhanglong"+i+"\r\n").getBytes());
+		buf=Unpooled.copiedBuffer((gson.toJson(request)+"\r\n").getBytes());
 		ctx.writeAndFlush(buf);
 	}
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		String message=msg.toString();
+		System.out.println("ctx = [" + ctx + "], msg = [" + msg + "]");
 		Request request=null;
 		Response response=new Response();
 		if(message!=null){
