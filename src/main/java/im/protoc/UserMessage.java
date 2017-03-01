@@ -66,7 +66,7 @@ public class UserMessage implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "Request [uid=" + uid + ", from=" + from + ", to=" + to + ", type=" + type + ", content=" + content
+		return "Message [uid=" + uid + ", from=" + from + ", to=" + to + ", type=" + type + ", content=" + content
 				+ ", timestamp=" + timestamp + ", sign=" + sign + "]";
 	}
 }

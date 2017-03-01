@@ -8,8 +8,7 @@ import com.google.gson.Gson;
 import im.core.container.Container;
 import im.core.executor.Task;
 import im.core.executor.WorkThread;
-import im.protoc.Request;
-import im.protoc.Response;
+import im.protoc.Message;
 import im.utils.CommUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -27,13 +26,9 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		Container.addChannel(ctx.channel());
 		i=Container.getCount();
 		Container.addOrReplace("zhanglong"+i, ctx.channel().id());
-		Request request=new Request();
-		request.setUid("123");
-		request.setTimestamp(System.currentTimeMillis());
-		request.setType("system");
-		request.setContent("hello");
+
 		buf.clear();
-		buf=Unpooled.copiedBuffer((gson.toJson(request)+"\r\n").getBytes());
+		buf=Unpooled.copiedBuffer((gson.toJson("")+"\r\n").getBytes());
 		ctx.writeAndFlush(buf);
 	}
 
@@ -41,28 +36,20 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		String message=msg.toString();
 		System.out.println("ctx = [" + ctx + "], msg = [" + msg + "]");
-		Request request=null;
-		Response response=new Response();
+		Message request=null;
+
 		if(message!=null){
 			request = CommUtil.varify(message);
 			if (request != null) {
 				// 消息有效 放入消息队列并发送响应给用户
 				WorkThread.executor.execute(new Task(request));
-				response.setUid(request.getUid());
-				response.setDes("OK");
-				response.setStatus(200);
-				response.setTimestamp(new Date().getTime());
-				response.setUid(UUID.randomUUID().toString());
+
 			} else {
 				// 消息无效 只响应用户
-				response.setUid(null);
-				response.setDes("解码异常!");
-				response.setStatus(500);
-				response.setTimestamp(new Date().getTime());
-				response.setUid(UUID.randomUUID().toString());
+
 			}
 			buf.clear();
-			buf=Unpooled.copiedBuffer((gson.toJson(response)).getBytes());
+			buf=Unpooled.copiedBuffer((gson.toJson(request)).getBytes());
 			ctx.writeAndFlush(buf);
 		}
 	}

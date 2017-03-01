@@ -1,14 +1,6 @@
 package im.testclient;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
-import java.util.Date;
-import java.util.Scanner;
-
-import com.google.gson.Gson;
-import im.protoc.Request;
 
 public class TestTCP {
 	public static void main(String[] args) throws IOException {
@@ -16,7 +8,7 @@ public class TestTCP {
 			Socket socket=new Socket("127.0.0.1",3000);
 			InputStream in=socket.getInputStream();
 			OutputStream out=socket.getOutputStream();
-			Request content=new Request();
+			Message content=new Message();
 			content.setContent("你好");
 			content.setFrom("zhanglong1");
 			content.setTimestamp(new Date().getTime());

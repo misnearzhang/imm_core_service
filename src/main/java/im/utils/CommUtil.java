@@ -1,14 +1,14 @@
 package im.utils;
 
 import com.google.gson.Gson;
-import im.protoc.Request;
+import im.protoc.Message;
 import im.protoc.pojo.RequestPOJO;
 
 public class CommUtil {
 	private static Gson gson=new Gson();
-	public static Request varify(String message){
+	public static Message varify(String message){
 		try{
-			Request request=gson.fromJson(message, Request.class);
+			Message request=gson.fromJson(message, Message.class);
 			return request;
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -16,15 +16,15 @@ public class CommUtil {
 		}
 	}
 	
-	public static RequestPOJO Protoc2POJO(Request request){
+	public static RequestPOJO Protoc2POJO(Message message){
 		RequestPOJO requestpojo=new RequestPOJO();
-		requestpojo.setMessage_content(request.getContent());
-		requestpojo.setMessage_from(request.getContent());
-		requestpojo.setMessage_sign(request.getSign());
-		requestpojo.setMessage_timestamp(request.getTimestamp());
-		requestpojo.setMessage_to(request.getContent());
-		requestpojo.setMessage_type(request.getType());
-		requestpojo.setMessage_uid(request.getUid());
+		requestpojo.setMessage_content(message.getContent());
+		requestpojo.setMessage_from(message.getContent());
+		requestpojo.setMessage_sign(message.getSign());
+		requestpojo.setMessage_timestamp(message.getTimestamp());
+		requestpojo.setMessage_to(message.getContent());
+		requestpojo.setMessage_type(message.getType());
+		requestpojo.setMessage_uid(message.getUid());
 		return requestpojo;
 	}
 }

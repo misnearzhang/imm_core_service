@@ -1,15 +1,15 @@
 package im.core.executor;
 
-import im.protoc.Request;
+import im.protoc.Message;
 
 /**
  * Created by zhanglong on 17-2-25.
  */
 public class Task implements Runnable{
-    private Request request;
+    private Message message;
 
-    public Task(Request request) {
-        this.request = request;
+    public Task(Message message) {
+        this.message = message;
     }
 
     public void run() {
