@@ -18,13 +18,13 @@ public class CommUtil {
 	
 	public static RequestPOJO Protoc2POJO(Message message){
 		RequestPOJO requestpojo=new RequestPOJO();
-		requestpojo.setMessage_content(message.getContent());
+		/*requestpojo.setMessage_content(message.getContent());
 		requestpojo.setMessage_from(message.getContent());
 		requestpojo.setMessage_sign(message.getSign());
 		requestpojo.setMessage_timestamp(message.getTimestamp());
 		requestpojo.setMessage_to(message.getContent());
 		requestpojo.setMessage_type(message.getType());
-		requestpojo.setMessage_uid(message.getUid());
+		requestpojo.setMessage_uid(message.getUid());*/
 		return requestpojo;
 	}
 }

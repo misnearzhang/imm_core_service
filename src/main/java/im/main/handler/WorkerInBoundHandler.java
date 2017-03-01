@@ -1,8 +1,5 @@
 package im.main.handler;
 
-import java.util.Date;
-import java.util.UUID;
-
 import com.google.gson.Gson;
 
 import im.core.container.Container;
@@ -28,8 +25,8 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		Container.addOrReplace("zhanglong"+i, ctx.channel().id());
 
 		buf.clear();
-		buf=Unpooled.copiedBuffer((gson.toJson("")+"\r\n").getBytes());
-		ctx.writeAndFlush(buf);
+		buf=Unpooled.copiedBuffer("wellcome".getBytes());
+		Container.send(buf,ctx.channel().id());
 	}
 
 	@Override
@@ -40,17 +37,16 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 
 		if(message!=null){
 			request = CommUtil.varify(message);
+			buf.clear();
+			buf=Unpooled.copiedBuffer((gson.toJson("hello")+"\r\n").getBytes());
 			if (request != null) {
 				// 消息有效 放入消息队列并发送响应给用户
 				WorkThread.executor.execute(new Task(request));
-
 			} else {
 				// 消息无效 只响应用户
 
 			}
-			buf.clear();
-			buf=Unpooled.copiedBuffer((gson.toJson(request)).getBytes());
-			ctx.writeAndFlush(buf);
+			Container.send(buf,ctx.channel().id());
 		}
 	}
 
@@ -96,7 +92,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 			System.out.println("心跳检测到了");
 			buf.clear();
 			buf=Unpooled.copiedBuffer((gson.toJson("Hearbeat   please ignore")).getBytes());
-			ctx.writeAndFlush(buf);
+			Container.send(buf,ctx.channel().id());
 		}
 	}
 }
