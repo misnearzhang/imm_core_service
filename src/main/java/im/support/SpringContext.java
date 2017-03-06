@@ -7,6 +7,6 @@ public class SpringContext {
     public static ApplicationContext ac = null;
     static {
     		 ac = new ClassPathXmlApplicationContext(
-    						"com/im/main/config/spring.xml");
+    						"/im/main/config/spring.xml");
     	}
 }

@@ -1,8 +1,7 @@
 package im.support.mq;
 
-import org.apache.commons.lang3.SerializationUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.util.SerializationUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
