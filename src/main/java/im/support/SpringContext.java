@@ -1,4 +1,4 @@
-package im.db;
+package im.support;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

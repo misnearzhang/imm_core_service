@@ -1,7 +1,7 @@
-package im.db.service.impl;
+package im.support.service.impl;
 
-import im.db.dao.IRequestDao;
-import im.db.service.IRequestService;
+import im.support.dao.IRequestDao;
+import im.support.service.IRequestService;
 import im.protoc.pojo.RequestPOJO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

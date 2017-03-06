@@ -1,4 +1,4 @@
-package im.db.dao;
+package im.support.dao;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,9 +1,9 @@
-package im.db.dao.impl;
+package im.support.dao.impl;
 
 import javax.annotation.Resource;
 
-import im.db.dao.BaseDao;
-import im.db.dao.IRequestDao;
+import im.support.dao.BaseDao;
+import im.support.dao.IRequestDao;
 import im.protoc.pojo.RequestPOJO;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;

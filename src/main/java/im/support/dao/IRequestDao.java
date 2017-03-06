@@ -1,4 +1,4 @@
-package im.db.dao;
+package im.support.dao;
 
 import im.protoc.pojo.RequestPOJO;
 

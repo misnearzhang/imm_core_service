@@ -1,5 +1,9 @@
 package im.core.executor;
 
+import im.support.mq.Publisher;
+import im.utils.SpringBeanUtil;
+
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -25,6 +29,12 @@ public class RetransTask implements Runnable{
                 break;
             case THIRD:
                 //发送到数据库保存  作为离线消息
+                Publisher publisher= (Publisher) SpringBeanUtil.getBean("publisher");
+                try {
+                    publisher.sendMessage("hello");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             default:
         }
