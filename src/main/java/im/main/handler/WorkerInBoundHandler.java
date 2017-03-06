@@ -87,7 +87,8 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 
 
 	/**
-	 * 心跳设计   Read 120   Write 125  首先发生读心跳事件
+	 * 心跳设计   Read 120   Write 125  首先发生写心跳事件  紧接着去读这个事件 的响应
+	 * 超过5秒不通就叫做一次失败  失败3次断掉链接 等待客户端重连
 	 * @param ctx
 	 * @param evt
 	 * @throws Exception
@@ -105,13 +106,11 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 					nativeByteBuf=Unpooled.copiedBuffer("Hearbeat   please ignore".getBytes());
 					Container.send(nativeByteBuf, ctx.channel().id());
 				} else if (idle.state().equals(IdleState.READER_IDLE)) {
-					if (Container.getPingPongCount(ctx.channel().id()) == 2) {
+					Container.pingPongCountAdd(ctx.channel().id());
+					if (Container.getPingPongCount(ctx.channel().id()) == 3) {
 						//超时过多  不可用
 						Container.logOut(ctx.channel().id());
 						ctx.channel().close();
-					} else {
-						//写超时 说明心跳发送出去5秒没有收到响应 失败计数器加1
-						Container.pingPongCountAdd(ctx.channel().id());
 					}
 				}
 			}

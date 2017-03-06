@@ -54,12 +54,7 @@ import io.netty.handler.timeout.IdleStateHandler;
          			O0o li1
 */
 public class Server {
-	private static final byte[] SNMP_HOST_ADDR = {(byte)192, (byte)168, (byte)1, (byte)147};
-	//private static final byte[] SNMP_HOST_ADDR = {(byte)104, (byte)251, (byte)225, (byte)127};
-	private final static int SNMP_TRAP_PORT = 3000;
 	public void bind(int port) throws Exception {
-		final SocketAddress socket =
-	            new InetSocketAddress(InetAddress.getByAddress(SNMP_HOST_ADDR), SNMP_TRAP_PORT);
 		EventLoopGroup master = new NioEventLoopGroup(1);
 		EventLoopGroup slaver = new NioEventLoopGroup(4);
 		ServerBootstrap bootstrap = new ServerBootstrap();
@@ -77,7 +72,7 @@ public class Server {
 //					ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(10*1024*1024, 0, 2));
 //					ch.pipeline().addLast(new StringDecoder());
 					ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
-							6, 9, 0));
+							120, 125, 0));
 					ch.pipeline().addLast(new WorkOutBoundHandler());
 					ch.pipeline().addLast(new WorkerInBoundHandler());
 //					ByteBuf delimiter=Unpooled.copiedBuffer("".getBytes());
@@ -98,7 +93,7 @@ public class Server {
 					//pipeline.addLast(new WorkerInBoundHandler());
 				}
 			});
-			ChannelFuture f = bootstrap.bind(3000).sync();
+			ChannelFuture f = bootstrap.bind(port).sync();
 			f.channel().closeFuture().sync();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -110,11 +105,6 @@ public class Server {
 
 	public static void main(String[] args) {
 		try {
-			//ExecutorService executor=Executors.newCachedThreadPool();
-			//
-			/*for(int i=0;i<20;i++){
-				executor.execute(new Processor());//业务处理线程池
-			}*/
 			new Server().bind(3000);
 		} catch (Exception e) {
 			e.printStackTrace();

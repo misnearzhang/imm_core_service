@@ -81,8 +81,7 @@ public abstract class MessageEnum {
      * 系统推送消息类型
      */
     public enum systemType{
-        LOGIN_ANOTHER("403","用户在其他地方登陆"),
-        MESSAGE_SUCCESS( "200", "消息接受成功" );
+        LOGIN_ANOTHER("300","用户在其他地方登陆");
         private String code;
         private String comment;
         systemType( String code, String comment) {
