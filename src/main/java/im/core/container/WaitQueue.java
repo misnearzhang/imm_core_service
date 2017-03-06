@@ -3,6 +3,7 @@ package im.core.container;
 import im.protoc.Message;
 
 import java.io.Serializable;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -10,10 +11,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * when send a {@link im.protoc.Message} message ,save a copy.
  */
 public class WaitQueue implements Serializable{
-    private static ConcurrentLinkedQueue<Message> messages=new ConcurrentLinkedQueue<Message>();
+    /**
+     * String 消息uuid
+     * {@link Message} 消息正文
+     */
+    private static ConcurrentHashMap<String,Message> messages=new ConcurrentHashMap<String, Message>();
 
-
-    public boolean add(Message message){
-        return messages.add(message);
+    public static void add(String uuid,Message message){
+        messages.put(uuid,message);
     }
+
 }

@@ -14,10 +14,8 @@ import im.main.handler.WorkerInBoundHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
+import io.netty.channel.nio.NioEventLoop;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -64,12 +62,12 @@ public class Server {
 	            new InetSocketAddress(InetAddress.getByAddress(SNMP_HOST_ADDR), SNMP_TRAP_PORT);
 		EventLoopGroup master = new NioEventLoopGroup(1);
 		EventLoopGroup slaver = new NioEventLoopGroup(4);
+		ServerBootstrap bootstrap = new ServerBootstrap();
 		try {
-			ServerBootstrap b = new ServerBootstrap();
-			b.group(master, slaver);
-			b.channel(NioServerSocketChannel.class);
-			b.option(ChannelOption.SO_BACKLOG, 1024);
-			b.childHandler(new ChannelInitializer<SocketChannel>() {
+			bootstrap.group(master, slaver);
+			bootstrap.channel(NioServerSocketChannel.class);
+			bootstrap.option(ChannelOption.SO_BACKLOG, 1024);
+			bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
 					ByteBuf delimiter = Unpooled.copiedBuffer("\r\n".getBytes());
@@ -79,7 +77,7 @@ public class Server {
 //					ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(10*1024*1024, 0, 2));
 //					ch.pipeline().addLast(new StringDecoder());
 					ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
-							0, 0, 180));
+							6, 9, 0));
 					ch.pipeline().addLast(new WorkOutBoundHandler());
 					ch.pipeline().addLast(new WorkerInBoundHandler());
 //					ByteBuf delimiter=Unpooled.copiedBuffer("".getBytes());
@@ -100,7 +98,7 @@ public class Server {
 					//pipeline.addLast(new WorkerInBoundHandler());
 				}
 			});
-			ChannelFuture f = b.bind(3000).sync();
+			ChannelFuture f = bootstrap.bind(3000).sync();
 			f.channel().closeFuture().sync();
 		} catch (Exception e) {
 			e.printStackTrace();
