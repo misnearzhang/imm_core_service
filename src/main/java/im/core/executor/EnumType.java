@@ -7,7 +7,7 @@ import java.util.concurrent.*;
  * @author Misnearzhang
  *
  */
-public class WorkThread {
+public class EnumType {
 
 	public enum RetransCount{
 		FISRT,SECOND,THIRD

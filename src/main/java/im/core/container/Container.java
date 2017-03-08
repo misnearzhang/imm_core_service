@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import im.protoc.Message;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import io.netty.channel.group.*;
@@ -21,6 +23,7 @@ public class Container {
 	//userAccount : ChannelId   //  用户账户  channelId
 	private static ConcurrentHashMap<String, UserAccount> accountConcurrentHashMap=new ConcurrentHashMap<String, UserAccount>();
 	private static ConcurrentHashMap<ChannelId, UserAccount> channelIdUserAccountConcurrentHashMap=new ConcurrentHashMap<ChannelId, UserAccount>();
+	public static ConcurrentHashMap<String , ByteBuf> retransConcurrentHashMap=new ConcurrentHashMap<String, ByteBuf>();//
 	private static EventExecutor executors=new DefaultEventExecutor();
 	private static ChannelGroup group=new DefaultChannelGroup(executors);
 	
@@ -69,13 +72,14 @@ public class Container {
 	 * @param obj
 	 * @param channelId
 	 */
-	public static void send(Object obj,ChannelId channelId){
+	public static void send(final String uid, final Object obj, ChannelId channelId){
 		Channel channel=group.find(channelId);
 		ChannelGroupFuture futures=group.writeAndFlush(obj, ChannelMatchers.is(channel));
     futures.addListener(
         new GenericFutureListener<Future<? super Void>>() {
           public void operationComplete(Future<? super Void> future) throws Exception {
             //TODO io完成  在这里设定定时 定时(未收到消息响应则重发)
+			retransConcurrentHashMap.put(uid, (ByteBuf) obj);//加入临时缓冲
             System.out.println("所有用户Id:"+group.size());
           }
         });

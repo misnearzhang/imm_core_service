@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 
 import im.core.container.Container;
 import im.core.executor.Task;
-import im.core.executor.WorkThread;
+import im.core.executor.EnumType;
 import im.protoc.Message;
 import im.utils.CommUtil;
 import io.netty.buffer.ByteBuf;
@@ -27,7 +27,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		Container.addOrReplace("zhanglong"+i, ctx.channel().id());
 		buf.clear();
 		buf=Unpooled.copiedBuffer("wellcome".getBytes());
-		Container.send(buf,ctx.channel().id());
+		Container.send(null,buf,ctx.channel().id());
 	}
 
 	@Override
@@ -41,12 +41,12 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 			buf=Unpooled.copiedBuffer((gson.toJson("hello")+"\r\n").getBytes());
 			if (request != null) {
 				// 消息有效 放入消息队列并发送响应给用户
-				WorkThread.executor.execute(new Task(request));
+				EnumType.executor.execute(new Task(request));
 			} else {
 				// 消息无效 快速响应
 
 			}
-			Container.send(buf,ctx.channel().id());
+			Container.send(null,buf,ctx.channel().id());
 		}
 	}
 
@@ -104,7 +104,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 					//读超时 说明客户端没有活动  那么发送一个心跳
 					nativeByteBuf.clear();
 					nativeByteBuf=Unpooled.copiedBuffer("Hearbeat   please ignore".getBytes());
-					Container.send(nativeByteBuf, ctx.channel().id());
+					Container.send(null,nativeByteBuf, ctx.channel().id());
 				} else if (idle.state().equals(IdleState.READER_IDLE)) {
 					Container.pingPongCountAdd(ctx.channel().id());
 					if (Container.getPingPongCount(ctx.channel().id()) == 3) {
