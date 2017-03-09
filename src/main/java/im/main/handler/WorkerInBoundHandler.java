@@ -31,6 +31,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		buf.clear();
 		buf=Unpooled.copiedBuffer("wellcome".getBytes());
 		Container.send(null,buf,ctx.channel().id());
+		logger.info(Container.getCount());
 	}
 
 	@Override
