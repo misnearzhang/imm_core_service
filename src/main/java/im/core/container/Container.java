@@ -60,7 +60,7 @@ public class Container {
 		return channelIdUserAccountConcurrentHashMap.get(channelId).getHeartBeatCount();
 	}
 	public static int getCount(){
-		return accountConcurrentHashMap.size();
+		return group.size();
 	}
 	
 	
