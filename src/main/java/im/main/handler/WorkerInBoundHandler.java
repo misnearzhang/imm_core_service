@@ -39,9 +39,9 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		Message request=null;
 		try {
 			if (message != null) {
-				request = CommUtil.varify(message);
+				//request = CommUtil.varify(message);
 				buf.clear();
-				buf = Unpooled.copiedBuffer((gson.toJson("hello") + "\r\n").getBytes());
+				buf = Unpooled.copiedBuffer((gson.toJson("hello every one") + "\r\n").getBytes());
 				if (request != null) {
 					// 消息有效 放入消息队列并发送响应给用户
 					EnumType.executor.execute(new Task(request));
