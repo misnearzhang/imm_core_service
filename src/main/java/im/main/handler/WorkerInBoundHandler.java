@@ -13,9 +13,12 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
-	
+	private final Logger logger = LogManager.getLogger( WorkerInBoundHandler.class );
+
 	Gson gson=new Gson();
 	ByteBuf buf=Unpooled.copiedBuffer(("").getBytes());
 	int i=0;
@@ -33,7 +36,6 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		String message=msg.toString();
-		System.out.println("ctx = [" + ctx + "], msg = [" + msg + "]");
 		Message request=null;
 		if(message!=null){
 			request = CommUtil.varify(message);
@@ -53,35 +55,33 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	@Override
 	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("channelReadComplete");
+		logger.info("channel read complete");
 		ctx.flush();
 	}
 
 	@Override
 	public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("channelWritabilityChanged");
+		logger.info("channelWritabilityChanged");
 	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println(cause.getMessage());
-		System.out.println("发生异常  :"+ctx.hashCode());
+		logger.error("something wrong "+cause.getMessage());
 		ctx.channel().close();
 	}
 
 	@Override
 	public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println(ctx.hashCode()+"已经下线下线");
+		logger.info(ctx.channel().id()+" already offline");
 		super.channelUnregistered(ctx);
 	}
 
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println(ctx.hashCode()+"正在下线...");
 		super.channelInactive(ctx);
 	}
 
@@ -98,10 +98,9 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		try {
 			if (evt instanceof IdleStateEvent) {
 				IdleStateEvent idle = (IdleStateEvent) evt;
-				System.out.println(idle.state());
-				System.out.println(Container.getPingPongCount(ctx.channel().id()));
 				if (idle.state().equals(IdleState.WRITER_IDLE)) {
 					//读超时 说明客户端没有活动  那么发送一个心跳
+					logger.info("write trigger ,send a request heartbeat");
 					nativeByteBuf.clear();
 					nativeByteBuf=Unpooled.copiedBuffer("Hearbeat   please ignore".getBytes());
 					Container.send(null,nativeByteBuf, ctx.channel().id());
@@ -111,6 +110,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 						//超时过多  不可用
 						Container.logOut(ctx.channel().id());
 						ctx.channel().close();
+						logger.error("client no response 3 times.  So I have closed the channel and wait for reconnect");
 					}
 				}
 			}

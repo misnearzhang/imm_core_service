@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration monitorInterval="3600" shutdownHook="disable">
+
+    <properties>
+        <property name="LOG_HOME">/root</property>
+        <!-- 日志切割的最小单位 -->
+        <property name="LOG_FILE_SIZE">100M</property>
+        <!-- 日志备份目录 -->
+        <property name="SERVER_NAME">imm-core-service</property>
+        <property name="OUTPUT_LOG_LEVEL">DEBUG</property><!-- 日志输出级别 -->
+    </properties>
+
+    <Appenders>
+        <!-- 定义控制台输出 -->
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <!-- 输出日志的格式 -->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%p] [%t] %c.%M(%L) | %m%n"/>
+        </Console>
+
+        <!--
+            定义后台文档日志记录
+            这个会打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档
+        -->
+        <RollingFile name="RollingFile"
+                     fileName="${LOG_HOME}/imm-core-log/${SERVER_NAME}.app.log"
+                     filePattern="${LOG_HOME}/imm-core-log/${SERVER_NAME}.$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] [%t] %c.%M(%L) | %m%n</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <!-- 定义log文件封存的周期 -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="${LOG_FILE_SIZE}"/>
+            </Policies>
+            <!-- 最多备份10个 -->
+            <DefaultRolloverStrategy fileIndex="max" max="20"/>
+        </RollingFile>
+
+
+        <!-- 只显示error级别的信息 -->
+        <RollingFile name="RollingFileError"
+                     fileName="${LOG_HOME}/imm-core-log/${SERVER_NAME}.app.error.log"
+                     filePattern="${LOG_HOME}/imm-core-log/${SERVER_NAME}.$${date:yyyy-MM}/app.error-%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%p] [%t] %c.%M(%L) | %m%n</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <!-- 定义log文件封存的周期 -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="${LOG_FILE_SIZE}"/>
+            </Policies>
+            <DefaultRolloverStrategy fileIndex="max" max="20"/>
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+    </Appenders>
+    
+    <Loggers>
+        <!-- 业务debug日志 -->
+        <logger name="com.hna" level="DEBUG"/>
+
+        <!-- 定义除单个类外所有日志记录级别 -->
+        <Root level="debug">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

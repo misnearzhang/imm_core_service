@@ -1,10 +1,8 @@
 package im.core.container;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import im.protoc.Message;
+import im.main.handler.WorkerInBoundHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
@@ -13,6 +11,8 @@ import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * 用户容器 存储所有在线用户  可以抽取出来用redis等nosql实现
@@ -20,6 +20,7 @@ import io.netty.util.concurrent.GenericFutureListener;
  *
  */
 public class Container {
+	private final Logger logger = LogManager.getLogger( Container.class );
 	//userAccount : ChannelId   //  用户账户  channelId
 	private static ConcurrentHashMap<String, UserAccount> accountConcurrentHashMap=new ConcurrentHashMap<String, UserAccount>();
 	private static ConcurrentHashMap<ChannelId, UserAccount> channelIdUserAccountConcurrentHashMap=new ConcurrentHashMap<ChannelId, UserAccount>();
@@ -80,7 +81,7 @@ public class Container {
           public void operationComplete(Future<? super Void> future) throws Exception {
             //TODO io完成  在这里设定定时 定时(未收到消息响应则重发)
 			retransConcurrentHashMap.put(uid, (ByteBuf) obj);//加入临时缓冲
-            System.out.println("所有用户Id:"+group.size());
+            System.out.println("all:"+group.size());
           }
         });
 

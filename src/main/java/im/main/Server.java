@@ -14,6 +14,9 @@ import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 /**
  * bootstramp 类 读取spring配置文件  开启线程池 加载主服务 
  * @author Misnearzhang
@@ -43,6 +46,7 @@ import io.netty.handler.timeout.IdleStateHandler;
          			O0o li1
 */
 public class Server {
+	private final Logger logger = LogManager.getLogger( Server.class );
 	public void bind(int port) throws Exception {
 		EventLoopGroup master = new NioEventLoopGroup(1);
 		EventLoopGroup slaver = new NioEventLoopGroup(4);
@@ -82,10 +86,12 @@ public class Server {
 					//pipeline.addLast(new WorkerInBoundHandler());
 				}
 			});
+			logger.info("server has startup successful!");
 			ChannelFuture f = bootstrap.bind(port).sync();
 			f.channel().closeFuture().sync();
 		} catch (Exception e) {
 			e.printStackTrace();
+			logger.error("server has stop !");
 		} finally {
 			master.shutdownGracefully();
 			slaver.shutdownGracefully();
