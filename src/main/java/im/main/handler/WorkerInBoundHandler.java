@@ -37,18 +37,22 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		String message=msg.toString();
 		Message request=null;
-		if(message!=null){
-			request = CommUtil.varify(message);
-			buf.clear();
-			buf=Unpooled.copiedBuffer((gson.toJson("hello")+"\r\n").getBytes());
-			if (request != null) {
-				// 消息有效 放入消息队列并发送响应给用户
-				EnumType.executor.execute(new Task(request));
-			} else {
-				// 消息无效 快速响应
+		try {
+			if (message != null) {
+				request = CommUtil.varify(message);
+				buf.clear();
+				buf = Unpooled.copiedBuffer((gson.toJson("hello") + "\r\n").getBytes());
+				if (request != null) {
+					// 消息有效 放入消息队列并发送响应给用户
+					EnumType.executor.execute(new Task(request));
+				} else {
+					// 消息无效 快速响应
 
+				}
+				Container.send(null, buf, ctx.channel().id());
 			}
-			Container.send(null,buf,ctx.channel().id());
+		}catch (Exception e){
+			logger.error(e.getMessage());
 		}
 	}
 

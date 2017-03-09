@@ -1,19 +1,18 @@
 package im.utils;
 
 import com.google.gson.Gson;
+import im.main.handler.WorkerInBoundHandler;
 import im.protoc.Message;
 import im.protoc.pojo.RequestPOJO;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CommUtil {
+	private final Logger logger = LogManager.getLogger( CommUtil.class );
 	private static Gson gson=new Gson();
 	public static Message varify(String message){
-		try{
-			Message request=gson.fromJson(message, Message.class);
-			return request;
-		}catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+		Message request=gson.fromJson(message, Message.class);
+		return request;
 	}
 	
 	public static RequestPOJO Protoc2POJO(Message message){
