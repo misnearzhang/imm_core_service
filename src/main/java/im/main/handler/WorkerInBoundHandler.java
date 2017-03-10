@@ -16,17 +16,19 @@ import io.netty.handler.timeout.IdleStateEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	private final Logger logger = LogManager.getLogger( WorkerInBoundHandler.class );
 
 	Gson gson=new Gson();
 	ByteBuf buf=Unpooled.copiedBuffer(("").getBytes());
-	int i=0;
+	AtomicInteger i=new AtomicInteger(0);
 	private ByteBuf nativeByteBuf = Unpooled.copiedBuffer("".getBytes());
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		Container.addChannel(ctx.channel());
-		i=Container.getCount();
+		i.addAndGet(1);
 		Container.addOrReplace("zhanglong"+i, ctx.channel().id());
 		buf.clear();
 		buf=Unpooled.copiedBuffer("wellcome".getBytes());
@@ -37,6 +39,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		String message=msg.toString();
+		logger.info(message);
 		Message request=null;
 		try {
 			if (message != null) {
