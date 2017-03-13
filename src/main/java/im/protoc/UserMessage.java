@@ -1,6 +1,7 @@
 package im.protoc;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 消息发起抽象 可用其他序列化工具代替
@@ -50,4 +51,5 @@ public class UserMessage implements Serializable{
 	public void setSign(String sign) {
 		this.sign = sign;
 	}
+
 }

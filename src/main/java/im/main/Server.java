@@ -18,7 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * bootstramp 类 读取spring配置文件  开启线程池 加载主服务 
+ * bootstramp 类 开启线程池 加载主服务
  * @author Misnearzhang
  *
  */

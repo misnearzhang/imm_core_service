@@ -6,6 +6,10 @@ import im.core.container.Container;
 import im.core.executor.Task;
 import im.core.executor.EnumType;
 import im.protoc.Message;
+import im.protoc.UserMessage;
+import im.protoc.pojo.OfflineMessage;
+import im.protoc.pojo.RequestPOJO;
+import im.support.mq.Publisher;
 import im.utils.CommUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -16,6 +20,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -24,7 +29,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 
 	Gson gson=new Gson();
 	ByteBuf buf=Unpooled.directBuffer();
-
+	Publisher publisher=new Publisher();
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		Container.addChannel(ctx.channel());
@@ -41,7 +46,16 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		logger.info(message);
 		Message request=null;
 		try {
-			if (message != null) {
+			OfflineMessage message1=new OfflineMessage();
+			message1.setMessageFrom(12);
+			message1.setMessageTo(34);
+			message1.setMessageStatus("1");
+			message1.setAddtime(new Date());
+			message1.setUpdatetime(new Date());
+			message1.setMessageContent("one two three four five six seven eight nine ten");
+
+			publisher.send(gson.toJson(message1));
+			/*if (message != null) {
 				//request = CommUtil.varify(message);
 				//buf = Unpooled.copiedBuffer((gson.toJson("hello every one") + "\r\n").getBytes());
 				buf=Unpooled.directBuffer();
@@ -55,7 +69,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 
 				}
 				Container.send(null, buf, ctx.channel().id());
-			}
+			}*/
 		}catch (Exception e){
 			e.printStackTrace();
 			logger.error(e.getMessage());

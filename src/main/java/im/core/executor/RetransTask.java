@@ -1,7 +1,6 @@
 package im.core.executor;
 
 import im.support.mq.Publisher;
-import im.utils.SpringBeanUtil;
 import io.netty.buffer.ByteBuf;
 
 import java.io.IOException;
@@ -30,12 +29,10 @@ public class RetransTask implements Runnable{
                 break;
             case THIRD:
                 //发送到数据库保存  作为离线消息 同时关闭该channel
-                Publisher publisher= (Publisher) SpringBeanUtil.getBean("publisher");
+                //Publisher publisher= (Publisher) SpringBeanUtil.getBean("publisher");
                 try {
-                    publisher.sendMessage("hello");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }finally {
+                    //publisher.sendMessage("hello");
+                } finally {
 
                 }
                 break;
