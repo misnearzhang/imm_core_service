@@ -95,6 +95,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		logger.error("something wrong "+cause.getMessage());
 		Container.logOut(ctx.channel().id());
 		ctx.channel().close();
+		publisher.close();
 	}
 
 	@Override
