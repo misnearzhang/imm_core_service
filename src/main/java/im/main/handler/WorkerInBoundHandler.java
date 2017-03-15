@@ -27,9 +27,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	private final Logger logger = LogManager.getLogger( WorkerInBoundHandler.class );
 
-	Gson gson=new Gson();
-	ByteBuf buf=Unpooled.directBuffer();
-	Publisher publisher=new Publisher();
+	private final Gson gson=new Gson();
+	private ByteBuf buf=Unpooled.directBuffer();
+	private static final Publisher publisher=Publisher.newInstance();
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		Container.addChannel(ctx.channel());

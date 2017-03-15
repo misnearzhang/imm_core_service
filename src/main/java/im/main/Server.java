@@ -48,7 +48,7 @@ import org.apache.logging.log4j.Logger;
 public class Server {
 	private final Logger logger = LogManager.getLogger( Server.class );
 	public void bind(int port) throws Exception {
-		EventLoopGroup master = new NioEventLoopGroup(1);
+		EventLoopGroup master = new NioEventLoopGroup();
 		EventLoopGroup slaver = new NioEventLoopGroup(4);
 		ServerBootstrap bootstrap = new ServerBootstrap();
 		try {
