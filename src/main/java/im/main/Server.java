@@ -65,7 +65,7 @@ public class Server {
 //					ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(10*1024*1024, 0, 2));
 //					ch.pipeline().addLast(new StringDecoder());
 					ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
-							120, 121, 0));
+							123, 120, 0));
 					ch.pipeline().addLast(new WorkOutBoundHandler());
 					ch.pipeline().addLast(new WorkerInBoundHandler());
 //					ByteBuf delimiter=Unpooled.copiedBuffer("".getBytes());

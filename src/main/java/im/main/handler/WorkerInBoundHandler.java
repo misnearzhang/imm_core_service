@@ -35,7 +35,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		Container.addChannel(ctx.channel());
 		Container.addOrReplace("zhanglong"+System.currentTimeMillis(), ctx.channel().id());
 		buf.clear();
-		buf=Unpooled.copiedBuffer("wellcome".getBytes());
+		buf=Unpooled.copiedBuffer("wellcome\r\n".getBytes());
 		Container.send(null,buf,ctx.channel().id());
 		logger.info(Container.getCount());
 	}
@@ -43,7 +43,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		String message=msg.toString();
-		logger.info(message);
+		logger.info("心跳返回：:"+(String)msg);
 		Message request=null;
 		try {
 			OfflineMessage message1=new OfflineMessage();
@@ -132,10 +132,10 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 					heartBeatBuf.writeBytes(sendMsg.getBytes());
 					Container.sendHeartBeat(heartBeatBuf, ctx.channel().id());
 				} else if (idle.state().equals(IdleState.READER_IDLE)) {
-					logger.info("read trigger");
+					logger.info("读超时---------》》");
 					Container.pingPongCountAdd(ctx.channel().id());
 					logger.info("heartbeat Count: "+Container.getPingPongCount(ctx.channel().id()) );
-					if (Container.getPingPongCount(ctx.channel().id()) == 3) {
+					if (Container.getPingPongCount(ctx.channel().id()) == 4) {
 						//超时过多  不可用
 						Container.logOut(ctx.channel().id());
 						ctx.channel().close();

@@ -18,8 +18,8 @@ public class Publisher {
     private final static String QUEUE_NAME = "queue-from-core-server";
     private final static String EXCHANGE_NAME="exchange-from-core-server";
     private final static String ROUTINGKEY="1111111111";
-    private final static String HOST="192.168.1.33";
-    private final static String USERNAME="root";
+    private final static String HOST="localhost";
+    private final static String USERNAME="zhanglong";
     private final static String PASSWORD="123456";
 
     private static ConnectionFactory factory;
