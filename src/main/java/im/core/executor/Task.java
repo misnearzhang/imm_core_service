@@ -56,6 +56,9 @@ public class Task implements Runnable{
             //send
             sendBuf.skipBytes(gson.toJson(message).getBytes().length);
             Container.send(sendBuf,Container.getChannelId(to));
+        }else if("system".equals(type)){
+            //系统消息 做出相应处理，比如说用户跳出
+
         }else if("response".equals(type)){
             //收到响应  判断响应类型  消息响应和心跳响应
             //retransConcurrentHashMap.remove(header.getUid());

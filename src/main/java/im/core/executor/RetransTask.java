@@ -8,11 +8,11 @@ import java.util.concurrent.TimeUnit;
  * Created by Misnearzhang on 2017/3/6.
  */
 public class RetransTask implements Runnable{
-    private String string;
+    private String Message;
     private ThreadPool.RetransCount count;
 
-    public RetransTask(String string, ThreadPool.RetransCount count) {
-        this.string = string;
+    public RetransTask(String Message, ThreadPool.RetransCount count) {
+        this.Message = Message;
         this.count = count;
     }
 

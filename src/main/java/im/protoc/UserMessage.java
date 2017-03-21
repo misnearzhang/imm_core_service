@@ -16,7 +16,7 @@ public class UserMessage implements Serializable{
 	private String from;//  friend group
 	private String to;//	 friend
 	private String type;//TEXT IMAGE
-	private String content;//加密字符串
+	private String content;//文本或者图片链接
 	private String sign;//校验和
 	
 	
