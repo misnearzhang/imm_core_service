@@ -1,6 +1,7 @@
 package im.main;
 
 
+import im.config.SystemConfig;
 import im.main.handler.WorkOutBoundHandler;
 import im.main.handler.WorkerInBoundHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -100,7 +101,7 @@ public class Server {
 
 	public static void main(String[] args) {
 		try {
-			new Server().bind(3000);
+			new Server().bind(SystemConfig.tcpPort);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

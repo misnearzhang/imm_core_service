@@ -1,5 +1,5 @@
 #listening port
-tcp-port=
+tcp-port=3000
 
 #heartbeat time
 idle-read=120
@@ -7,11 +7,11 @@ idle-write=123
 idle-failure-count=3
 
 #core ThreadPool
-threadpool-corepoolsize=
-threadpool-maximumpoolsize=
+threadpool-corepoolsize=20
+threadpool-maximumpoolsize=50
 #TimeUnit s
-threadpool-keepalivetime=
-threadpool-retransfirsttime=
-threadpool-retranssecondtime=
-threadpool-retransthirdtime=
+threadpool-keepalivetime=10
+threadpool-retransfirsttime=3
+threadpool-retranssecondtime=5
+threadpool-retransthirdtime=7
 

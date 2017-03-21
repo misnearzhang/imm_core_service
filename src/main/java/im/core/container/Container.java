@@ -1,7 +1,11 @@
 package im.core.container;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
+import im.config.SystemConfig;
+import im.core.executor.RetransTask;
+import im.core.executor.ThreadPool;
 import im.main.handler.WorkerInBoundHandler;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -25,8 +29,6 @@ public class Container {
 	//userAccount : ChannelId   //  用户账户  channelId
 	private static ConcurrentHashMap<String, UserAccount> accountConcurrentHashMap=new ConcurrentHashMap<String, UserAccount>(100000);
 	private static ConcurrentHashMap<ChannelId, UserAccount> channelIdUserAccountConcurrentHashMap=new ConcurrentHashMap<ChannelId, UserAccount>(100000);
-
-	public static ConcurrentHashMap<String , ByteBuf> retransConcurrentHashMap=new ConcurrentHashMap<String, ByteBuf>(1000000);//重发队列
 
 	private static EventExecutor executors=new DefaultEventExecutor();//channel使用的线程池
 	private static ChannelGroup group=new DefaultChannelGroup(executors);//维护 所有在线的channel
@@ -101,14 +103,13 @@ public class Container {
 	 * @param obj
 	 * @param channelId
 	 */
-	public static void send(final String uid, final Object obj, ChannelId channelId){
+	public static void send(final Object obj, ChannelId channelId){
 		Channel channel=group.find(channelId);
 		ChannelGroupFuture futures=group.writeAndFlush(obj, ChannelMatchers.is(channel));
 		futures.addListener(
         new GenericFutureListener<Future<? super Void>>() {
           public void operationComplete(Future<? super Void> future) throws Exception {
-            //TODO io完成  在这里设定定时 定时(未收到消息响应则重发)
-			retransConcurrentHashMap.put(uid, (ByteBuf) obj);//加入临时缓冲
+			  ThreadPool.retransExecutor.schedule(new RetransTask("first retrans", ThreadPool.RetransCount.FISRT), SystemConfig.threadRetransFisrtTime, TimeUnit.SECONDS);
             System.out.println("all:"+group.size());
           }
         });

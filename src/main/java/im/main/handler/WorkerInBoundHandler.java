@@ -3,6 +3,8 @@ package im.main.handler;
 import com.google.gson.Gson;
 
 import im.core.container.Container;
+import im.core.executor.Task;
+import im.core.executor.ThreadPool;
 import im.protoc.Message;
 import im.protoc.pojo.OfflineMessage;
 import im.support.mq.Publisher;
@@ -30,7 +32,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		Container.addOrReplace("zhanglong"+System.currentTimeMillis(), ctx.channel().id());
 		buf.clear();
 		buf=Unpooled.copiedBuffer("wellcome\r\n".getBytes());
-		Container.send(null,buf,ctx.channel().id());
+		Container.send(buf,ctx.channel().id());
 		logger.info(Container.getCount());
 	}
 
@@ -38,7 +40,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		String message=msg.toString();
 		logger.info("心跳返回：:"+(String)msg);
-		Message request=null;
+		Message request=CommUtil.varify(message);
 		try {
 			OfflineMessage message1=new OfflineMessage();
 			message1.setMessageFrom(12);
@@ -48,13 +50,11 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 			message1.setUpdatetime(new Date());
 			message1.setMessageContent("one two three four five six seven eight nine ten");
 
-			publisher.send(gson.toJson(message1));
-			/*if (message != null) {
+			//publisher.send(gson.toJson(message1));
+			if (message != null) {
 				//request = CommUtil.varify(message);
 				//buf = Unpooled.copiedBuffer((gson.toJson("hello every one") + "\r\n").getBytes());
 				buf=Unpooled.directBuffer();
-				byte[] sendMsg="hi 大家好".getBytes();
-				buf.writeBytes(sendMsg);
 				if (request != null) {
 					// 消息有效 放入消息队列并发送响应给用户
 					ThreadPool.executor.execute(new Task(request));
@@ -62,8 +62,8 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 					// 消息无效 快速响应
 
 				}
-				Container.send(null, buf, ctx.channel().id());
-			}*/
+				Container.send(buf, ctx.channel().id());
+			}
 		}catch (Exception e){
 			e.printStackTrace();
 			logger.error(e.getMessage());
@@ -107,8 +107,8 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 
 
 	/**
-	 * 心跳设计   Read 120   Write 125  首先发生写心跳事件  紧接着去读这个事件 的响应
-	 * 超过5秒不通就叫做一次失败  失败3次断掉链接 等待客户端重连
+	 * 心跳设计   Read 122   Write 120  首先发生写超时  接着像客户端发送心跳 等待心跳响应
+	 * 超过2秒无响应失败计数器++ 失败3次断掉链接 等待客户端重连
 	 * @param ctx
 	 * @param evt
 	 * @throws Exception

@@ -1,5 +1,7 @@
 package im.core.executor;
 
+import im.config.SystemConfig;
+
 import java.util.concurrent.*;
 
 /**
@@ -16,11 +18,16 @@ public class ThreadPool {
 	/**
 	 * 核心线程池，corePoolSize maximumPoolSize keepAliveTime TimeUnit queue
 	 */
-	public static ThreadPoolExecutor executor=new ThreadPoolExecutor(20,50,10, TimeUnit.SECONDS,queue);
+	public static ThreadPoolExecutor executor=new ThreadPoolExecutor(SystemConfig.threadCorePoolSize,SystemConfig.threadMaximumPoolSize,SystemConfig.threadKeepAliveTime, TimeUnit.SECONDS,queue);
 
 	/**
 	 * 重传定时线程池
 	 */
 	public static ScheduledThreadPoolExecutor retransExecutor=new ScheduledThreadPoolExecutor(5);
+
+	public static void get(Runnable test){
+		retransExecutor.schedule(test,5,TimeUnit.SECONDS);
+
+	}
 
 }

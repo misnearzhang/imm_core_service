@@ -1,5 +1,7 @@
 package im.core.executor;
 
+import im.config.SystemConfig;
+
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,10 +19,10 @@ public class RetransTask implements Runnable{
     public void run() {
         switch (count){
             case FISRT:
-                ThreadPool.retransExecutor.schedule(new RetransTask("second retrans", ThreadPool.RetransCount.SECOND),2, TimeUnit.SECONDS);
+                ThreadPool.retransExecutor.schedule(new RetransTask("second retrans", ThreadPool.RetransCount.SECOND), SystemConfig.threadRetransSecondTime, TimeUnit.SECONDS);
                 break;
             case SECOND:
-                ThreadPool.retransExecutor.schedule(new RetransTask("Third retrans", ThreadPool.RetransCount.THIRD),4, TimeUnit.SECONDS);
+                ThreadPool.retransExecutor.schedule(new RetransTask("Third retrans", ThreadPool.RetransCount.THIRD),SystemConfig.threadRetransThirdTime, TimeUnit.SECONDS);
                 break;
             case THIRD:
                 //发送到数据库保存  作为离线消息 同时关闭该channel
