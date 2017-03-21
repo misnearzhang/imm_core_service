@@ -10,7 +10,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelId;
 
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static im.core.container.Container.retransConcurrentHashMap;
@@ -66,6 +65,6 @@ public class Task implements Runnable{
         }else if("heartbeat".equals(type)){
             //直接丢弃 完成通信就可以了
         }
-        EnumType.retransExecutor.schedule(new RetransTask("first retrans", EnumType.RetransCount.FISRT),1, TimeUnit.SECONDS);
+        ThreadPool.retransExecutor.schedule(new RetransTask("first retrans", ThreadPool.RetransCount.FISRT),2, TimeUnit.SECONDS);
     }
 }

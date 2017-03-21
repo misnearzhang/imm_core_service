@@ -1,0 +1,17 @@
+#listening port
+tcp-port=
+
+#heartbeat time
+idle-read=120
+idle-write=123
+idle-failure-count=3
+
+#core ThreadPool
+threadpool-corepoolsize=
+threadpool-maximumpoolsize=
+#TimeUnit s
+threadpool-keepalivetime=
+threadpool-retransfirsttime=
+threadpool-retranssecondtime=
+threadpool-retransthirdtime=
+

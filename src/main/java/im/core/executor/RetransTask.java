@@ -1,10 +1,5 @@
 package im.core.executor;
 
-import im.support.mq.Publisher;
-import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -12,9 +7,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class RetransTask implements Runnable{
     private String string;
-    private EnumType.RetransCount count;
+    private ThreadPool.RetransCount count;
 
-    public RetransTask(String string, EnumType.RetransCount count) {
+    public RetransTask(String string, ThreadPool.RetransCount count) {
         this.string = string;
         this.count = count;
     }
@@ -22,10 +17,10 @@ public class RetransTask implements Runnable{
     public void run() {
         switch (count){
             case FISRT:
-                EnumType.retransExecutor.schedule(new RetransTask("second retrans", EnumType.RetransCount.SECOND),2, TimeUnit.SECONDS);
+                ThreadPool.retransExecutor.schedule(new RetransTask("second retrans", ThreadPool.RetransCount.SECOND),2, TimeUnit.SECONDS);
                 break;
             case SECOND:
-                EnumType.retransExecutor.schedule(new RetransTask("Third retrans", EnumType.RetransCount.THIRD),4, TimeUnit.SECONDS);
+                ThreadPool.retransExecutor.schedule(new RetransTask("Third retrans", ThreadPool.RetransCount.THIRD),4, TimeUnit.SECONDS);
                 break;
             case THIRD:
                 //发送到数据库保存  作为离线消息 同时关闭该channel

@@ -3,12 +3,8 @@ package im.main.handler;
 import com.google.gson.Gson;
 
 import im.core.container.Container;
-import im.core.executor.Task;
-import im.core.executor.EnumType;
 import im.protoc.Message;
-import im.protoc.UserMessage;
 import im.protoc.pojo.OfflineMessage;
-import im.protoc.pojo.RequestPOJO;
 import im.support.mq.Publisher;
 import im.utils.CommUtil;
 import io.netty.buffer.ByteBuf;
@@ -21,8 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	private final Logger logger = LogManager.getLogger( WorkerInBoundHandler.class );
@@ -63,7 +57,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 				buf.writeBytes(sendMsg);
 				if (request != null) {
 					// 消息有效 放入消息队列并发送响应给用户
-					EnumType.executor.execute(new Task(request));
+					ThreadPool.executor.execute(new Task(request));
 				} else {
 					// 消息无效 快速响应
 
