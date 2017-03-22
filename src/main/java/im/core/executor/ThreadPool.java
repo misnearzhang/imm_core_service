@@ -25,8 +25,8 @@ public class ThreadPool {
 	 */
 	public static ScheduledThreadPoolExecutor retransExecutor=new ScheduledThreadPoolExecutor(5);
 
-	public static void get(Runnable test){
-		retransExecutor.schedule(test,5,TimeUnit.SECONDS);
+	public static void run(Runnable task){
+		retransExecutor.schedule(task,5,TimeUnit.SECONDS);
 
 	}
 

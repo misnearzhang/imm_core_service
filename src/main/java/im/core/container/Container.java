@@ -109,8 +109,7 @@ public class Container {
 		futures.addListener(
         new GenericFutureListener<Future<? super Void>>() {
           public void operationComplete(Future<? super Void> future) throws Exception {
-			  ThreadPool.retransExecutor.schedule(new RetransTask("first retrans", ThreadPool.RetransCount.FISRT), SystemConfig.threadRetransFisrtTime, TimeUnit.SECONDS);
-            System.out.println("all:"+group.size());
+			  ThreadPool.retransExecutor.schedule(new RetransTask(null, ThreadPool.RetransCount.FISRT), SystemConfig.threadRetransFisrtTime, TimeUnit.SECONDS);
           }
         });
 
