@@ -38,7 +38,7 @@ public class SystemConfig {
     public int threadRetransSecondTime;
     public int threadRetransThirdTime;*/
 
-    private static final Map<String, String> map=readFile("/home/zhanglong/IdeaProjects/imm_core_service/src/main/resources/systemconfig");;
+    private static final Map<String, String> map=readFile("D:\\20170213\\imm_core_service\\src\\main\\resources\\systemconfig");
 
     public static final int idleReadTime;
 

@@ -29,7 +29,6 @@ public class ParseTask implements Runnable{
     }
 
     public void run() {
-        //TODO  消息处理
         Header header= gson.fromJson(sendMessage.getHead(),Header.class);
         String type=header.getType();
         ByteBuf sendBuf= Unpooled.copiedBuffer("".getBytes());

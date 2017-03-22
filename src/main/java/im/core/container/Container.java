@@ -104,13 +104,6 @@ public class Container {
 	public static void send(final Object obj, ChannelId channelId){
 		Channel channel=group.find(channelId);
 		ChannelGroupFuture futures=group.writeAndFlush(obj, ChannelMatchers.is(channel));
-		futures.addListener(
-        new GenericFutureListener<Future<? super Void>>() {
-          public void operationComplete(Future<? super Void> future) throws Exception {
-			  ThreadPool.retransExecutor.schedule(new SendTask(null, ThreadPool.RetransCount.FISRT), SystemConfig.threadRetransFisrtTime, TimeUnit.SECONDS);
-          }
-        });
-
 	}
 	public static void sendHeartBeat(final Object obj,ChannelId channelId){
 		Channel channel=group.find(channelId);
