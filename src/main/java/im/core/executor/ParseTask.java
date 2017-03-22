@@ -16,19 +16,21 @@ import java.util.concurrent.TimeUnit;
 import im.core.container.Container;
 
 /**
+ * 解析报文 并做处理  用户消息则将消息处理了转发给网络发送线程 系统消息则根据消息类型处理
  * Created by zhanglong on 17-2-25.
  */
-public class Task implements Runnable{
+public class ParseTask implements Runnable{
     private Gson gson =new Gson();
-    private Message message;
+    private Message sendMessage;
+    private String message;
 
-    public Task(Message message) {
+    public ParseTask(String message) {
         this.message = message;
     }
 
     public void run() {
         //TODO  消息处理
-        Header header= gson.fromJson(message.getHead(),Header.class);
+        Header header= gson.fromJson(sendMessage.getHead(),Header.class);
         String type=header.getType();
         ByteBuf sendBuf= Unpooled.copiedBuffer("".getBytes());
         /*
@@ -40,8 +42,8 @@ public class Task implements Runnable{
             //解析出发送方
             String from;
             String to;
-            String uid;
-            UserMessage userMessage=gson.fromJson(message.getBody(),UserMessage.class);
+            String uid=header.getUid();
+            UserMessage userMessage=gson.fromJson(sendMessage.getBody(),UserMessage.class);
             from=userMessage.getFrom();
             to=userMessage.getTo();
             ChannelId channelId=Container.getChannelId(to);
@@ -51,18 +53,16 @@ public class Task implements Runnable{
             header1.setStatus("");
             header1.setUid(header.getUid());
             header1.setType(MessageEnum.type.USER.getCode());
-            message.setHead(gson.toJson(header1));
-            message.setBody(gson.toJson(userMessage));
-            //send
-            sendBuf.skipBytes(gson.toJson(message).getBytes().length);
-            Container.send(sendBuf,Container.getChannelId(to));
+            sendMessage.setHead(gson.toJson(header1));
+            sendMessage.setBody(gson.toJson(userMessage));
+            ThreadPool.sendMessage(new SendTask(sendMessage, ThreadPool.RetransCount.FISRT,channelId,uid),uid);
         }else if("system".equals(type)){
             //系统消息 做出相应处理，比如说用户跳出
 
         }else if("response".equals(type)){
             //收到响应  判断响应类型  消息响应和心跳响应
             //retransConcurrentHashMap.remove(header.getUid());
-
+            ThreadPool.removeFurure(header.getUid());
         }
 
     }

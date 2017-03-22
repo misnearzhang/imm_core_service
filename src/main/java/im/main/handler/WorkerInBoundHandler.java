@@ -3,7 +3,7 @@ package im.main.handler;
 import com.google.gson.Gson;
 
 import im.core.container.Container;
-import im.core.executor.Task;
+import im.core.executor.ParseTask;
 import im.core.executor.ThreadPool;
 import im.protoc.Message;
 import im.protoc.pojo.OfflineMessage;
@@ -39,35 +39,8 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		String message=msg.toString();
-		logger.info("心跳返回：:"+(String)msg);
-		Message request=CommUtil.varify(message);
-		try {
-			OfflineMessage message1=new OfflineMessage();
-			message1.setMessageFrom(12);
-			message1.setMessageTo(34);
-			message1.setMessageStatus("1");
-			message1.setAddtime(new Date());
-			message1.setUpdatetime(new Date());
-			message1.setMessageContent("one two three four five six seven eight nine ten");
-
-			//publisher.send(gson.toJson(message1));
-			if (message != null) {
-				//request = CommUtil.varify(message);
-				//buf = Unpooled.copiedBuffer((gson.toJson("hello every one") + "\r\n").getBytes());
-				buf=Unpooled.directBuffer();
-				if (request != null) {
-					// 消息有效 放入消息队列并发送响应给用户
-					ThreadPool.executor.execute(new Task(request));
-				} else {
-					// 消息无效 快速响应
-
-				}
-				Container.send(buf, ctx.channel().id());
-			}
-		}catch (Exception e){
-			e.printStackTrace();
-			logger.error(e.getMessage());
-		}
+		ThreadPool.parseMessage(message);
+		logger.info("收到消息：:"+(String)msg);
 	}
 
 	@Override

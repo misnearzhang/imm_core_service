@@ -6,12 +6,12 @@ idle-read=120
 idle-write=123
 idle-failure-count=3
 
-#core ThreadPool
-threadpool-corepoolsize=20
-threadpool-maximumpoolsize=50
+#parse ThreadPool
+threadpool-corepoolsize=5
+threadpool-maximumpoolsize=10
+#sender ThreadPool
+sender-threadpool-poolsize=8
 #TimeUnit s
 threadpool-keepalivetime=10
-threadpool-retransfirsttime=3
-threadpool-retranssecondtime=5
-threadpool-retransthirdtime=7
+threadpool-threadRetransTime=5
 

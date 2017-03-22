@@ -52,12 +52,9 @@ public class SystemConfig {
 
     public static final int threadKeepAliveTime;
 
-    public static final int threadRetransFisrtTime;
+    public static final int threadRetransTime;
 
-    public static final int threadRetransSecondTime;
-
-    public static final int threadRetransThirdTime;
-
+    public static final int senderThreadpoolPoolSize;
     static {
         idleReadTime= Integer.parseInt(map.get("idle-read"));
         idleWriteTime= Integer.parseInt(map.get("idle-write"));
@@ -65,9 +62,9 @@ public class SystemConfig {
         threadCorePoolSize= Integer.parseInt(map.get("threadpool-corepoolsize"));
         threadMaximumPoolSize= Integer.parseInt(map.get("threadpool-maximumpoolsize"));
         threadKeepAliveTime= Integer.parseInt(map.get("threadpool-keepalivetime"));
-        threadRetransFisrtTime= Integer.parseInt(map.get("threadpool-retransfirsttime"));
-        threadRetransSecondTime= Integer.parseInt(map.get("threadpool-retranssecondtime"));
-        threadRetransThirdTime= Integer.parseInt(map.get("threadpool-retransthirdtime"));
+        threadRetransTime= Integer.parseInt(map.get("threadpool-threadRetransTime"));
+        senderThreadpoolPoolSize=Integer.parseInt(map.get("sender-threadpool-poolsize"));
+
     }
 
 

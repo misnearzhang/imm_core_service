@@ -4,10 +4,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import im.config.SystemConfig;
-import im.core.executor.RetransTask;
+import im.core.executor.SendTask;
 import im.core.executor.ThreadPool;
-import im.main.handler.WorkerInBoundHandler;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import io.netty.channel.group.*;
@@ -109,7 +107,7 @@ public class Container {
 		futures.addListener(
         new GenericFutureListener<Future<? super Void>>() {
           public void operationComplete(Future<? super Void> future) throws Exception {
-			  ThreadPool.retransExecutor.schedule(new RetransTask(null, ThreadPool.RetransCount.FISRT), SystemConfig.threadRetransFisrtTime, TimeUnit.SECONDS);
+			  ThreadPool.retransExecutor.schedule(new SendTask(null, ThreadPool.RetransCount.FISRT), SystemConfig.threadRetransFisrtTime, TimeUnit.SECONDS);
           }
         });
 

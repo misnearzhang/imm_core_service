@@ -1,6 +1,7 @@
 package im.core.executor;
 
 import im.config.SystemConfig;
+import im.protoc.Message;
 
 import java.util.concurrent.*;
 
@@ -16,18 +17,35 @@ public class ThreadPool {
 	}
 	private static BlockingQueue<Runnable> queue=new ArrayBlockingQueue<Runnable>(1000000);
 	/**
-	 * 核心线程池，corePoolSize maximumPoolSize keepAliveTime TimeUnit queue
+	 * parse线程池，corePoolSize maximumPoolSize keepAliveTime TimeUnit queue
 	 */
-	public static ThreadPoolExecutor executor=new ThreadPoolExecutor(SystemConfig.threadCorePoolSize,SystemConfig.threadMaximumPoolSize,SystemConfig.threadKeepAliveTime, TimeUnit.SECONDS,queue);
+	private static ThreadPoolExecutor parser=new ThreadPoolExecutor(SystemConfig.threadCorePoolSize,SystemConfig.threadMaximumPoolSize,SystemConfig.threadKeepAliveTime, TimeUnit.SECONDS,queue);
 
 	/**
-	 * 重传定时线程池
+	 * 发送线程池
 	 */
-	public static ScheduledThreadPoolExecutor retransExecutor=new ScheduledThreadPoolExecutor(5);
+	private static ScheduledThreadPoolExecutor retransExecutor=new ScheduledThreadPoolExecutor(5);
+	private static ConcurrentHashMap<String,ScheduledFuture> futures=new ConcurrentHashMap<String, ScheduledFuture>(100);
 
-	public static void run(Runnable task){
-		retransExecutor.schedule(task,5,TimeUnit.SECONDS);
+	static {
+		retransExecutor.setRemoveOnCancelPolicy(true);
+	}
+
+	public static void sendMessage(SendTask task,String uid) {
+		ScheduledFuture future = retransExecutor.schedule(task, SystemConfig.threadRetransTime, TimeUnit.SECONDS);
+		futures.put(uid,future);
 
 	}
 
+
+	public static void parseMessage(String message){
+		parser.execute(new ParseTask(message));
+	}
+
+	public static boolean removeFurure(String uid){
+		ScheduledFuture future=futures.get(uid);
+		future.cancel(false);
+		retransExecutor.purge();
+		return true;
+	}
 }
