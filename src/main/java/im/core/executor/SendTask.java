@@ -1,21 +1,21 @@
 package im.core.executor;
 
-import im.config.SystemConfig;
-import im.protoc.Message;
+import im.core.container.Container;
 import io.netty.channel.ChannelId;
-
-import java.util.concurrent.TimeUnit;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Created by Misnearzhang on 2017/3/6.
  */
 public class SendTask implements Runnable{
+    private final Logger logger = LogManager.getLogger( SendTask.class );
     private ChannelId toChannelId;
     private String uid;
-    private Message message;
+    private String message;
     private ThreadPool.RetransCount count;
 
-    public SendTask(Message Message, ThreadPool.RetransCount count,ChannelId channelId,String uid) {
+    public SendTask(String Message, ThreadPool.RetransCount count,ChannelId channelId,String uid) {
         this.message = Message;
         this.count = count;
         this.toChannelId=channelId;
@@ -23,7 +23,8 @@ public class SendTask implements Runnable{
     }
 
     public void run() {
-        //Container.send();  send message
+        logger.info(message+"----"+count.toString());
+        Container.send(message,toChannelId);  //send message
         switch (count){
             case FISRT:
                 this.count=ThreadPool.RetransCount.SECOND;

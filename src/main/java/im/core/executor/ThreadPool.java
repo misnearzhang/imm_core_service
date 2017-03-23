@@ -31,15 +31,19 @@ public class ThreadPool {
 		retransExecutor.setRemoveOnCancelPolicy(true);
 	}
 
+	public static void parseMessage(String message){
+		parser.execute(new ParseTask(message));
+	}
+
+
+	public static void sendMessageNow(SendTask task,String uid) {
+		ScheduledFuture future = retransExecutor.schedule(task, 0, TimeUnit.SECONDS);
+		futures.put(uid,future);
+	}
 	public static void sendMessage(SendTask task,String uid) {
 		ScheduledFuture future = retransExecutor.schedule(task, SystemConfig.threadRetransTime, TimeUnit.SECONDS);
 		futures.put(uid,future);
 
-	}
-
-
-	public static void parseMessage(String message){
-		parser.execute(new ParseTask(message));
 	}
 
 	public static boolean removeFurure(String uid){

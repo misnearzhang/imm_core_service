@@ -42,4 +42,9 @@ public class CommUtil {
 		sb.append(gson.toJson(message)).append(MessageEnum.delimiters.ENTER.getCode());
 		return sb.toString();
 	}
+
+	public static String createUUID(){
+		UUID uuid = UUID.randomUUID();
+		return uuid.toString();
+	}
 }

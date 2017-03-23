@@ -28,10 +28,11 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	private static final Publisher publisher=Publisher.newInstance();
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		String userId="zhanglong"+System.currentTimeMillis();
 		Container.addChannel(ctx.channel());
 		Container.addOrReplace("zhanglong"+System.currentTimeMillis(), ctx.channel().id());
 		buf.clear();
-		buf=Unpooled.copiedBuffer("wellcome\r\n".getBytes());
+		buf=Unpooled.copiedBuffer(("wellcome:"+userId+"\r\n").getBytes());
 		Container.send(buf,ctx.channel().id());
 		logger.info(Container.getCount());
 	}
