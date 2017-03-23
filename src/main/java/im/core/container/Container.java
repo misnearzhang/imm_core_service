@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
 import im.config.SystemConfig;
 import im.core.executor.SendTask;
 import im.core.executor.ThreadPool;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import io.netty.channel.group.*;
@@ -22,7 +24,7 @@ import org.apache.logging.log4j.Logger;
  *
  */
 public class Container {
-	private final Logger logger = LogManager.getLogger( Container.class );
+	private static final Logger logger = LogManager.getLogger( Container.class );
 
 	//userAccount : ChannelId   //  用户账户  channelId
 	private static ConcurrentHashMap<String, UserAccount> accountConcurrentHashMap=new ConcurrentHashMap<String, UserAccount>(100000);
@@ -37,7 +39,9 @@ public class Container {
 	 * @return
 	 */
 	public static ChannelId getChannelId(String userAccount){
-		if(accountConcurrentHashMap.contains(userAccount)){
+		logger.info(accountConcurrentHashMap.contains(userAccount));
+		if(accountConcurrentHashMap.containsKey(userAccount)){
+			logger.info(userAccount);
 			return accountConcurrentHashMap.get(userAccount).getChannelId();
 		}else{
 			return null;
@@ -62,6 +66,8 @@ public class Container {
 			accountConcurrentHashMap.put(userName, userAccount);
 			channelIdUserAccountConcurrentHashMap.put(channelId,userAccount);
 		}
+		logger.info("accountConcurrentHashMap:"+accountConcurrentHashMap);
+		logger.info("channelIdUserAccountConcurrentHashMap:"+channelIdUserAccountConcurrentHashMap);
 		return true;
 	}
 
@@ -101,9 +107,14 @@ public class Container {
 	 * @param obj
 	 * @param channelId
 	 */
-	public static void send(final Object obj, ChannelId channelId){
+	public static void send(final String obj, ChannelId channelId){
+		ByteBuf sendbuf= Unpooled.directBuffer();
+		logger.info(obj);
+		logger.info(channelId);
+		sendbuf.writeBytes(obj.getBytes());
 		Channel channel=group.find(channelId);
-		ChannelGroupFuture futures=group.writeAndFlush(obj, ChannelMatchers.is(channel));
+		logger.info(channel);
+		ChannelGroupFuture futures=group.writeAndFlush(sendbuf, ChannelMatchers.is(channel));
 	}
 	public static void sendHeartBeat(final Object obj,ChannelId channelId){
 		Channel channel=group.find(channelId);

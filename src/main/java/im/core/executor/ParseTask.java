@@ -31,7 +31,6 @@ public class ParseTask implements Runnable{
         sendMessage=gson.fromJson(message,Message.class);
         Header header= gson.fromJson(sendMessage.getHead(),Header.class);
         String type=header.getType();
-        ByteBuf sendBuf= Unpooled.copiedBuffer("".getBytes());
         /*
         USER( "user", "用户消息" ),
         SYSTEM( "system", "系统消息" ),
@@ -39,22 +38,14 @@ public class ParseTask implements Runnable{
          */
         if("user".equals(type)){
             //解析出发送方
-            String from;
             String to;
             String uid=header.getUid();
             UserMessage userMessage=gson.fromJson(sendMessage.getBody(),UserMessage.class);
-            from=userMessage.getFrom();
             to=userMessage.getTo();
             ChannelId channelId=Container.getChannelId(to);
-            userMessage.setFrom(to);
-            userMessage.setTo(from);
-            Header header1=new Header();
-            header1.setStatus("");
-            header1.setUid(header.getUid());
-            header1.setType(MessageEnum.type.USER.getCode());
-            sendMessage.setHead(gson.toJson(header1));
-            sendMessage.setBody(gson.toJson(userMessage));
-            ThreadPool.sendMessageNow(new SendTask(gson.toJson(sendMessage), ThreadPool.RetransCount.FISRT,channelId,uid),uid);
+            logger.info("to:"+to);
+            logger.info("channelId:"+channelId);
+            ThreadPool.sendMessageNow(new SendTask(message, ThreadPool.RetransCount.FISRT,channelId,uid),uid);
         }else if("system".equals(type)){
             //系统消息 做出相应处理，比如说用户跳出
 

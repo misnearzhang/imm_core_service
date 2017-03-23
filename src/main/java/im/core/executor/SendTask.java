@@ -24,7 +24,7 @@ public class SendTask implements Runnable{
 
     public void run() {
         logger.info(message+"----"+count.toString());
-        Container.send(message,toChannelId);  //send message
+        Container.send(message+"\r\n",toChannelId);  //send message
         switch (count){
             case FISRT:
                 this.count=ThreadPool.RetransCount.SECOND;

@@ -24,16 +24,13 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	private final Logger logger = LogManager.getLogger( WorkerInBoundHandler.class );
 
 	private final Gson gson=new Gson();
-	private ByteBuf buf=Unpooled.directBuffer();
 	private static final Publisher publisher=Publisher.newInstance();
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		String userId="zhanglong"+System.currentTimeMillis();
 		Container.addChannel(ctx.channel());
-		Container.addOrReplace("zhanglong"+System.currentTimeMillis(), ctx.channel().id());
-		buf.clear();
-		buf=Unpooled.copiedBuffer(("wellcome:"+userId+"\r\n").getBytes());
-		Container.send(buf,ctx.channel().id());
+		Container.addOrReplace(userId, ctx.channel().id());
+		Container.send("wellcome:"+userId+"\r\n",ctx.channel().id());
 		logger.info(Container.getCount());
 	}
 
