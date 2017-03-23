@@ -27,14 +27,17 @@ public class SendTask implements Runnable{
         Container.send(message+"\r\n",toChannelId);  //send message
         switch (count){
             case FISRT:
+                logger.info("first retrans");
                 this.count=ThreadPool.RetransCount.SECOND;
                 ThreadPool.sendMessage(this,uid);
                 break;
             case SECOND:
+                logger.info("second retrans");
                 this.count=ThreadPool.RetransCount.THIRD;
                 ThreadPool.sendMessage(this,uid);
                 break;
             case THIRD:
+                logger.info("give up,save in db");
                 //发送到数据库保存  作为离线消息 同时关闭该channel
                 //Publisher publisher= (Publisher) SpringBeanUtil.getBean("publisher");
                 try {

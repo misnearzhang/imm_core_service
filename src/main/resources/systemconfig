@@ -2,8 +2,8 @@
 tcp-port=3000
 
 #heartbeat time
-idle-read=120
-idle-write=123
+idle-read=200
+idle-write=205
 idle-failure-count=3
 
 #parse ThreadPool
@@ -13,5 +13,5 @@ threadpool-maximumpoolsize=10
 sender-threadpool-poolsize=8
 #TimeUnit s
 threadpool-keepalivetime=10
-threadpool-threadRetransTime=5
+threadpool-threadRetransTime=10
 

@@ -12,7 +12,8 @@ public abstract class MessageEnum {
         USER( "user", "用户消息" ),
         SYSTEM( "system", "系统消息" ),
         RESPONSE( "response", "响应消息" ),
-        HEARTBEAT( "heartbeat", "心跳消息" );
+        PING ("ping", "心跳ping" ),
+        PONG("pong","心跳pong");
         private String code;
         private String comment;
         type( String code, String comment) {
@@ -81,7 +82,8 @@ public abstract class MessageEnum {
      * 系统推送消息类型
      */
     public enum systemType{
-        LOGIN_ANOTHER("300","用户在其他地方登陆");
+        HANDSHAKE("handshake","应用层握手,校验用户登录信息"),
+        LOGINANOTHER("loginaother","用户在其他地方登陆");
         private String code;
         private String comment;
         systemType( String code, String comment) {
