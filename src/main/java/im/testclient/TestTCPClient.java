@@ -24,7 +24,7 @@ public class TestTCPClient {
 			b.handler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
-					ByteBuf delimiter=Unpooled.copiedBuffer("&&".getBytes());
+					ByteBuf delimiter=Unpooled.copiedBuffer("\r\n".getBytes());
 					ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
 					ch.pipeline().addLast(new StringDecoder());
 					ch.pipeline().addLast(new TestUDPClientHandler());
@@ -41,6 +41,6 @@ public class TestTCPClient {
 	}
 	
 	public static void main(String[] args){
-		new TestTCPClient().run(1080);
+		new TestTCPClient().run(3000);
 	}
 }
