@@ -6,6 +6,8 @@ import im.protoc.Header;
 import im.protoc.Message;
 import im.protoc.MessageEnum;
 import im.protoc.pojo.RequestPOJO;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +38,7 @@ public class CommUtil {
 		Message message=new Message();
 		Header head=new Header();
 		head.setUid(UUID.randomUUID().toString());
-		head.setType(MessageEnum.type.HEARTBEAT.getCode());
+		head.setType(MessageEnum.type.PING.getCode());
 		head.setStatus(MessageEnum.status.REQ.getCode());
 		message.setHead(gson.toJson(head));
 		sb.append(gson.toJson(message)).append(MessageEnum.delimiters.ENTER.getCode());
@@ -46,5 +48,17 @@ public class CommUtil {
 	public static String createUUID(){
 		UUID uuid = UUID.randomUUID();
 		return uuid.toString();
+	}
+
+	public static String createResponse(String uuid){
+		Message response = new Message();
+		Header header1 = new Header();
+		header1.setUid(uuid);
+		header1.setStatus("200");
+		header1.setType(MessageEnum.type.RESPONSE.getCode());
+		response.setHead(gson.toJson(header1));
+		String send = gson.toJson(response);
+		send += "\r\n";
+		return send;
 	}
 }

@@ -6,6 +6,7 @@ import im.protoc.Header;
 import im.protoc.Message;
 import im.protoc.MessageEnum;
 import im.protoc.UserMessage;
+import im.utils.CommUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelId;
@@ -27,33 +28,42 @@ public class ParseTask implements Runnable{
     }
 
     public void run() {
-        logger.info(message);
-        sendMessage=gson.fromJson(message,Message.class);
-        Header header= gson.fromJson(sendMessage.getHead(),Header.class);
-        String type=header.getType();
+        try {
+            logger.info(message);
+            sendMessage = gson.fromJson(message, Message.class);
+            Header header = gson.fromJson(sendMessage.getHead(), Header.class);
+            String type = header.getType();
         /*
         USER( "user", "用户消息" ),
         SYSTEM( "system", "系统消息" ),
         RESPONSE( "response", "响应消息" )
          */
-        if("user".equals(type)){
-            //解析出发送方
-            String to;
-            String uid=header.getUid();
-            UserMessage userMessage=gson.fromJson(sendMessage.getBody(),UserMessage.class);
-            to=userMessage.getTo();
-            ChannelId channelId=Container.getChannelId(to);
-            logger.info("to:"+to);
-            logger.info("channelId:"+channelId);
-            ThreadPool.sendMessageNow(new SendTask(message, ThreadPool.RetransCount.FISRT,channelId,uid),uid);
-        }else if("system".equals(type)){
-            //系统消息 做出相应处理，比如说用户跳出
+            if ("user".equals(type)) {
+                //解析出发送方
+                String from;
+                String to;
+                String uid = header.getUid();
+                UserMessage userMessage = gson.fromJson(sendMessage.getBody(), UserMessage.class);
+                to = userMessage.getTo();
+                from = userMessage.getFrom();
+                ChannelId toChannelId = Container.getChannelId(to);
+                ChannelId fromChannelId = Container.getChannelId(from);
+                logger.info("to:" + to);
+                logger.info("from:" + from);
+                Container.send(CommUtil.createResponse(uid), fromChannelId);
+                ThreadPool.sendMessageNow(new SendTask(message, ThreadPool.RetransCount.FISRT, toChannelId, uid), uid);
+            } else if ("system".equals(type)) {
+                //系统消息 做出相应处理，比如说用户跳出
 
-        }else if("response".equals(type)){
-            //收到响应  判断响应类型  消息响应和心跳响应
-            //retransConcurrentHashMap.remove(header.getUid());
-            ThreadPool.removeFurure(header.getUid());
+            } else if ("response".equals(type)) {
+                //收到响应  判断响应类型  消息响应和心跳响应
+                //retransConcurrentHashMap.remove(header.getUid());
+                logger.info("收到响应了 删去重发");
+                ThreadPool.removeFurure(header.getUid());
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
         }
-
     }
 }

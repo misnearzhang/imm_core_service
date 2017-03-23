@@ -21,8 +21,8 @@ public class TestTCP {
 		UserMessage body=new UserMessage();
 		body.setSign("");
 		body.setType("user");
-		body.setFrom("zhanglong1490234027209");
-		body.setTo("zhanglong1490234023143");
+		body.setFrom("zhanglong1490301366526");
+		body.setTo("zhanglong1490301374902");
 		body.setContent("hellow");
 		message.setBody(gson.toJson(body));
 		System.out.println(gson.toJson(message));

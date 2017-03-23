@@ -18,12 +18,23 @@ public class TestTCPClientHandler extends ChannelInboundHandlerAdapter {
 		Gson gson = new Gson();
 		Message message = gson.fromJson(msg.toString(), Message.class);
 		Header header = gson.fromJson(message.getHead(), Header.class);
-		if (MessageEnum.type.HEARTBEAT.getCode().equals(header.getType())) {
+		if (MessageEnum.type.PING.getCode().equals(header.getType())) {
 			Message response = new Message();
 			Header header1 = new Header();
 			header1.setUid(header.getUid());
 			header1.setStatus("200");
-			header1.setType(MessageEnum.type.HEARTBEAT.getCode());
+			header1.setType(MessageEnum.type.PONG.getCode());
+			message.setHead(gson.toJson(header1));
+			String send = gson.toJson(message);
+			send += "\r\n";
+			ByteBuf buf = Unpooled.copiedBuffer(send.getBytes());
+			ctx.channel().writeAndFlush(buf);
+		}else if(MessageEnum.type.USER.getCode().equals(header.getType())){
+			Message response = new Message();
+			Header header1 = new Header();
+			header1.setUid(header.getUid());
+			header1.setStatus("200");
+			header1.setType(MessageEnum.type.RESPONSE.getCode());
 			message.setHead(gson.toJson(header1));
 			String send = gson.toJson(message);
 			send += "\r\n";
