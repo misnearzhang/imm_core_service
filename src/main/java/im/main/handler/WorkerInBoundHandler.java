@@ -67,12 +67,14 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
 		// TODO Auto-generated method stub
 		logger.info(ctx.channel().id()+" already offline");
+		Container.logOut(ctx.channel().id());
 		super.channelUnregistered(ctx);
 	}
 
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		// TODO Auto-generated method stub
+		Container.logOut(ctx.channel().id());
 		super.channelInactive(ctx);
 	}
 
