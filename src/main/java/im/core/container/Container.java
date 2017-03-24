@@ -81,10 +81,10 @@ public class Container {
 	 * @return
 	 */
 	public static boolean logOut(ChannelId channelId){
-		if(accountConcurrentHashMap.containsKey(channelId)){
-			accountConcurrentHashMap.remove(channelIdUserAccountConcurrentHashMap.get(channelId).getAccount());
-		}
 		if (channelIdUserAccountConcurrentHashMap.containsKey(channelId)){
+			if(accountConcurrentHashMap.containsKey(channelIdUserAccountConcurrentHashMap.get(channelId).getAccount())){
+				accountConcurrentHashMap.remove(channelIdUserAccountConcurrentHashMap.get(channelId).getAccount());
+			}
 			channelIdUserAccountConcurrentHashMap.remove(channelId);
 		}
 		return true;
