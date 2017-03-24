@@ -60,6 +60,8 @@ public class ParseTask implements Runnable{
                 //retransConcurrentHashMap.remove(header.getUid());
                 logger.info("收到响应了 删去重发");
                 ThreadPool.removeFurure(header.getUid());
+            }else if(MessageEnum.type.PONG.getCode().equals(type)){
+                //心跳响应  不做任何事
             }
 
         }catch (Exception e){
