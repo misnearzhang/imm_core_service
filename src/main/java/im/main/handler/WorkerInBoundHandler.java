@@ -36,6 +36,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
+		Container.pingPongRest(ctx.channel().id());
 		String message=msg.toString();
 		ThreadPool.parseMessage(message);
 		logger.info("收到消息：:"+(String)msg);

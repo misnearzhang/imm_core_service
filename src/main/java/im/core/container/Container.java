@@ -95,6 +95,10 @@ public class Container {
 		channelIdUserAccountConcurrentHashMap.get(channelId).addCount();
 	}
 
+    public static void pingPongRest(ChannelId channelId){
+        channelIdUserAccountConcurrentHashMap.get(channelId).CountRest();
+    }
+
 	//获得心跳数
 	public static int getPingPongCount(ChannelId channelId){
 		return channelIdUserAccountConcurrentHashMap.get(channelId).getHeartBeatCount();

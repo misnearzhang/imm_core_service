@@ -48,4 +48,7 @@ public class UserAccount implements Serializable{
     public void addCount(){
         this.heartBeatCount++;
     }
+    public void CountRest(){
+        this.heartBeatCount=0;
+    }
 }

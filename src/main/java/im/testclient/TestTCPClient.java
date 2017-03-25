@@ -31,7 +31,7 @@ public class TestTCPClient {
 					//ch.pipeline().addLast(new ValidateUser());
 				}
 			});
-			ChannelFuture f=b.connect("127.0.0.1", port).sync();
+			ChannelFuture f=b.connect("xcnana.com", port).sync();
 			f.channel().closeFuture().sync();
 		} catch (Exception e) {
 			e.printStackTrace();
