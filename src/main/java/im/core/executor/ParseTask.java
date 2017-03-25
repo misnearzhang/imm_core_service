@@ -33,11 +33,6 @@ public class ParseTask implements Runnable{
             sendMessage = gson.fromJson(message, Message.class);
             Header header = gson.fromJson(sendMessage.getHead(), Header.class);
             String type = header.getType();
-        /*
-        USER( "user", "用户消息" ),
-        SYSTEM( "system", "系统消息" ),
-        RESPONSE( "response", "响应消息" )
-         */
             if ("user".equals(type)) {
                 //解析出发送方
                 String from;
@@ -53,8 +48,10 @@ public class ParseTask implements Runnable{
                 Container.send(CommUtil.createResponse(uid), fromChannelId);
                 ThreadPool.sendMessageNow(new SendTask(message, ThreadPool.RetransCount.FISRT, toChannelId, uid), uid);
             } else if ("system".equals(type)) {
+                //第一类 登录消息  拿到用户的登录信息 然后通过mq与webService通信 这边的公钥对吧webService的秘钥 判断登录情况
+                //第二类消息 登出消息 用户发送登出请求 服务器登出 注销用户链接
+                //。。。。
                 //系统消息 做出相应处理，比如说用户跳出
-
             } else if ("response".equals(type)) {
                 //收到响应  判断响应类型  消息响应和心跳响应
                 //retransConcurrentHashMap.remove(header.getUid());
