@@ -18,6 +18,8 @@ import io.netty.util.concurrent.GenericFutureListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.swing.plaf.basic.BasicMenuUI;
+
 /**
  * 用户容器 存储所有在线用户  可以抽取出来用redis等nosql实现
  * @author Misnearzhang
@@ -130,6 +132,9 @@ public class Container {
 	}
 	public static void addChannel(Channel channel){
 		group.add(channel);
+	}
+	public static void removeChannel(Channel channel){
+		group.remove(channel);
 	}
 
 }

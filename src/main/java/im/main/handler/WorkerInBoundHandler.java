@@ -27,10 +27,6 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	private static final Publisher publisher=Publisher.newInstance();
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		String userId="zhanglong"+System.currentTimeMillis();
-		Container.addChannel(ctx.channel());
-		Container.addOrReplace(userId, ctx.channel().id());
-		Container.send("wellcome:"+userId+"\r\n",ctx.channel().id());
 		logger.info(Container.getCount());
 	}
 
@@ -38,7 +34,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		Container.pingPongRest(ctx.channel().id());
 		String message=msg.toString();
-		ThreadPool.parseMessage(message);
+		ThreadPool.parseMessage(message,ctx.channel());
 		logger.info("收到消息：:"+(String)msg);
 	}
 
@@ -58,8 +54,10 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		// TODO Auto-generated method stub
+		cause.printStackTrace();
 		logger.error("something wrong "+cause.getMessage());
 		Container.logOut(ctx.channel().id());
+		Container.removeChannel(ctx.channel());
 		ctx.channel().close();
 		publisher.close();
 	}

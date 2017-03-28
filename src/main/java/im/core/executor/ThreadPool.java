@@ -2,6 +2,8 @@ package im.core.executor;
 
 import im.config.SystemConfig;
 import im.protoc.Message;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelId;
 
 import java.util.concurrent.*;
 
@@ -31,8 +33,8 @@ public class ThreadPool {
 		retransExecutor.setRemoveOnCancelPolicy(true);
 	}
 
-	public static void parseMessage(String message){
-		parser.execute(new ParseTask(message));
+	public static void parseMessage(String message, Channel channel){
+		parser.execute(new ParseTask(message,channel));
 	}
 
 
