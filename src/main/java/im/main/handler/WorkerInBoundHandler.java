@@ -24,7 +24,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	private final Logger logger = LogManager.getLogger( WorkerInBoundHandler.class );
 
 	private final Gson gson=new Gson();
-	private static final Publisher publisher=Publisher.newInstance();
+	//private static final Publisher publisher=Publisher.newInstance();
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		logger.info(Container.getCount());
@@ -56,7 +56,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		Container.logOut(ctx.channel().id());
 		Container.removeChannel(ctx.channel());
 		ctx.channel().close();
-		publisher.close();
+		//publisher.close();
 	}
 
 	@Override
@@ -90,12 +90,13 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 					if(!Container.isLogin(ctx.channel().id())){
 						//该连接没有通过握手请求 关闭
 						ctx.channel().close();
+					}else{
+						//读超时 说明客户端没有活动  那么发送一个心跳
+						logger.info("write trigger ,send a request heartbeat");
+						String sendMsg=CommUtil.createHeartBeatMessage();
+						heartBeatBuf.writeBytes(sendMsg.getBytes());
+						Container.sendHeartBeat(heartBeatBuf, ctx.channel().id());
 					}
-					//读超时 说明客户端没有活动  那么发送一个心跳
-					logger.info("write trigger ,send a request heartbeat");
-					String sendMsg=CommUtil.createHeartBeatMessage();
-					heartBeatBuf.writeBytes(sendMsg.getBytes());
-					Container.sendHeartBeat(heartBeatBuf, ctx.channel().id());
 				} else if (idle.state().equals(IdleState.READER_IDLE)) {
 					logger.info("读超时---------》》");
 					Container.pingPongCountAdd(ctx.channel().id());

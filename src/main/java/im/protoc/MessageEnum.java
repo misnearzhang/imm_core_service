@@ -50,7 +50,8 @@ public abstract class MessageEnum {
         REQ("100","请求消息"),
         OK( "200", "消息接受成功" ),
         ERROR( "500", "系统错误" ),
-        DISCARD( "404", "消息丢失" );
+        DISCARD( "404", "消息丢失" ),
+        OTHERLOGIN("403","用户在其他地方登陆");//消息type为system时使用
         private String code;
         private String comment;
         status( String code, String comment) {

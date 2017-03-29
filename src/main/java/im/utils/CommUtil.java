@@ -40,7 +40,7 @@ public class CommUtil {
 		head.setUid(UUID.randomUUID().toString());
 		head.setType(MessageEnum.type.PING.getCode());
 		head.setStatus(MessageEnum.status.REQ.getCode());
-		message.setHead(gson.toJson(head));
+		message.setHead(head);
 		sb.append(gson.toJson(message)).append(MessageEnum.delimiters.ENTER.getCode());
 		return sb.toString();
 	}
@@ -56,9 +56,19 @@ public class CommUtil {
 		header1.setUid(uuid);
 		header1.setStatus("200");
 		header1.setType(MessageEnum.type.RESPONSE.getCode());
-		response.setHead(gson.toJson(header1));
+		response.setHead(header1);
 		String send = gson.toJson(response);
 		send += "\r\n";
+		return send;
+	}
+	public static String createPush(){
+		Message message=new Message();
+		Header header =new Header();
+		header.setType(MessageEnum.type.SYSTEM.getCode());
+		header.setStatus(MessageEnum.status.OTHERLOGIN.getCode());
+		header.setUid(UUID.randomUUID().toString());
+		message.setHead(header);
+		String send=gson.toJson(message+"\r\n");
 		return send;
 	}
 }

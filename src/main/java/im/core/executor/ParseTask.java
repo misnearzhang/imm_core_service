@@ -28,7 +28,7 @@ public class ParseTask implements Runnable{
         try {
             logger.info(message);
             sendMessage = gson.fromJson(message, Message.class);
-            Header header = gson.fromJson(sendMessage.getHead(), Header.class);
+            Header header = sendMessage.getHead();
             String uid = header.getUid();
             String type = header.getType();
             if ("user".equals(type)) {
@@ -57,6 +57,13 @@ public class ParseTask implements Runnable{
                 HandShakeMessage handshakeMessage=gson.fromJson(body,HandShakeMessage.class);
                 //此处判断该用户是否已经在线 如已经在线 则发送下线通知 退更新Channel容器
                 //TODO
+                String account=handshakeMessage.getAccount();
+                if(Container.isLogin(account)){
+                    //用户已经在线 向该用户发送下线通知
+                    logger.info("用户已经在线 踢掉当前用户");
+                    ChannelId channelId=Container.getChannelId(account);
+                    Container.send(CommUtil.createPush(),channelId);//发送下线通知
+                }
                 Container.addChannel(channel);
                 Container.addOrReplace(handshakeMessage.getAccount(), channel.id());
                 Container.send(CommUtil.createResponse(uid), channel.id());

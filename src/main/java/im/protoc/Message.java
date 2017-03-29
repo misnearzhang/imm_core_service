@@ -6,14 +6,14 @@ import java.io.Serializable;
  * Created by zhanglong on 2017/2/25.
  */
 public class Message implements Serializable{
-    private String head;//Header
+    private Header head;//Header
     private String body;//Body
 
-    public String getHead() {
+    public Header getHead() {
         return head;
     }
 
-    public Message setHead(String head) {
+    public Message setHead(Header head) {
         this.head = head;
         return this;
     }

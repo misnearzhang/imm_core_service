@@ -59,7 +59,7 @@ public class Server {
 			bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
-					ByteBuf delimiter = Unpooled.copiedBuffer("\r\n".getBytes());
+					ByteBuf delimiter = Unpooled.copiedBuffer("%%%%".getBytes());
 					ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
 					ch.pipeline().addLast(new StringDecoder());
 					ch.pipeline().addLast(new LineBasedFrameDecoder(1024*5));

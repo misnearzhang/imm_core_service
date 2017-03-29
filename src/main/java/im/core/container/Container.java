@@ -41,7 +41,7 @@ public class Container {
 	 * @return
 	 */
 	public static ChannelId getChannelId(String userAccount){
-		logger.info(accountConcurrentHashMap.contains(userAccount));
+		logger.info(accountConcurrentHashMap.containsKey(userAccount));
 		if(accountConcurrentHashMap.containsKey(userAccount)){
 			logger.info(userAccount);
 			return accountConcurrentHashMap.get(userAccount).getChannelId();
@@ -61,7 +61,7 @@ public class Container {
 	 */
 	public static boolean addOrReplace(String userName,ChannelId channelId){
 		UserAccount userAccount=new UserAccount(userName,channelId);
-		if(accountConcurrentHashMap.containsKey(userName)&&channelIdUserAccountConcurrentHashMap.contains(channelId)){
+		if(accountConcurrentHashMap.containsKey(userName)){
 			accountConcurrentHashMap.replace(userName, userAccount);
 			channelIdUserAccountConcurrentHashMap.replace(channelId,userAccount);
 		}else{
@@ -140,7 +140,7 @@ public class Container {
 		sendbuf.writeBytes(obj.getBytes());
 		Channel channel=group.find(channelId);
 		logger.info(channel);
-		ChannelGroupFuture futures=group.writeAndFlush(sendbuf, ChannelMatchers.is(channel));
+		group.writeAndFlush(sendbuf, ChannelMatchers.is(channel));
 	}
 	public static void sendHeartBeat(final Object obj,ChannelId channelId){
 		Channel channel=group.find(channelId);
