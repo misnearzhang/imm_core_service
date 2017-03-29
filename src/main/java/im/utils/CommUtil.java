@@ -50,12 +50,23 @@ public class CommUtil {
 		return uuid.toString();
 	}
 
-	public static String createResponse(String uuid){
+	public static String createResponse(String status,String uuid){
 		Message response = new Message();
 		Header header1 = new Header();
 		header1.setUid(uuid);
-		header1.setStatus("200");
+		header1.setStatus(status);
 		header1.setType(MessageEnum.type.RESPONSE.getCode());
+		response.setHead(header1);
+		String send = gson.toJson(response);
+		send += "\r\n";
+		return send;
+	}
+	public static String createHandShakeResponse(String status,String uuid){
+		Message response = new Message();
+		Header header1 = new Header();
+		header1.setUid(uuid);
+		header1.setStatus(status);
+		header1.setType(MessageEnum.type.HANDSHAKERESPONSE.getCode());
 		response.setHead(header1);
 		String send = gson.toJson(response);
 		send += "\r\n";

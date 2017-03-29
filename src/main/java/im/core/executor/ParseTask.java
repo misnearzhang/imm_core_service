@@ -42,8 +42,15 @@ public class ParseTask implements Runnable{
                 ChannelId fromChannelId = Container.getChannelId(from);
                 logger.info("to:" + to);
                 logger.info("from:" + from);
-                Container.send(CommUtil.createResponse(uid), fromChannelId);
-                ThreadPool.sendMessageNow(new SendTask(message, ThreadPool.RetransCount.FISRT, toChannelId, uid), uid);
+                if(toChannelId==null){
+                    Container.send(CommUtil.createResponse(MessageEnum.status.OFFLINE.getCode(),uid), fromChannelId);
+                    logger.info("用户暂时不在线  缓存消息并通知用户");
+                    //缓存消息
+                    //send2mq
+                }else{
+                    Container.send(CommUtil.createResponse(MessageEnum.status.OK.getCode(),uid), fromChannelId);
+                    ThreadPool.sendMessageNow(new SendTask(message, ThreadPool.RetransCount.FISRT, toChannelId, uid), uid);
+                }
             } else if ("system".equals(type)) {
                 //校验
                 //第一类 登录消息  拿到用户的登录信息 然后通过mq与webService通信 这边的公钥对吧webService的秘钥 判断登录情况
@@ -55,18 +62,23 @@ public class ParseTask implements Runnable{
                 String body=sendMessage.getBody();
                 logger.info("read the HANDSHAKE message:"+body);
                 HandShakeMessage handshakeMessage=gson.fromJson(body,HandShakeMessage.class);
-                //此处判断该用户是否已经在线 如已经在线 则发送下线通知 退更新Channel容器
-                //TODO
-                String account=handshakeMessage.getAccount();
-                if(Container.isLogin(account)){
-                    //用户已经在线 向该用户发送下线通知
-                    logger.info("用户已经在线 踢掉当前用户");
-                    ChannelId channelId=Container.getChannelId(account);
-                    Container.send(CommUtil.createPush(),channelId);//发送下线通知
+                //校验握手信息
+                if(!checkHandShake(handshakeMessage.getAccount(),handshakeMessage.getPassword())){
+                    //响应握手失败
+                    Container.send(CommUtil.createHandShakeResponse(MessageEnum.status.HANDSHAKEFAIL.getCode(),uid), channel.id());
+                }else{
+                    //此处判断该用户是否已经在线 如已经在线 则发送下线通知 并更新Channel容器
+                    String account=handshakeMessage.getAccount();
+                    if(Container.isLogin(account)){
+                        //用户已经在线 向该用户发送下线通知
+                        logger.info("用户已经在线 踢掉当前用户");
+                        ChannelId channelId=Container.getChannelId(account);
+                        Container.send(CommUtil.createPush(),channelId);//发送下线通知
+                    }
+                    Container.addChannel(channel);
+                    Container.addOrReplace(handshakeMessage.getAccount(), channel.id());
+                    Container.send(CommUtil.createHandShakeResponse(MessageEnum.status.OK.getCode(),uid), channel.id());
                 }
-                Container.addChannel(channel);
-                Container.addOrReplace(handshakeMessage.getAccount(), channel.id());
-                Container.send(CommUtil.createResponse(uid), channel.id());
             }else if ("response".equals(type)) {
                 //收到响应  判断响应类型  消息响应和心跳响应
                 //retransConcurrentHashMap.remove(header.getUid());
@@ -76,9 +88,13 @@ public class ParseTask implements Runnable{
                 //心跳响应  不做任何事
                 //Container.pingPongRest(ctx.channel().id());
             }
-
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    boolean checkHandShake(String account,String password){
+
+        return true;
     }
 }

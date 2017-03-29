@@ -14,7 +14,8 @@ public abstract class MessageEnum {
         RESPONSE( "response", "响应消息" ),
         PING ("ping", "心跳ping" ),
         PONG("pong","心跳pong"),
-        HANDSHAKE("handshake","请求握手");
+        HANDSHAKE("handshake","请求握手"),
+        HANDSHAKERESPONSE("handshakeresponse","响应握手");
         private String code;
         private String comment;
         type( String code, String comment) {
@@ -49,6 +50,8 @@ public abstract class MessageEnum {
     public enum status{
         REQ("100","请求消息"),
         OK( "200", "消息接受成功" ),
+        OFFLINE("201","用户离线"),
+        HANDSHAKEFAIL("401","握手失败"),
         ERROR( "500", "系统错误" ),
         DISCARD( "404", "消息丢失" ),
         OTHERLOGIN("403","用户在其他地方登陆");//消息type为system时使用
