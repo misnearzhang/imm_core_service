@@ -66,6 +66,7 @@ public class ParseTask implements Runnable{
                 ThreadPool.removeFurure(header.getUid());
             }else if(MessageEnum.type.PONG.getCode().equals(type)){
                 //心跳响应  不做任何事
+                //Container.pingPongRest(ctx.channel().id());
             }
 
         }catch (Exception e){

@@ -98,7 +98,9 @@ public class Container {
 	}
 
     public static void pingPongRest(ChannelId channelId){
-        channelIdUserAccountConcurrentHashMap.get(channelId).CountRest();
+		if(channelIdUserAccountConcurrentHashMap.containsKey(channelId)){
+			channelIdUserAccountConcurrentHashMap.get(channelId).CountRest();
+		}
     }
 
 	//获得心跳数
