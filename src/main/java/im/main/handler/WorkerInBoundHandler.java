@@ -40,20 +40,17 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 
 	@Override
 	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-		// TODO Auto-generated method stub
 		logger.info("channel read complete");
 		ctx.flush();
 	}
 
 	@Override
 	public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
-		// TODO Auto-generated method stub
 		logger.info("channelWritabilityChanged");
 	}
 
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		// TODO Auto-generated method stub
 		cause.printStackTrace();
 		logger.error("something wrong "+cause.getMessage());
 		Container.logOut(ctx.channel().id());
@@ -64,7 +61,6 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 
 	@Override
 	public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-		// TODO Auto-generated method stub
 		logger.info(ctx.channel().id()+" already offline");
 		Container.logOut(ctx.channel().id());
 		super.channelUnregistered(ctx);
@@ -72,7 +68,6 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		// TODO Auto-generated method stub
 		Container.logOut(ctx.channel().id());
 		super.channelInactive(ctx);
 	}
@@ -92,6 +87,10 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 			if (evt instanceof IdleStateEvent) {
 				IdleStateEvent idle = (IdleStateEvent) evt;
 				if (idle.state().equals(IdleState.WRITER_IDLE)) {
+					if(!Container.isLogin(ctx.channel().id())){
+						//该连接没有通过握手请求 关闭
+						ctx.channel().close();
+					}
 					//读超时 说明客户端没有活动  那么发送一个心跳
 					logger.info("write trigger ,send a request heartbeat");
 					String sendMsg=CommUtil.createHeartBeatMessage();

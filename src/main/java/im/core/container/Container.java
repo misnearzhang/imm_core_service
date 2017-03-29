@@ -76,6 +76,20 @@ public class Container {
 	public static boolean isLogin(String userName){
 		return accountConcurrentHashMap.containsKey(userName);
 	}
+	public static boolean isLogin(ChannelId channelId){
+		boolean containsKey=channelIdUserAccountConcurrentHashMap.containsKey(channelId);
+		if(containsKey){
+			UserAccount account=channelIdUserAccountConcurrentHashMap.get(channelId);
+			if(accountConcurrentHashMap.containsKey(account.getAccount())){
+				return true;
+			}else{
+				channelIdUserAccountConcurrentHashMap.remove(channelId);
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
 
 	/**
 	 * 登出 清理 accountConcurrentHashMap 和 channelIdUserAccountConcurrentHashMap中数据
