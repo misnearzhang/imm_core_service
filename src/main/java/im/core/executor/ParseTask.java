@@ -45,21 +45,22 @@ public class ParseTask implements Runnable{
                 Container.send(CommUtil.createResponse(uid), fromChannelId);
                 ThreadPool.sendMessageNow(new SendTask(message, ThreadPool.RetransCount.FISRT, toChannelId, uid), uid);
             } else if ("system".equals(type)) {
-                String body=sendMessage.getBody();
-                SystemMessage systemMessage=gson.fromJson(body,SystemMessage.class);
-                if("handshake".equals(systemMessage.getType())){
-                    HandShakeMessage handshakeMessage=(HandShakeMessage)systemMessage.getData();
-                    Container.send(CommUtil.createResponse(uid), channel.id());
-                    Container.addChannel(channel);
-                    Container.addOrReplace(handshakeMessage.getAccount(), channel.id());
-                    Container.addChannel(channel);
-                }
                 //校验
                 //第一类 登录消息  拿到用户的登录信息 然后通过mq与webService通信 这边的公钥对吧webService的秘钥 判断登录情况
                 //第二类消息 登出消息 用户发送登出请求 服务器登出 注销用户链接
                 //。。。。
                 //系统消息 做出相应处理，比如说用户跳出
-            } else if ("response".equals(type)) {
+            } else if("handshake".equals(type)){
+                logger.info("HANDSHAKE start");
+                String body=sendMessage.getBody();
+                logger.info("read the HANDSHAKE message:"+body);
+                HandShakeMessage handshakeMessage=gson.fromJson(body,HandShakeMessage.class);
+                //此处判断该用户是否已经在线 如已经在线 则发送下线通知 退更新Channel容器
+                //TODO
+                Container.addChannel(channel);
+                Container.addOrReplace(handshakeMessage.getAccount(), channel.id());
+                Container.send(CommUtil.createResponse(uid), channel.id());
+            }else if ("response".equals(type)) {
                 //收到响应  判断响应类型  消息响应和心跳响应
                 //retransConcurrentHashMap.remove(header.getUid());
                 logger.info("收到响应了 删去重发");

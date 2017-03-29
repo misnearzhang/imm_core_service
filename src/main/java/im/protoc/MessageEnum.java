@@ -13,7 +13,8 @@ public abstract class MessageEnum {
         SYSTEM( "system", "系统消息" ),
         RESPONSE( "response", "响应消息" ),
         PING ("ping", "心跳ping" ),
-        PONG("pong","心跳pong");
+        PONG("pong","心跳pong"),
+        HANDSHAKE("handshake","请求握手");
         private String code;
         private String comment;
         type( String code, String comment) {
@@ -78,39 +79,6 @@ public abstract class MessageEnum {
         }
     }
 
-    /**
-     * 系统推送消息类型
-     */
-    public enum systemType{
-        HANDSHAKE("handshake","应用层握手,校验用户登录信息"),
-        LOGINANOTHER("loginaother","用户在其他地方登陆");
-        private String code;
-        private String comment;
-        systemType( String code, String comment) {
-            this.code = code;
-            this.comment = comment;
-        }
-        public static boolean isCode ( final String code ) {
-            for ( systemType value : systemType.values() ) {
-                if ( value.getCode().equalsIgnoreCase( code ) ) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        public static boolean isNotCode ( final String code ) {
-            return ! isCode( code );
-        }
-
-
-        public String getComment () {
-            return comment;
-        }
-
-        public String getCode () {
-            return code;
-        }
-    }
 
     public enum delimiters{
         ENTER("\r\n","回车换行"),
