@@ -103,6 +103,7 @@ public class Container {
 			}
 			channelIdUserAccountConcurrentHashMap.remove(channelId);
 		}
+		group.remove(channelId);
 		return true;
 	}
 
