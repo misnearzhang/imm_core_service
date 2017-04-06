@@ -1,6 +1,7 @@
 package im.core.executor;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import im.core.container.Container;
 import im.protoc.*;
 import im.utils.CommUtil;
@@ -88,8 +89,15 @@ public class ParseTask implements Runnable{
                 //心跳响应  不做任何事
                 //Container.pingPongRest(ctx.channel().id());
             }
-        }catch (Exception e){
+        }catch (JsonSyntaxException e){
+            //json解析异常 返回用户报错信息
+            logger.error("json解码错误！！");
+            Container.send(CommUtil.createResponse(MessageEnum.status.DECODEERR.getCode(),null), channel.id());//json解码错误 返回报错
             e.printStackTrace();
+        }catch (NullPointerException nullpoint){
+            logger.error("空消息");
+            Container.send(CommUtil.createResponse(MessageEnum.status.ERROR.getCode(),null), channel.id());//空消息
+            nullpoint.printStackTrace();
         }
     }
 

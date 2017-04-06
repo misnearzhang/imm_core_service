@@ -20,8 +20,8 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * bootstramp 类 开启线程池 加载主服务
- * @author Misnearzhang
  *
+ * @author Misnearzhang
  */
 /*
                    _ooOoo_
@@ -47,31 +47,31 @@ import org.apache.logging.log4j.Logger;
          			O0o li1
 */
 public class Server {
-	private final Logger logger = LogManager.getLogger( Server.class );
-	public void bind(int port) throws Exception {
-		EventLoopGroup master = new NioEventLoopGroup();
-		EventLoopGroup slaver = new NioEventLoopGroup(4);
-		ServerBootstrap bootstrap = new ServerBootstrap();
-		try {
-			bootstrap.group(master, slaver);
-			bootstrap.channel(NioServerSocketChannel.class);
-			bootstrap.option(ChannelOption.SO_BACKLOG, 1024);
-			bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
-				@Override
-				protected void initChannel(SocketChannel ch) throws Exception {
-					ByteBuf delimiter = Unpooled.copiedBuffer("\r\n".getBytes());
-					ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
-					ch.pipeline().addLast(new StringDecoder());
-					ch.pipeline().addLast(new LineBasedFrameDecoder(1024*5));
-//					ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(10*1024*1024, 0, 2));
-//					ch.pipeline().addLast(new StringDecoder());
-					ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
-							123, 120, 0));
-					ch.pipeline().addLast(new WorkOutBoundHandler());
-					ch.pipeline().addLast(new WorkerInBoundHandler());
+    private final Logger logger = LogManager.getLogger(Server.class);
+
+    public void bind(int port) throws Exception {
+        EventLoopGroup master = new NioEventLoopGroup();
+        EventLoopGroup slaver = new NioEventLoopGroup(4);
+        ServerBootstrap bootstrap = new ServerBootstrap();
+        try {
+            bootstrap.group(master, slaver);
+            bootstrap.channel(NioServerSocketChannel.class);
+            bootstrap.option(ChannelOption.SO_BACKLOG, 1024);
+            bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
+                @Override
+                protected void initChannel(SocketChannel ch) throws Exception {
+                    ByteBuf delimiter = Unpooled.copiedBuffer("\r\n".getBytes());
+                    ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
+                    ch.pipeline().addLast(new StringDecoder());
+                    ch.pipeline().addLast(new LineBasedFrameDecoder(1024 * 5));
+                    ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
+                            123, 120, 0));
+                    ch.pipeline().addLast(new WorkOutBoundHandler());
+                    ch.pipeline().addLast(new WorkerInBoundHandler());
+
 //					ByteBuf delimiter=Unpooled.copiedBuffer("".getBytes());
-					/*// ch.pipeline().addLast(new ValidateUser());
-					ChannelPipeline pipeline = ch.pipeline();
+                    /*// ch.pipeline().addLast(new ValidateUser());
+                    ChannelPipeline pipeline = ch.pipeline();
 					// 设置带长度编码器
 					pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
 					// 设置protobuf编码器
@@ -84,26 +84,26 @@ public class Server {
 					// 设置protobufDecoder 解码器
 					pipeline.addLast("protobufDecoder", new ProtobufDecoder(
 							NettyProbuf.Netty.getDefaultInstance()));*/
-					//pipeline.addLast(new WorkerInBoundHandler());
-				}
-			});
-			logger.info("server has startup successful!");
-			ChannelFuture f = bootstrap.bind(port).sync();
-			f.channel().closeFuture().sync();
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("server has stop !");
-		} finally {
-			master.shutdownGracefully();
-			slaver.shutdownGracefully();
-		}
-	}
+                    //pipeline.addLast(new WorkerInBoundHandler());
+                }
+            });
+            logger.info("server has startup successful!");
+            ChannelFuture f = bootstrap.bind(port).sync();
+            f.channel().closeFuture().sync();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("server has stop !");
+        } finally {
+            master.shutdownGracefully();
+            slaver.shutdownGracefully();
+        }
+    }
 
-	public static void main(String[] args) {
-		try {
-			new Server().bind(SystemConfig.tcpPort);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    public static void main(String[] args) {
+        try {
+            new Server().bind(SystemConfig.tcpPort);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

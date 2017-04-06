@@ -53,6 +53,7 @@ public abstract class MessageEnum {
         OFFLINE("201","用户离线"),
         HANDSHAKEFAIL("401","握手失败"),
         ERROR( "500", "系统错误" ),
+        DECODEERR("505","解码错误"),
         DISCARD( "404", "消息丢失" ),
         OTHERLOGIN("403","用户在其他地方登陆");//消息type为system时使用
         private String code;
