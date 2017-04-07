@@ -38,10 +38,21 @@ public class ThreadPool {
 	}
 
 
+	/**
+	 * 立即发送消息
+	 * @param task
+	 * @param uid
+	 */
 	public static void sendMessageNow(SendTask task,String uid) {
 		ScheduledFuture future = retransExecutor.schedule(task, 0, TimeUnit.SECONDS);
 		futures.put(uid,future);
 	}
+
+	/**
+	 * 重发消息
+	 * @param task
+	 * @param uid
+	 */
 	public static void sendMessage(SendTask task,String uid) {
 		ScheduledFuture future = retransExecutor.schedule(task, SystemConfig.threadRetransTime, TimeUnit.SECONDS);
 		futures.put(uid,future);
