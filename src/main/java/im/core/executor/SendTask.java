@@ -1,6 +1,7 @@
 package im.core.executor;
 
 import im.core.container.Container;
+import im.core.exception.NotOnlineException;
 import io.netty.channel.ChannelId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +25,12 @@ public class SendTask implements Runnable{
 
     public void run() {
         logger.info(message+"----"+count.toString());
-        Container.send(message+"\r\n",toChannelId);  //send message
+        try {
+            Container.send(message+"\r\n",toChannelId);  //send message
+        } catch (NotOnlineException e) {
+            e.printStackTrace();
+            return;
+        }
         switch (count){
             case FISRT:
                 logger.info("first retrans");

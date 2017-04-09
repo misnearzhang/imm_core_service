@@ -4,6 +4,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import im.config.SystemConfig;
+import im.core.exception.NotOnlineException;
 import im.core.executor.SendTask;
 import im.core.executor.ThreadPool;
 import io.netty.buffer.ByteBuf;
@@ -134,14 +135,19 @@ public class Container {
 	 * @param obj
 	 * @param channelId
 	 */
-	public static void send(final String obj, ChannelId channelId){
+	public static void send(final String obj, ChannelId channelId) throws NotOnlineException {
 		ByteBuf sendbuf= Unpooled.directBuffer();
 		logger.info(obj);
 		logger.info(channelId);
 		sendbuf.writeBytes(obj.getBytes());
-		Channel channel=group.find(channelId);
-		logger.info(channel);
-		group.writeAndFlush(sendbuf, ChannelMatchers.is(channel));
+		if(isLogin(channelId)){
+			Channel channel=group.find(channelId);
+			logger.info(channel);
+			group.writeAndFlush(sendbuf, ChannelMatchers.is(channel));
+		}else{
+			throw new NotOnlineException();
+		}
+
 	}
 	public static void sendHeartBeat(final Object obj,ChannelId channelId){
 		Channel channel=group.find(channelId);
