@@ -46,7 +46,7 @@ public class ParseTask implements Runnable{
                 logger.info("from:" + from);
                 if(toChannelId==null){
                     Container.send(CommUtil.createResponse(MessageEnum.status.OFFLINE.getCode(),uid), fromChannelId);
-                    logger.info("用户暂时不在线  缓存消息并通知用户");
+                    logger.info("this account is offline and we will cache this message utils it online");
                     //缓存消息
                     //send2mq
                 }else{
@@ -74,7 +74,7 @@ public class ParseTask implements Runnable{
                     String account=handshakeMessage.getAccount();
                     if(Container.isLogin(account)){
                         //用户已经在线 向该用户发送下线通知
-                        logger.info("用户已经在线 踢掉当前用户");
+                        logger.info("this account already online , going well offline it");
                         ChannelId channelId=Container.getChannelId(account);
                         Container.send(CommUtil.createPush(),channelId);//发送下线通知
                     }
@@ -86,7 +86,7 @@ public class ParseTask implements Runnable{
             }else if ("response".equals(type)) {
                 //收到响应  判断响应类型  消息响应和心跳响应
                 //retransConcurrentHashMap.remove(header.getUid());
-                logger.info("收到响应了 删去重发");
+                logger.info("receive response , remove retrans task");
                 ThreadPool.removeFurure(header.getUid());
             }else if(MessageEnum.type.PONG.getCode().equals(type)){
                 //心跳响应  不做任何事
@@ -94,11 +94,11 @@ public class ParseTask implements Runnable{
             }
         }catch (JsonSyntaxException e){
             //json解析异常 返回用户报错信息
-            logger.error("json解码错误！！");
+            logger.error("json parse err！！");
             //Container.send(CommUtil.createResponse(MessageEnum.status.DECODEERR.getCode(),null), channel.id());//json解码错误 返回报错
             e.printStackTrace();
         }catch (NullPointerException nullpoint){
-            logger.error("空消息");
+            logger.error("null message");
             //Container.send(CommUtil.createResponse(MessageEnum.status.ERROR.getCode(),null), channel.id());//空消息
             nullpoint.printStackTrace();
         }catch (NotOnlineException e){
