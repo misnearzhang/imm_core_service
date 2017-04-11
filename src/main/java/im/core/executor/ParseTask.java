@@ -67,6 +67,7 @@ public class ParseTask implements Runnable{
                 //校验握手信息
                 if(!checkHandShake(handshakeMessage.getAccount(),handshakeMessage.getPassword())){
                     //响应握手失败
+                    logger.info("handshake Fail!!");
                     Container.send(CommUtil.createHandShakeResponse(MessageEnum.status.HANDSHAKEFAIL.getCode(),uid), channel.id());
                 }else{
                     //此处判断该用户是否已经在线 如已经在线 则发送下线通知 并更新Channel容器
@@ -77,6 +78,7 @@ public class ParseTask implements Runnable{
                         ChannelId channelId=Container.getChannelId(account);
                         Container.send(CommUtil.createPush(),channelId);//发送下线通知
                     }
+                    logger.info("handshake Success!!");
                     Container.addChannel(channel);
                     Container.addOrReplace(handshakeMessage.getAccount(), channel.id());
                     Container.send(CommUtil.createHandShakeResponse(MessageEnum.status.OK.getCode(),uid), channel.id());

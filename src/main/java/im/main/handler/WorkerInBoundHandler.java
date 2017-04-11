@@ -35,7 +35,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 		Container.pingPongRest(ctx.channel().id());
 		String message=msg.toString();
 		ThreadPool.parseMessage(message,ctx.channel());
-		logger.info("收到消息:"+(String)msg);
+		logger.info("收到消息:{}",(String)msg);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		cause.printStackTrace();
-		logger.error("something wrong "+cause.getMessage());
+		logger.error("something wrong {}", cause.getMessage());
 		Container.logOut(ctx.channel().id());
 		Container.removeChannel(ctx.channel());
 		ctx.channel().close();
