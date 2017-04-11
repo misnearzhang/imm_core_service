@@ -22,9 +22,9 @@ public class WorkerHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 		ByteBuf bug = msg.content();
 		byte[] b = new byte[bug.readableBytes()];
 		bug.readBytes(b);
-		System.out.println("来自客户端:" + new String(b));
+		System.out.println("form:" + new String(b));
 		bug.clear();
-		bug=Unpooled.copiedBuffer("收到信息".getBytes());
+		bug=Unpooled.copiedBuffer("to".getBytes());
 
 		DatagramPacket pack = new DatagramPacket(bug, msg.sender());
 		try {
