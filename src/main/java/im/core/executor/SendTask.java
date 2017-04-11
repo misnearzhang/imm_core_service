@@ -9,38 +9,38 @@ import org.apache.logging.log4j.Logger;
 /**
  * Created by Misnearzhang on 2017/3/6.
  */
-public class SendTask implements Runnable{
-    private final Logger logger = LogManager.getLogger( SendTask.class );
+public class SendTask implements Runnable {
+    private final Logger logger = LogManager.getLogger(SendTask.class);
     private ChannelId toChannelId;
     private String uid;
     private String message;
     private ThreadPool.RetransCount count;
 
-    public SendTask(String Message, ThreadPool.RetransCount count,ChannelId channelId,String uid) {
+    public SendTask(String Message, ThreadPool.RetransCount count, ChannelId channelId, String uid) {
         this.message = Message;
         this.count = count;
-        this.toChannelId=channelId;
-        this.uid=uid;
+        this.toChannelId = channelId;
+        this.uid = uid;
     }
 
     public void run() {
-        logger.info(message+"----"+count.toString());
+        logger.info(message + "----" + count.toString());
         try {
-            Container.send(message+"\r\n",toChannelId);  //send message
+            Container.send(message + "\r\n", toChannelId);  //send message
         } catch (NotOnlineException e) {
             e.printStackTrace();
             return;
         }
-        switch (count){
+        switch (count) {
             case FISRT:
                 logger.info("first retrans");
-                this.count=ThreadPool.RetransCount.SECOND;
-                ThreadPool.sendMessage(this,uid);
+                this.count = ThreadPool.RetransCount.SECOND;
+                ThreadPool.sendMessage(this, uid);
                 break;
             case SECOND:
                 logger.info("second retrans");
-                this.count=ThreadPool.RetransCount.THIRD;
-                ThreadPool.sendMessage(this,uid);
+                this.count = ThreadPool.RetransCount.THIRD;
+                ThreadPool.sendMessage(this, uid);
                 break;
             case THIRD:
                 logger.info("give up,save in db");

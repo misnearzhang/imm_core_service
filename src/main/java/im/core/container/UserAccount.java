@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by Misnearzhang on 2017/3/6.
  */
-public class UserAccount implements Serializable{
+public class UserAccount implements Serializable {
     private String account;
     private ChannelId channelId;
     private int heartBeatCount;
@@ -45,10 +45,11 @@ public class UserAccount implements Serializable{
         return this;
     }
 
-    public void addCount(){
+    public void addCount() {
         this.heartBeatCount++;
     }
-    public void CountRest(){
-        this.heartBeatCount=0;
+
+    public void CountRest() {
+        this.heartBeatCount = 0;
     }
 }

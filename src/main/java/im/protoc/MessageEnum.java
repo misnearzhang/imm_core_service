@@ -8,6 +8,15 @@ public abstract class MessageEnum {
     /**
      * 消息类型
      */
+
+    public static final String TYPE_USER="user";
+    public static final String TYPE_SYSTEM="system";
+    public static final String TYPE_RESPONSE="response";
+    public static final String TYPE_PING="ping";
+    public static final String TYPE_PONG="pong";
+    public static final String TYPE_HANDSHAKE="handshake";
+    public static final String TYPE_HANDSHAKERESPONSE="handshakeresponse";
+
     public enum type{
         USER( "user", "用户消息" ),
         SYSTEM( "system", "系统消息" ),

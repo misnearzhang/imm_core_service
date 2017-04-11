@@ -3,7 +3,7 @@ package im.core.exception;
 /**
  * Created by zhanglong on 17-4-9.
  */
-public class NotOnlineException extends Exception{
+public class NotOnlineException extends Exception {
 
     @Override
     public String getMessage() {

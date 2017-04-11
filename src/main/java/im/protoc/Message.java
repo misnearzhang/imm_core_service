@@ -2,10 +2,11 @@ package im.protoc;
 
 import java.io.Serializable;
 
-/**接收消息抽象
+/**
+ * 接收消息抽象
  * Created by zhanglong on 2017/2/25.
  */
-public class Message implements Serializable{
+public class Message implements Serializable {
     private Header head;//Header
     private String body;//Body
 
