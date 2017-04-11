@@ -89,23 +89,20 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter{
 				if (idle.state().equals(IdleState.WRITER_IDLE)) {
 					if(!Container.isLogin(ctx.channel().id())){
 						//该连接没有通过握手请求 关闭
+						logger.info("this client had not handshake , close it ");
 						ctx.channel().close();
 					}else{
 						//读超时 说明客户端没有活动  那么发送一个心跳
-						logger.info("write trigger ,send a request heartbeat");
 						String sendMsg=CommUtil.createHeartBeatMessage();
 						heartBeatBuf.writeBytes(sendMsg.getBytes());
 						Container.sendHeartBeat(heartBeatBuf, ctx.channel().id());
 					}
 				} else if (idle.state().equals(IdleState.READER_IDLE)) {
-					logger.info("读超时---------》》");
 					Container.pingPongCountAdd(ctx.channel().id());
-					logger.info("heartbeat Count: "+Container.getPingPongCount(ctx.channel().id()) );
 					if (Container.getPingPongCount(ctx.channel().id()) == 4) {
 						//超时过多  不可用
 						Container.logOut(ctx.channel().id());
 						ctx.channel().close();
-						logger.error("client no response 3 times.  So I have closed the channel and wait for reconnect");
 					}
 				}
 			}
