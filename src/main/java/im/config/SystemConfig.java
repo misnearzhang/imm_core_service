@@ -85,7 +85,7 @@ public class SystemConfig {
                 e.printStackTrace();
                 return null;
             }
-            Enumeration en = pps.propertyNames(); //得到配置文件的名字
+            Enumeration en = pps.propertyNames();//得到配置文件的名字
 
             while(en.hasMoreElements()) {
                 String strKey = (String) en.nextElement();
