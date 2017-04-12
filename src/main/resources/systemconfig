@@ -1,6 +1,9 @@
 #listening port
 tcp-port=3000
 
+#Delimiter
+delimiter=%%%%
+
 #heartbeat time
 idle-read=200
 idle-write=205

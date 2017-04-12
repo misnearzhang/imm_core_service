@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import im.core.container.Container;
 import im.core.exception.NotOnlineException;
+import im.core.exception.UnSupportMessageType;
+import im.core.executor.define.AbstractParse;
 import im.protoc.*;
 import im.utils.CommUtil;
 import io.netty.channel.Channel;
@@ -11,26 +13,30 @@ import io.netty.channel.ChannelId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+
 /**
  * 解析报文 并做处理  用户消息则将消息处理了转发给网络发送线程 系统消息则根据消息类型处理
  * Created by zhanglong on 17-2-25.
  */
-public class ParseTask implements Runnable {
+public class ParseTask extends AbstractParse {
     private final Logger logger = LogManager.getLogger(ParseTask.class);
     private Gson gson = new Gson();
     private Message sendMessage;
-    private String message;
-    private Channel channel;
 
     public ParseTask(String message, Channel channel) {
-        this.message = message;
-        this.channel = channel;
+        super(message, channel);
     }
 
-    public void run() {
+    boolean checkHandShake(String account, String password) {
+
+        return true;
+    }
+
+    @Override
+    public void parse(Object message,Channel channel) {
         try {
-            logger.info(message);
-            sendMessage = gson.fromJson(message, Message.class);
+            sendMessage = (Message) message;
             Header header = sendMessage.getHead();
             String uid = header.getUid();
             String type = header.getType();
@@ -53,7 +59,7 @@ public class ParseTask implements Runnable {
                         //send2mq
                     } else {
                         Container.send(CommUtil.createResponse(MessageEnum.status.OK.getCode(), uid), fromChannelId);
-                        ThreadPool.sendMessageNow(new SendTask(message, ThreadPool.RetransCount.FISRT, toChannelId, uid), uid);
+                        ThreadPool.sendMessageNow(new SendTask(gson.toJson(message), ThreadPool.RetransCount.FISRT, toChannelId, uid), uid);
                     }
                     break;
                 case MessageEnum.TYPE_SYSTEM:
@@ -115,8 +121,8 @@ public class ParseTask implements Runnable {
         }
     }
 
-    boolean checkHandShake(String account, String password) {
-
-        return true;
+    @Override
+    public Class setType() {
+        return Message.class;
     }
 }

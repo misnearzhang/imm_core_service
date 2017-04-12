@@ -75,9 +75,8 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
 
 
     /**
-     * 心跳设计   Read 122   Write 120  首先发生写超时  接着像客户端发送心跳 等待心跳响应
-     * 超过2秒无响应失败计数器++ 失败3次断掉链接 等待客户端重连
-     *
+     * heartbeat : when WRITE_IDLE is detect then send a PING message, while 3 times not receive PONG message then close this channel
+     *             if the client is not had a handshake so in the first WRITE_IDLE close it.
      * @param ctx
      * @param evt
      * @throws Exception
@@ -90,11 +89,9 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
                 IdleStateEvent idle = (IdleStateEvent) evt;
                 if (idle.state().equals(IdleState.WRITER_IDLE)) {
                     if (!Container.isLogin(ctx.channel().id())) {
-                        //该连接没有通过握手请求 关闭
                         logger.info("this client had not handshake , close it ");
                         ctx.channel().close();
                     } else {
-                        //读超时 说明客户端没有活动  那么发送一个心跳
                         String sendMsg = CommUtil.createHeartBeatMessage();
                         heartBeatBuf.writeBytes(sendMsg.getBytes());
                         Container.sendHeartBeat(heartBeatBuf, ctx.channel().id());
@@ -102,7 +99,6 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
                 } else if (idle.state().equals(IdleState.READER_IDLE)) {
                     Container.pingPongCountAdd(ctx.channel().id());
                     if (Container.getPingPongCount(ctx.channel().id()) == 4) {
-                        //超时过多  不可用
                         Container.logOut(ctx.channel().id());
                         ctx.channel().close();
                     }

@@ -49,7 +49,7 @@ import org.apache.logging.log4j.Logger;
 public class Server {
     private final Logger logger = LogManager.getLogger(Server.class);
 
-    public void bind(int port) throws Exception {
+    public void bind(int port, final String delimit, final int idleRead, final int idleWrite) throws Exception {
         EventLoopGroup master = new NioEventLoopGroup();
         EventLoopGroup slaver = new NioEventLoopGroup(4);
         ServerBootstrap bootstrap = new ServerBootstrap();
@@ -60,12 +60,12 @@ public class Server {
             bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
-                    ByteBuf delimiter = Unpooled.copiedBuffer("\r\n".getBytes());
+                    ByteBuf delimiter = Unpooled.copiedBuffer(delimit.getBytes());
                     ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
                     ch.pipeline().addLast(new StringDecoder());
                     ch.pipeline().addLast(new LineBasedFrameDecoder(1024 * 5));
                     ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
-                            123, 120, 0));
+                            idleRead, idleWrite, 0));
                     ch.pipeline().addLast(new WorkOutBoundHandler());
                     ch.pipeline().addLast(new WorkerInBoundHandler());
 
@@ -101,7 +101,7 @@ public class Server {
 
     public static void main(String[] args) {
         try {
-            new Server().bind(SystemConfig.tcpPort);
+            new Server().bind(SystemConfig.tcpPort,SystemConfig.delimiter,SystemConfig.idleReadTime,SystemConfig.idleWriteTime);
         } catch (Exception e) {
             e.printStackTrace();
         }
