@@ -6,7 +6,10 @@ import im.core.container.Container;
 import im.core.exception.NotOnlineException;
 import im.protoc.MessageEnum;
 import im.utils.CommUtil;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+
+import java.nio.charset.Charset;
 
 /**
  * Created by Misnearzhang on 2017/4/12.
@@ -32,8 +35,8 @@ public abstract class AbstractParse implements Parse , Runnable{
         try {
             object = gson.fromJson(message, clazz);
             parse(object, channel);
-        } catch (JsonSyntaxException es) {
-            channel.writeAndFlush(CommUtil.createErrorResponse());
+        } catch (Exception es) {
+            channel.writeAndFlush(Unpooled.copiedBuffer(CommUtil.createErrorResponse(), Charset.defaultCharset()));
             es.printStackTrace();
         }
     }

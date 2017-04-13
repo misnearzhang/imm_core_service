@@ -2,7 +2,7 @@
 tcp-port=3000
 
 #Delimiter
-delimiter=%%%%
+delimiter=\r\n
 
 #heartbeat time
 idle-read=200
