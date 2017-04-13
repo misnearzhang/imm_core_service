@@ -62,6 +62,16 @@ public class CommUtil {
         send += "\r\n";
         return send;
     }
+    public static String createErrorResponse() {
+        Message response = new Message();
+        Header header1 = new Header();
+        header1.setStatus(MessageEnum.status.ERROR.getCode());
+        header1.setType(MessageEnum.type.RESPONSE.getCode());
+        response.setHead(header1);
+        String send = gson.toJson(response);
+        send += "\r\n";
+        return send;
+    }
 
     public static String createHandShakeResponse(String status, String uuid) {
         Message response = new Message();

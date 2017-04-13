@@ -1,14 +1,8 @@
 package im.core.executor;
 
 import im.config.SystemConfig;
-import im.core.exception.UnSupportMessageType;
-import im.core.executor.define.AbstractParse;
-import im.core.executor.define.Parse;
-import im.protoc.Message;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelId;
 
-import java.util.List;
 import java.util.concurrent.*;
 
 /**

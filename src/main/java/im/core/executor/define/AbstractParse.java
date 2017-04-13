@@ -2,12 +2,16 @@ package im.core.executor.define;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import im.core.container.Container;
+import im.core.exception.NotOnlineException;
+import im.protoc.MessageEnum;
+import im.utils.CommUtil;
 import io.netty.channel.Channel;
 
 /**
  * Created by Misnearzhang on 2017/4/12.
  */
-public abstract class AbstractParse implements Parse, Runnable {
+public abstract class AbstractParse implements Parse , Runnable{
 
     private Gson gson = new Gson();
     private String message;
@@ -27,12 +31,12 @@ public abstract class AbstractParse implements Parse, Runnable {
         Object object = null;
         try {
             object = gson.fromJson(message, clazz);
+            parse(object, channel);
         } catch (JsonSyntaxException es) {
+            channel.writeAndFlush(CommUtil.createErrorResponse());
             es.printStackTrace();
         }
-        parse(object, channel);
     }
-
     public abstract void parse(Object message, Channel channel);
 
     public abstract Class setType();

@@ -6,6 +6,7 @@ import im.core.container.Container;
 import im.core.exception.NotOnlineException;
 import im.core.exception.UnSupportMessageType;
 import im.core.executor.define.AbstractParse;
+import im.core.executor.define.Parse;
 import im.protoc.*;
 import im.utils.CommUtil;
 import io.netty.channel.Channel;
@@ -25,7 +26,7 @@ public class ParseTask extends AbstractParse {
     private Message sendMessage;
 
     public ParseTask(String message, Channel channel) {
-        super(message, channel);
+        super(message,channel);
     }
 
     boolean checkHandShake(String account, String password) {
@@ -105,6 +106,7 @@ public class ParseTask extends AbstractParse {
                     //Container.pingPongRest(ctx.channel().id());
                     break;
                 default:
+                    //不支持该协议
             }
         } catch (JsonSyntaxException e) {
             //json解析异常 返回用户报错信息
@@ -125,4 +127,5 @@ public class ParseTask extends AbstractParse {
     public Class setType() {
         return Message.class;
     }
+
 }
