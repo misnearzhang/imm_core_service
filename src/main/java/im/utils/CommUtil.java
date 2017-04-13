@@ -85,11 +85,11 @@ public class CommUtil {
         return send;
     }
 
-    public static String createPush() {
+    public static String createPush(String status) {
         Message message = new Message();
         Header header = new Header();
         header.setType(MessageEnum.type.SYSTEM.getCode());
-        header.setStatus(MessageEnum.status.OTHERLOGIN.getCode());
+        header.setStatus(status);
         header.setUid(UUID.randomUUID().toString());
         message.setHead(header);
         String send = gson.toJson(message + "\r\n");
