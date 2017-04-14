@@ -8,9 +8,6 @@
     <artifactId>core-server</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>imm_third_service</module>
-    </modules>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/io.netty/netty-handler -->
         <dependency>
