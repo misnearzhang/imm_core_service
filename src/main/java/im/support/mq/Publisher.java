@@ -3,6 +3,7 @@ package im.support.mq;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -12,6 +13,7 @@ import java.util.concurrent.TimeoutException;
  * Created by Misnearzhang on 2017/3/6.
  */
 
+@Component
 public class Publisher {
     private static final Object LOCK = new Object();
 

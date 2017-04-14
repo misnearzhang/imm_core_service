@@ -1,9 +1,9 @@
-package im.main;
+package im.server;
 
 
 import im.config.SystemConfig;
-import im.main.handler.WorkOutBoundHandler;
-import im.main.handler.WorkerInBoundHandler;
+import im.server.handler.WorkOutBoundHandler;
+import im.server.handler.WorkerInBoundHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -17,6 +17,8 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * bootstramp 类 开启线程池 加载主服务
@@ -48,6 +50,8 @@ import org.apache.logging.log4j.Logger;
 */
 public class Server {
     private final Logger logger = LogManager.getLogger(Server.class);
+
+    private ApplicationContext springContext;
 
     public void bind(int port, final String delimit, final int idleRead, final int idleWrite) throws Exception {
         EventLoopGroup master = new NioEventLoopGroup();
@@ -99,9 +103,25 @@ public class Server {
         }
     }
 
+    public void init(){
+        SpringInit();
+    }
+    public void startup(){
+    }
+
+    private void SpringInit() {
+        //初始化spring
+        springContext=new ClassPathXmlApplicationContext("applicationContext.xml");
+    }
+
+
     public static void main(String[] args) {
         try {
-            new Server().bind(SystemConfig.tcpPort,SystemConfig.delimiter,SystemConfig.idleReadTime,SystemConfig.idleWriteTime);
+            Server server=new Server();
+            System.out.println("test");
+            server.init();
+            System.out.println("test1");
+            server.bind(SystemConfig.tcpPort,SystemConfig.delimiter,SystemConfig.idleReadTime,SystemConfig.idleWriteTime);
         } catch (Exception e) {
             e.printStackTrace();
         }
