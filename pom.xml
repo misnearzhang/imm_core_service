@@ -6,7 +6,11 @@
 
     <groupId>imm</groupId>
     <artifactId>core-server</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>imm_third_service</module>
+    </modules>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/io.netty/netty-handler -->
         <dependency>
@@ -134,6 +138,23 @@
             <artifactId>spring-context</artifactId>
             <version>4.3.6.RELEASE</version>
         </dependency>
+        <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context-support</artifactId>
+            <version>4.3.6.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>4.3.6.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+            <version>1.6.5.RELEASE</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework</groupId>

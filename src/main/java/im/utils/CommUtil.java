@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import im.protoc.Header;
 import im.protoc.Message;
 import im.protoc.MessageEnum;
-import im.protoc.pojo.RequestPOJO;
+import im.protoc.db.RequestPOJO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

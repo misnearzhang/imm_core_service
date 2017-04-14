@@ -4,30 +4,34 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import im.core.container.Container;
 import im.core.exception.NotOnlineException;
-import im.core.exception.UnSupportMessageType;
 import im.core.executor.define.AbstractParse;
-import im.core.executor.define.Parse;
 import im.protoc.*;
+import im.protoc.db.OfflineMessage;
+import im.support.mq.SendMessage;
 import im.utils.CommUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
+import java.util.Date;
 
 /**
  * 解析报文 并做处理  用户消息则将消息处理了转发给网络发送线程 系统消息则根据消息类型处理
  * Created by zhanglong on 17-2-25.
  */
+
 public class ParseTask extends AbstractParse {
+    @Autowired
+    SendMessage sender;
     private final Logger logger = LogManager.getLogger(ParseTask.class);
     private Gson gson = new Gson();
-    private Message sendMessage;
-
     public ParseTask(String message, Channel channel) {
         super(message,channel);
     }
+
+    private Message sendMessage;
 
     boolean checkHandShake(String account, String password) {
 
@@ -56,6 +60,13 @@ public class ParseTask extends AbstractParse {
                     if (toChannelId == null) {
                         Container.send(CommUtil.createResponse(MessageEnum.status.OFFLINE.getCode(), uid), fromChannelId);
                         logger.info("this account is offline and we will cache this message utils it online");
+                        sender.send2db(new OfflineMessage().
+                                setMessageContent(userMessage.getContent()).
+                                setMessageFrom(userMessage.getFrom()).
+                                setMessageTo(userMessage.getTo()).setMessageStatus("100").
+                                setAddtime(new Date()).
+                                setUpdatetime(new Date())
+                        );
                         //缓存消息
                         //send2mq
                     } else {

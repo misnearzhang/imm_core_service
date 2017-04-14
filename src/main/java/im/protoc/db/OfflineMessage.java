@@ -1,4 +1,4 @@
-package im.protoc.pojo;
+package im.protoc.db;
 
 import java.util.Date;
 
@@ -19,7 +19,7 @@ public class OfflineMessage {
      *
      * @mbg.generated
      */
-    private Integer messageFrom;
+    private String messageFrom;
 
     /**
      *
@@ -28,7 +28,7 @@ public class OfflineMessage {
      *
      * @mbg.generated
      */
-    private Integer messageTo;
+    private String messageTo;
 
     /**
      *
@@ -84,20 +84,20 @@ public class OfflineMessage {
         return this;
     }
 
-    public Integer getMessageFrom() {
+    public String getMessageFrom() {
         return messageFrom;
     }
 
-    public OfflineMessage setMessageFrom(Integer messageFrom) {
+    public OfflineMessage setMessageFrom(String messageFrom) {
         this.messageFrom = messageFrom;
         return this;
     }
 
-    public Integer getMessageTo() {
+    public String getMessageTo() {
         return messageTo;
     }
 
-    public OfflineMessage setMessageTo(Integer messageTo) {
+    public OfflineMessage setMessageTo(String messageTo) {
         this.messageTo = messageTo;
         return this;
     }
