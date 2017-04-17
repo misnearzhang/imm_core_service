@@ -1,5 +1,7 @@
 package im.config;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.io.*;
 import java.util.*;
 
@@ -38,27 +40,28 @@ public class SystemConfig {
     public int threadRetransSecondTime;
     public int threadRetransThirdTime;*/
 
-    private static final Map<String, String> map = readFile("systemconfig");
+    //private static final Map<String, String> map = readFile("properties/systemconfig.properties");
 
-    public static final String delimiter;
+    @Value("delimiter")
+    public static String delimiter;
+    @Value("idle-read")
+    public static int idleReadTime;
+    @Value("idle-write")
+    public static int idleWriteTime;
+    @Value("tcp-port")
+    public static int tcpPort;
+    @Value("threadpool-corepoolsize")
+    public static int threadCorePoolSize;
+    @Value("threadpool-maximumpoolsize")
+    public static int threadMaximumPoolSize;
+    @Value("threadpool-keepalivetime")
+    public static int threadKeepAliveTime;
+    @Value("threadpool-threadRetransTime")
+    public static int threadRetransTime;
+    @Value("sender-threadpool-poolsize")
+    public static int senderThreadpoolPoolSize;
 
-    public static final int idleReadTime;
-
-    public static final int idleWriteTime;
-
-    public static final int tcpPort;
-
-    public static final int threadCorePoolSize;
-
-    public static final int threadMaximumPoolSize;
-
-    public static final int threadKeepAliveTime;
-
-    public static final int threadRetransTime;
-
-    public static final int senderThreadpoolPoolSize;
-
-    static {
+    /*static {
         delimiter = map.get("delimiter");
         idleReadTime = Integer.parseInt(map.get("idle-read"));
         idleWriteTime = Integer.parseInt(map.get("idle-write"));
@@ -68,9 +71,9 @@ public class SystemConfig {
         threadKeepAliveTime = Integer.parseInt(map.get("threadpool-keepalivetime"));
         threadRetransTime = Integer.parseInt(map.get("threadpool-threadRetransTime"));
         senderThreadpoolPoolSize = Integer.parseInt(map.get("sender-threadpool-poolsize"));
-    }
+    }*/
 
-    static Map<String, String> readFile(String path) {
+    /*static Map<String, String> readFile(String path) {
         //载入配置文件
         Map<String, String> map = new HashMap<String, String>();
         Properties pps = new Properties();
@@ -95,5 +98,5 @@ public class SystemConfig {
             map.put(strKey, strValue);
         }
         return map;
-    }
+    }*/
 }

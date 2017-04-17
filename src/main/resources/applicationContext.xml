@@ -1,61 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xmlns:context="http://www.springframework.org/schema/context"
-	   xmlns:task="http://www.springframework.org/schema/task" xmlns:rabbit="http://www.springframework.org/schema/c"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task" xmlns:rabbit="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
 	   http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
-    
-	<context:component-scan base-package="im" />
 
-	<bean id="publisher" class="im.support.mq.Publisher"/>
+    <context:component-scan base-package="im"/>
 
+    <bean id="publisher" class="im.support.mq.Publisher"/>
 
-
-	<task:executor id="amqpConnectionTaskExecutor" pool-size="${rabbit.pool.size}"/>
-
-	<!-- rabbit 连接工厂-->
-	<rabbit:connection-factory
-			id="connectionFactory"
-			virtual-host="${rabbit.virtual.host}"
-			username="${rabbit.username}"
-			password="${rabbit.password}"
-			thread-factory="threadFactory"
-			channel-cache-size="60"
-			executor="amqpConnectionTaskExecutor"
-	/>
-	<!-- 定义线程的名字 -->
-	<bean id="threadFactory" class="org.springframework.scheduling.concurrent.CustomizableThreadFactory">
-		<constructor-arg value="rabbitmq-"/>
-	</bean>
-
-	<!--
+    <!--配置文件加载开始-->
+    <bean id="propertyPlaceholderConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath*:properties/rabbit.properties</value>
+                <value>classpath*:properties/systemconfig.properties</value>
+            </list>
+        </property>
+    </bean>
+    <task:executor id="amqpConnectionTaskExecutor" pool-size="${rabbit.pool.size}"/>
+    <!-- rabbit 连接工厂-->
+    <rabbit:connection-factory
+            id="connectionFactory"
+            virtual-host="${rabbit.host}"
+            username="${rabbit.username}"
+            password="${rabbit.password}"
+            thread-factory="threadFactory"
+            channel-cache-size="60"
+            executor="amqpConnectionTaskExecutor"
+    />
+    <!-- 定义线程的名字 -->
+    <bean id="threadFactory" class="org.springframework.scheduling.concurrent.CustomizableThreadFactory">
+        <constructor-arg value="rabbitmq-"/>
+    </bean>
+    <!--
         交换机配置, 代码中手动绑定队列,这里无需设置
     -->
-
-	<!-- MQ 管理, 队列 交换机 -->
-	<rabbit:admin connection-factory="connectionFactory"/>
-
-	<!-- 定义template start -->
-	<!--
+    <!-- MQ 管理, 队列 交换机 -->
+    <rabbit:admin connection-factory="connectionFactory"/>
+    <!-- 定义template start -->
+    <!--
         定义template,在代码中手动指定交换机和队列
         reply-timeout : 为发送和接收操作超时,以毫秒为单位。默认是5000(5秒)。
         300000 : 最大5分钟后超时
     -->
-	<rabbit:template id="amqpTemplate"
-					 connection-factory="connectionFactory"
-					 retry-template="retryTemplate"
-					 reply-timeout="300000"
-	/>
-	<!-- 添加重试功能 -->
-	<bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
-		<property name="backOffPolicy">
-			<bean class="org.springframework.retry.backoff.ExponentialBackOffPolicy">
-				<property name="initialInterval" value="500"/>
-				<property name="multiplier" value="10.0"/>
-				<property name="maxInterval" value="10000"/>
-			</bean>
-		</property>
-	</bean>
+    <rabbit:template id="amqpTemplate"
+                     connection-factory="connectionFactory"
+                     retry-template="retryTemplate"
+                     reply-timeout="300000"
+    />
+    <!-- 添加重试功能 -->
+    <bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
+        <property name="backOffPolicy">
+            <bean class="org.springframework.retry.backoff.ExponentialBackOffPolicy">
+                <property name="initialInterval" value="500"/>
+                <property name="multiplier" value="10.0"/>
+                <property name="maxInterval" value="10000"/>
+            </bean>
+        </property>
+    </bean>
 </beans>

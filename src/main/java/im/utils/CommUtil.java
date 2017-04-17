@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import im.protoc.Header;
 import im.protoc.Message;
 import im.protoc.MessageEnum;
-import im.protoc.db.RequestPOJO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,18 +16,6 @@ public class CommUtil {
     public static Message varify(String message) {
         Message request = gson.fromJson(message, Message.class);
         return request;
-    }
-
-    public static RequestPOJO Protoc2POJO(Message message) {
-        RequestPOJO requestpojo = new RequestPOJO();
-        /*requestpojo.setMessage_content(message.getContent());
-        requestpojo.setMessage_from(message.getContent());
-		requestpojo.setMessage_sign(message.getSign());
-		requestpojo.setMessage_timestamp(message.getTimestamp());
-		requestpojo.setMessage_to(message.getContent());
-		requestpojo.setMessage_type(message.getType());
-		requestpojo.setMessage_uid(message.getUid());*/
-        return requestpojo;
     }
 
     public static String createHeartBeatMessage() {
