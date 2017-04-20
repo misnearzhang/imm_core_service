@@ -102,4 +102,9 @@ public class ThreadPool {
         ioExecutor.purge();
         return true;
     }
+
+    public void close(){
+        this.ioExecutor.shutdown();
+        this.businessExecutor.shutdown();
+    }
 }
