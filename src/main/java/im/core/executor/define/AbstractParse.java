@@ -20,11 +20,6 @@ public abstract class AbstractParse implements Parse , Runnable{
     private String message;
     private Channel channel;
 
-    public AbstractParse(String message, Channel channel) {
-        this.message = message;
-        this.channel = channel;
-    }
-
     @Override
     public void run() {
         Class clazz = setType();
@@ -34,13 +29,18 @@ public abstract class AbstractParse implements Parse , Runnable{
         Object object = null;
         try {
             object = gson.fromJson(message, clazz);
-            parse(object, channel);
+            parse(object , channel);
         } catch (Exception es) {
             channel.writeAndFlush(Unpooled.copiedBuffer(CommUtil.createErrorResponse(), Charset.defaultCharset()));
             es.printStackTrace();
         }
     }
-    public abstract void parse(Object message, Channel channel);
+    public abstract void parse(Object object , Channel channel);
 
     public abstract Class setType();
+
+    public void initData(String message, Channel channel){
+        this.message = message;
+        this.channel = channel;
+    }
 }

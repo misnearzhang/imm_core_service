@@ -16,10 +16,8 @@ public interface Parse {
      */
     Class setType() throws UnSupportMessageType;
 
-
     /**
      * 解析消息
      */
-    void parse(Object message, Channel channel);
-
+    void parse(Object message , Channel channel);
 }

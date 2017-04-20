@@ -1,7 +1,13 @@
 package im.testclient;
 
 import com.google.gson.Gson;
+import im.protoc.HandShakeMessage;
+import im.protoc.Header;
+import im.protoc.Message;
+import im.protoc.MessageEnum;
+
 import java.io.IOException;
+import java.util.UUID;
 
 public class TestTCP {
 	public static void main(String[] args) throws IOException {
@@ -23,7 +29,7 @@ public class TestTCP {
 		System.out.println(gson.toJson(message));
 */
 
-		/*Message message=new Message();
+		Message message=new Message();
 		Header header=new Header();
 		HandShakeMessage handShakeMessage=new HandShakeMessage();
 		handShakeMessage.setAccount(System.currentTimeMillis()+"");
@@ -33,7 +39,7 @@ public class TestTCP {
 		header.setType(MessageEnum.type.HANDSHAKE.getCode());
 		message.setHead(header);
 		message.setBody(gson.toJson(handShakeMessage));
-		System.out.println(gson.toJson(message));*/
+		System.out.println(gson.toJson(message));
 	}
 	public byte[] getSendBlock(short length,byte[] data){
 		return null;

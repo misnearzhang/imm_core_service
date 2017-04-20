@@ -30,11 +30,8 @@ public class ParseTask extends AbstractParse {
     SendMessage sender;
     private final Logger logger = LogManager.getLogger(ParseTask.class);
     private Gson gson = new Gson();
-    public ParseTask(String message, Channel channel) {
-        super(message,channel);
-    }
-
     private Message sendMessage;
+    private ThreadPool threadPool;
 
     boolean checkHandShake(String account, String password) {
 
@@ -42,9 +39,9 @@ public class ParseTask extends AbstractParse {
     }
 
     @Override
-    public void parse(Object message,Channel channel) {
+    public void parse(Object object , Channel channel) {
         try {
-            sendMessage = (Message) message;
+            sendMessage = (Message) object;
             Header header = sendMessage.getHead();
             String uid = header.getUid();
             String type = header.getType();
@@ -74,7 +71,7 @@ public class ParseTask extends AbstractParse {
                         //send2mq
                     } else {
                         Container.send(CommUtil.createResponse(MessageEnum.status.OK.getCode(), uid), fromChannelId);
-                        ThreadPool.sendMessageNow(new SendTask(gson.toJson(message), ThreadPool.RetransCount.FISRT, toChannelId, uid), uid);
+                        threadPool.sendMessageNow(new SendTask(gson.toJson(object), ThreadPool.RetransCount.FISRT, toChannelId, uid), uid);
                     }
                     break;
                 case MessageEnum.TYPE_SYSTEM:
@@ -113,7 +110,7 @@ public class ParseTask extends AbstractParse {
                     //收到响应  判断响应类型  消息响应和心跳响应
                     //retransConcurrentHashMap.remove(header.getUid());
                     logger.info("receive response , remove retrans task");
-                    ThreadPool.removeFurure(header.getUid());
+                    threadPool.removeFurure(header.getUid());
                     break;
                 case MessageEnum.TYPE_PONG:
                     //心跳响应  不做任何事

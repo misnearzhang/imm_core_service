@@ -14,6 +14,7 @@ public class SendTask implements Runnable {
     private ChannelId toChannelId;
     private String uid;
     private String message;
+    private ThreadPool threadPool;
     private ThreadPool.RetransCount count;
 
     public SendTask(String Message, ThreadPool.RetransCount count, ChannelId channelId, String uid) {
@@ -35,12 +36,12 @@ public class SendTask implements Runnable {
             case FISRT:
                 logger.info("first retrans");
                 this.count = ThreadPool.RetransCount.SECOND;
-                ThreadPool.sendMessage(this, uid);
+                threadPool.sendMessage(this, uid);
                 break;
             case SECOND:
                 logger.info("second retrans");
                 this.count = ThreadPool.RetransCount.THIRD;
-                ThreadPool.sendMessage(this, uid);
+                threadPool.sendMessage(this, uid);
                 break;
             case THIRD:
                 logger.info("give up,save in db");

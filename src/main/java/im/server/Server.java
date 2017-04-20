@@ -2,6 +2,9 @@ package im.server;
 
 
 import im.config.SystemConfig;
+import im.core.executor.ParseTask;
+import im.core.executor.ThreadPool;
+import im.core.executor.define.Parse;
 import im.server.handler.WorkOutBoundHandler;
 import im.server.handler.WorkerInBoundHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -17,7 +20,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -49,11 +52,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
          		佛祖保佑       永无BUG
          			O0o li1
 */
-public class Server {
+public class Server<T>{
 
     private final Logger logger = LogManager.getLogger(Server.class);
 
     private ApplicationContext springContext;
+
+    private ThreadPool threadPool;
+    public void setThreadPool(ThreadPool threadPool){
+        this.threadPool = threadPool;
+    }
+
 
     public void bind(int port, final String delimit, final int idleRead, final int idleWrite) throws Exception {
         EventLoopGroup master = new NioEventLoopGroup();
@@ -73,7 +82,7 @@ public class Server {
                     ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
                             idleRead, idleWrite, 0));
                     ch.pipeline().addLast(new WorkOutBoundHandler());
-                    ch.pipeline().addLast(new WorkerInBoundHandler());
+                    ch.pipeline().addLast(new WorkerInBoundHandler(threadPool));
 
 //					ByteBuf delimiter=Unpooled.copiedBuffer("".getBytes());
                     /*// ch.pipeline().addLast(new ValidateUser());
@@ -109,8 +118,6 @@ public class Server {
     public void init(){
         SpringInit();
     }
-    public void startup(){
-    }
 
     private void SpringInit() {
         //初始化spring
@@ -123,7 +130,12 @@ public class Server {
             Server server=new Server();
             System.out.println("test");
             server.init();
+            ThreadPool threadPool = new ThreadPool(5,10,5,1000);
+            threadPool.init();
+            threadPool.reflectParse("im.core.executor.ParseTask");
+            server.setThreadPool(threadPool);
             System.out.println("test1");
+            //server.setParse(new ParseTask());
             server.bind(3000,"\r\n",205,200);
         } catch (Exception e) {
             e.printStackTrace();

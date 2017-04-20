@@ -11,9 +11,9 @@
 		http://www.springframework.org/schema/task
 		http://www.springframework.org/schema/task/spring-task.xsd">
 
-    <context:component-scan base-package="im"/>
+    <context:component-scan base-package="im.core"/>
 
-    <bean id="publisher" class="im.support.mq.Publisher"/>
+    <!--<bean id="publisher" class="im.support.mq.Publisher"/>-->
 
     <!--配置文件加载开始-->
     <bean id="propertyPlaceholderConfigurer"
@@ -27,6 +27,14 @@
         </property>
     </bean>
 
+    <!--线程池初始化-->
+
+    <!--<bean id="threadPool" class="im.core.executor.ThreadPool" init-method="init">
+        <constructor-arg name="corePoolSize" value="${threadpool-corepoolsize}"/>
+        <constructor-arg name="maxPoolSize" value="${threadpool-maximumpoolsize}"/>
+        <constructor-arg name="keepAliveTime" value="${threadpool-keepalivetime}"/>
+        <constructor-arg name="blockingQueueSize" value="${threadpool-blockingqueue}"/>
+    </bean>-->
     <bean id="systemConfig" class="im.config.SystemConfig">
         <property name="delimiter" value="${delimiter}"/>
         <property name="idleReadTime" value="${idle-read}"/>
@@ -39,8 +47,8 @@
         <property name="threadRetransSecondTime" value="${threadpool-threadRetransTime}"/>
         <property name="threadRetransThirdTime" value="${threadpool-threadRetransTime}"/>
     </bean>
-    <task:executor id="amqpConnectionTaskExecutor" pool-size="${rabbit.pool.size}"/>
-    <!-- rabbit 连接工厂-->
+    <!--<task:executor id="amqpConnectionTaskExecutor" pool-size="${rabbit.pool.size}"/>
+    &lt;!&ndash; rabbit 连接工厂&ndash;&gt;
     <rabbit:connection-factory
             id="connectionFactory"
             virtual-host="${rabbit.host}"
@@ -50,27 +58,27 @@
             channel-cache-size="60"
             executor="amqpConnectionTaskExecutor"
     />
-    <!-- 定义线程的名字 -->
+    &lt;!&ndash; 定义线程的名字 &ndash;&gt;
     <bean id="threadFactory" class="org.springframework.scheduling.concurrent.CustomizableThreadFactory">
         <constructor-arg value="rabbitmq-"/>
     </bean>
-    <!--
+    &lt;!&ndash;
         交换机配置, 代码中手动绑定队列,这里无需设置
-    -->
-    <!-- MQ 管理, 队列 交换机 -->
+    &ndash;&gt;
+    &lt;!&ndash; MQ 管理, 队列 交换机 &ndash;&gt;
     <rabbit:admin connection-factory="connectionFactory"/>
-    <!-- 定义template start -->
-    <!--
+    &lt;!&ndash; 定义template start &ndash;&gt;
+    &lt;!&ndash;
         定义template,在代码中手动指定交换机和队列
         reply-timeout : 为发送和接收操作超时,以毫秒为单位。默认是5000(5秒)。
         300000 : 最大5分钟后超时
-    -->
+    &ndash;&gt;
     <rabbit:template id="amqpTemplate"
                      connection-factory="connectionFactory"
                      retry-template="retryTemplate"
                      reply-timeout="300000"
     />
-    <!-- 添加重试功能 -->
+    &lt;!&ndash; 添加重试功能 &ndash;&gt;
     <bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
         <property name="backOffPolicy">
             <bean class="org.springframework.retry.backoff.ExponentialBackOffPolicy">
@@ -79,5 +87,5 @@
                 <property name="maxInterval" value="10000"/>
             </bean>
         </property>
-    </bean>
+    </bean>-->
 </beans>

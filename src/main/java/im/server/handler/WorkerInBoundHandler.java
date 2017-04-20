@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 
 import im.core.container.Container;
 import im.core.executor.ThreadPool;
+import im.core.executor.define.Parse;
 import im.utils.CommUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -17,7 +18,11 @@ import org.apache.logging.log4j.Logger;
 public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
     private final Logger logger = LogManager.getLogger(WorkerInBoundHandler.class);
 
-    private final Gson gson = new Gson();
+    private final ThreadPool threadPool;
+
+    public WorkerInBoundHandler(ThreadPool threadPool) {
+        this.threadPool = threadPool;
+    }
 
     //private static final Publisher publisher=Publisher.newInstance();
     @Override
@@ -28,7 +33,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         Container.pingPongRest(ctx.channel().id());
-        ThreadPool.parseMessage(msg.toString(), ctx.channel());
+        threadPool.parseMessage(msg.toString(),ctx.channel());
         logger.info("receive message:{}", (String) msg);
     }
 

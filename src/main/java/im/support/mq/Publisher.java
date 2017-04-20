@@ -13,7 +13,6 @@ import java.util.concurrent.TimeoutException;
  * Created by Misnearzhang on 2017/3/6.
  */
 
-@Component
 public class Publisher {
     private static final Object LOCK = new Object();
 
