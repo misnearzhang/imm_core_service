@@ -26,6 +26,19 @@
             </list>
         </property>
     </bean>
+
+    <bean id="systemConfig" class="im.config.SystemConfig">
+        <property name="delimiter" value="${delimiter}"/>
+        <property name="idleReadTime" value="${idle-read}"/>
+        <property name="idleWriteTime" value="${idle-read}"/>
+        <property name="tcpPort" value="${tcp-port}"/>
+        <property name="threadCorePoolSize" value="${sender-threadpool-poolsize}"/>
+        <property name="threadKeepAliveTime" value="${threadpool-keepalivetime}"/>
+        <property name="threadMaximumPoolSize" value="${threadpool-maximumpoolsize}"/>
+        <property name="threadRetransFisrtTime" value="${threadpool-threadRetransTime}"/>
+        <property name="threadRetransSecondTime" value="${threadpool-threadRetransTime}"/>
+        <property name="threadRetransThirdTime" value="${threadpool-threadRetransTime}"/>
+    </bean>
     <task:executor id="amqpConnectionTaskExecutor" pool-size="${rabbit.pool.size}"/>
     <!-- rabbit 连接工厂-->
     <rabbit:connection-factory

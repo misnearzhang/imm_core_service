@@ -2,6 +2,7 @@ package im.core.executor;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import im.config.SystemConfig;
 import im.core.container.Container;
 import im.core.exception.NotOnlineException;
 import im.core.executor.define.AbstractParse;
@@ -23,6 +24,8 @@ import java.util.Date;
  */
 
 public class ParseTask extends AbstractParse {
+    @Autowired
+    SystemConfig systemConfig;
     @Autowired
     SendMessage sender;
     private final Logger logger = LogManager.getLogger(ParseTask.class);

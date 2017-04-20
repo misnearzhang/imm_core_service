@@ -17,6 +17,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -49,6 +50,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
          			O0o li1
 */
 public class Server {
+
     private final Logger logger = LogManager.getLogger(Server.class);
 
     private ApplicationContext springContext;
@@ -91,6 +93,7 @@ public class Server {
                     //pipeline.addLast(new WorkerInBoundHandler());
                 }
             });
+            logger.info(port);
             logger.info("server has startup successful!");
             ChannelFuture f = bootstrap.bind(port).sync();
             f.channel().closeFuture().sync();
@@ -121,7 +124,7 @@ public class Server {
             System.out.println("test");
             server.init();
             System.out.println("test1");
-            server.bind(SystemConfig.tcpPort,SystemConfig.delimiter,SystemConfig.idleReadTime,SystemConfig.idleWriteTime);
+            server.bind(3000,"\r\n",205,200);
         } catch (Exception e) {
             e.printStackTrace();
         }

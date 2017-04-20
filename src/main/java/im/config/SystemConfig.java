@@ -1,6 +1,7 @@
 package im.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.*;
@@ -28,75 +29,110 @@ import java.util.*;
  * threadpool-retranssecondtime=
  * threadpool-retransthirdtime=
  */
+
+@Component
 public class SystemConfig {
+    private String delimiter;
+    private int idleReadTime;
+    private int idleWriteTime;
+    private int tcpPort;
+    private int threadCorePoolSize;
+    private int threadMaximumPoolSize;
+    private int threadKeepAliveTime;
+    private int threadRetransFisrtTime;
+    private int threadRetransSecondTime;
+    private int threadRetransThirdTime;
 
-/*    public int idleReadTime;
-    public int idleWriteTime;
-    public int tcpPort;
-    public int threadCorePoolSize;
-    public int threadMaximumPoolSize;
-    public int threadKeepAliveTime;
-    public int threadRetransFisrtTime;
-    public int threadRetransSecondTime;
-    public int threadRetransThirdTime;*/
+    static {
 
-    //private static final Map<String, String> map = readFile("properties/systemconfig.properties");
+    }
+    public String getDelimiter() {
+        return delimiter;
+    }
 
-    @Value("delimiter")
-    public static String delimiter;
-    @Value("idle-read")
-    public static int idleReadTime;
-    @Value("idle-write")
-    public static int idleWriteTime;
-    @Value("tcp-port")
-    public static int tcpPort;
-    @Value("threadpool-corepoolsize")
-    public static int threadCorePoolSize;
-    @Value("threadpool-maximumpoolsize")
-    public static int threadMaximumPoolSize;
-    @Value("threadpool-keepalivetime")
-    public static int threadKeepAliveTime;
-    @Value("threadpool-threadRetransTime")
-    public static int threadRetransTime;
-    @Value("sender-threadpool-poolsize")
-    public static int senderThreadpoolPoolSize;
+    public SystemConfig setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+        return this;
+    }
 
-    /*static {
-        delimiter = map.get("delimiter");
-        idleReadTime = Integer.parseInt(map.get("idle-read"));
-        idleWriteTime = Integer.parseInt(map.get("idle-write"));
-        tcpPort = Integer.parseInt(map.get("tcp-port"));
-        threadCorePoolSize = Integer.parseInt(map.get("threadpool-corepoolsize"));
-        threadMaximumPoolSize = Integer.parseInt(map.get("threadpool-maximumpoolsize"));
-        threadKeepAliveTime = Integer.parseInt(map.get("threadpool-keepalivetime"));
-        threadRetransTime = Integer.parseInt(map.get("threadpool-threadRetransTime"));
-        senderThreadpoolPoolSize = Integer.parseInt(map.get("sender-threadpool-poolsize"));
-    }*/
+    public int getIdleReadTime() {
+        return idleReadTime;
+    }
 
-    /*static Map<String, String> readFile(String path) {
-        //载入配置文件
-        Map<String, String> map = new HashMap<String, String>();
-        Properties pps = new Properties();
-        InputStream in = null;
-        try {
-            in = new BufferedInputStream(ClassLoader.getSystemResourceAsStream(path));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        try {
-            pps.load(in);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        Enumeration en = pps.propertyNames();//得到配置文件的名字
+    public SystemConfig setIdleReadTime(int idleReadTime) {
+        this.idleReadTime = idleReadTime;
+        return this;
+    }
 
-        while (en.hasMoreElements()) {
-            String strKey = (String) en.nextElement();
-            String strValue = pps.getProperty(strKey);
-            map.put(strKey, strValue);
-        }
-        return map;
-    }*/
+    public int getIdleWriteTime() {
+        return idleWriteTime;
+    }
+
+    public SystemConfig setIdleWriteTime(int idleWriteTime) {
+        this.idleWriteTime = idleWriteTime;
+        return this;
+    }
+
+    public int getTcpPort() {
+        return tcpPort;
+    }
+
+    public SystemConfig setTcpPort(int tcpPort) {
+        this.tcpPort = tcpPort;
+        return this;
+    }
+
+    public int getThreadCorePoolSize() {
+        return threadCorePoolSize;
+    }
+
+    public SystemConfig setThreadCorePoolSize(int threadCorePoolSize) {
+        this.threadCorePoolSize = threadCorePoolSize;
+        return this;
+    }
+
+    public int getThreadMaximumPoolSize() {
+        return threadMaximumPoolSize;
+    }
+
+    public SystemConfig setThreadMaximumPoolSize(int threadMaximumPoolSize) {
+        this.threadMaximumPoolSize = threadMaximumPoolSize;
+        return this;
+    }
+
+    public int getThreadKeepAliveTime() {
+        return threadKeepAliveTime;
+    }
+
+    public SystemConfig setThreadKeepAliveTime(int threadKeepAliveTime) {
+        this.threadKeepAliveTime = threadKeepAliveTime;
+        return this;
+    }
+
+    public int getThreadRetransFisrtTime() {
+        return threadRetransFisrtTime;
+    }
+
+    public SystemConfig setThreadRetransFisrtTime(int threadRetransFisrtTime) {
+        this.threadRetransFisrtTime = threadRetransFisrtTime;
+        return this;
+    }
+
+    public int getThreadRetransSecondTime() {
+        return threadRetransSecondTime;
+    }
+
+    public SystemConfig setThreadRetransSecondTime(int threadRetransSecondTime) {
+        this.threadRetransSecondTime = threadRetransSecondTime;
+        return this;
+    }
+
+    public int getThreadRetransThirdTime() {
+        return threadRetransThirdTime;
+    }
+
+    public SystemConfig setThreadRetransThirdTime(int threadRetransThirdTime) {
+        this.threadRetransThirdTime = threadRetransThirdTime;
+        return this;
+    }
 }
