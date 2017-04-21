@@ -98,7 +98,11 @@ public class ParseTask extends AbstractParse {
                             //用户已经在线 向该用户发送下线通知
                             logger.info("this account already online , going well offline it");
                             ChannelId channelId = Container.getChannelId(account);
+                            Channel channel1 = Container.getChannel(channelId);
                             Container.send(CommUtil.createPush(MessageEnum.status.OTHERLOGIN.getCode()), channelId);//发送下线通知
+                            if(channel1!=null){
+                                Container.removeChannel(channel);
+                            }
                         }
                         logger.info("handshake Success!!");
                         Container.addChannel(channel);

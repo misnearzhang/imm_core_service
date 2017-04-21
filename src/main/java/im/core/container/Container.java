@@ -166,7 +166,9 @@ public class Container {
     }
 
     public static void removeChannel(Channel channel) {
-        group.remove(channel);
+        if(group.contains(channel)){
+            group.remove(channel);
+        }
     }
 
 }
