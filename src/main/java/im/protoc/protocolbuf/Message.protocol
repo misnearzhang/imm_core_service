@@ -1,0 +1,47 @@
+option java_package = "im.protoc.protocolbuf";
+option java_outer_classname = "Message";
+// 关注2：option选项
+
+// 关注3：消息模型
+// 下面详细说明
+// 生成 Person 消息对象（包含多个字段，下面详细说明）
+message Message {
+    required Head head = 1;
+    required string body = 2;
+
+    message Head {
+        required type type = 1;
+        required status status = 2;
+        required string uid = 3;
+    }
+
+    enum type{
+        USER = 1;
+        SYSTEM = 2;
+        RESPONSE = 3;
+        PING = 4;
+        PONG = 5;
+        HANDSHAKE = 6;
+        HANDSHAKERESPONSE = 7;
+    }
+    /*
+    REQ("100","请求消息"),
+        OK( "200", "消息接受成功" ),
+        OFFLINE("201","用户离线"),
+        HANDSHAKEFAIL("401","握手失败"),
+        ERROR( "500", "系统错误" ),
+        DECODEERR("505","解码错误"),
+        DISCARD( "404", "消息丢失" ),
+        OTHERLOGIN("403","用户在其他地方登陆");//消息type为system时使用
+    */
+    enum status{
+        REQ = 1;
+        OK = 2;
+        OFFLINE = 3;
+        HANDSHAKEFAIL = 4;
+        ERROR = 5;
+        DECODEERR = 6;
+        DISCARD = 7;
+        OTHERLOGIN = 8;
+    }
+}

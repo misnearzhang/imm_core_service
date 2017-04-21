@@ -47,10 +47,11 @@
         <property name="threadRetransSecondTime" value="${threadpool-threadRetransTime}"/>
         <property name="threadRetransThirdTime" value="${threadpool-threadRetransTime}"/>
     </bean>
-    <!--<task:executor id="amqpConnectionTaskExecutor" pool-size="${rabbit.pool.size}"/>
-    &lt;!&ndash; rabbit 连接工厂&ndash;&gt;
+    <task:executor id="amqpConnectionTaskExecutor" pool-size="${rabbit.pool.size}"/>
+    <!-- rabbit 连接工厂-->
     <rabbit:connection-factory
             id="connectionFactory"
+            addresses="${rabbit.addresses}"
             virtual-host="${rabbit.host}"
             username="${rabbit.username}"
             password="${rabbit.password}"
@@ -58,27 +59,27 @@
             channel-cache-size="60"
             executor="amqpConnectionTaskExecutor"
     />
-    &lt;!&ndash; 定义线程的名字 &ndash;&gt;
+    <!-- 定义线程的名字 -->
     <bean id="threadFactory" class="org.springframework.scheduling.concurrent.CustomizableThreadFactory">
         <constructor-arg value="rabbitmq-"/>
     </bean>
-    &lt;!&ndash;
+    <!--
         交换机配置, 代码中手动绑定队列,这里无需设置
-    &ndash;&gt;
-    &lt;!&ndash; MQ 管理, 队列 交换机 &ndash;&gt;
+    -->
+    <!-- MQ 管理, 队列 交换机 -->
     <rabbit:admin connection-factory="connectionFactory"/>
-    &lt;!&ndash; 定义template start &ndash;&gt;
-    &lt;!&ndash;
+    <!-- 定义template start -->
+    <!--
         定义template,在代码中手动指定交换机和队列
         reply-timeout : 为发送和接收操作超时,以毫秒为单位。默认是5000(5秒)。
         300000 : 最大5分钟后超时
-    &ndash;&gt;
+    -->
     <rabbit:template id="amqpTemplate"
                      connection-factory="connectionFactory"
                      retry-template="retryTemplate"
                      reply-timeout="300000"
     />
-    &lt;!&ndash; 添加重试功能 &ndash;&gt;
+    <!-- 添加重试功能 -->
     <bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
         <property name="backOffPolicy">
             <bean class="org.springframework.retry.backoff.ExponentialBackOffPolicy">
@@ -87,5 +88,5 @@
                 <property name="maxInterval" value="10000"/>
             </bean>
         </property>
-    </bean>-->
+    </bean>
 </beans>

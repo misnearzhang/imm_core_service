@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import im.core.container.Container;
 import im.core.executor.ThreadPool;
 import im.core.executor.define.Parse;
+import im.protoc.protocolbuf.Protoc;
 import im.utils.CommUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -32,9 +33,20 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        Container.pingPongRest(ctx.channel().id());
-        threadPool.parseMessage(msg.toString(),ctx.channel());
-        logger.info("receive message:{}", (String) msg);
+        if (msg instanceof Protoc.message) {
+            Protoc.message.Builder builder = Protoc.message.newBuilder((Protoc.message) msg);
+            logger.info(builder.getBody()+"\t"+builder.getHead().getType().toString());
+        } else if(msg instanceof ByteBuf) {
+            ByteBuf byteBuf=(ByteBuf)msg;
+            logger.info(""+byteBuf);
+        }else if(msg instanceof String) {
+            logger.info("String:"+msg);
+        }else{
+            logger.info("receive message:{}", (String) msg);
+            Container.pingPongRest(ctx.channel().id());
+            threadPool.parseMessage(msg.toString(), ctx.channel());
+            logger.info("receive message:{}", (String) msg);
+        }
     }
 
     @Override
@@ -74,7 +86,8 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
 
     /**
      * heartbeat : when WRITE_IDLE is detect then send a PING message, while 3 times not receive PONG message then close this channel
-     *             if the client is not had a handshake so in the first WRITE_IDLE close it.
+     * if the client is not had a handshake so in the first WRITE_IDLE close it.
+     *
      * @param ctx
      * @param evt
      * @throws Exception

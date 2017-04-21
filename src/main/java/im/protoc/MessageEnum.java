@@ -92,36 +92,4 @@ public abstract class MessageEnum {
             return code;
         }
     }
-
-
-    public enum delimiters{
-        ENTER("\r\n","回车换行"),
-        DOUBLEXX("**&&","特殊字符");
-        private String code;
-        private String comment;
-        delimiters( String code, String comment) {
-            this.code = code;
-            this.comment = comment;
-        }
-        public static boolean isCode ( final String code ) {
-            for ( delimiters value : delimiters.values() ) {
-                if ( value.getCode().equalsIgnoreCase( code ) ) {
-                    return true;
-                }
-            }
-            return false;
-        }
-        public static boolean isNotCode ( final String code ) {
-            return ! isCode( code );
-        }
-
-
-        public String getComment () {
-            return comment;
-        }
-
-        public String getCode () {
-            return code;
-        }
-    }
 }

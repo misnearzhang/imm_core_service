@@ -2,9 +2,6 @@ package im.core.executor;
 
 import im.core.executor.define.AbstractParse;
 import io.netty.channel.Channel;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.util.concurrent.*;
 
 /**

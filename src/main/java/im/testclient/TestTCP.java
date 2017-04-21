@@ -5,12 +5,15 @@ import im.protoc.HandShakeMessage;
 import im.protoc.Header;
 import im.protoc.Message;
 import im.protoc.MessageEnum;
+import im.protoc.protocolbuf.Protoc;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.util.UUID;
 
 public class TestTCP {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		Gson gson = new Gson();
 /*
 		Message message=new Message();
@@ -40,6 +43,22 @@ public class TestTCP {
 		message.setHead(header);
 		message.setBody(gson.toJson(handShakeMessage));
 		System.out.println(gson.toJson(message));
+
+		Socket socket = new Socket("127.0.0.1",3000);
+		OutputStream outputStream;
+		outputStream = socket.getOutputStream();
+		Protoc.message.Builder Proto = Protoc.message.newBuilder();
+		Protoc.message.Head.Builder Head = Protoc.message.Head.newBuilder();
+		Head.setType(Protoc.message.type.SYSTEM);
+		Head.setStatus("test");
+		Head.setUid(UUID.randomUUID().toString());
+		Proto.setHead(Head);
+		Proto.setBody("asdasdasdas");
+		outputStream.write(Proto.build().toByteArray());
+		while(true){
+			Thread.sleep(5000);
+			outputStream.write(Proto.build().toByteArray());
+		}
 	}
 	public byte[] getSendBlock(short length,byte[] data){
 		return null;

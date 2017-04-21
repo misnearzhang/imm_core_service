@@ -26,7 +26,7 @@ public class CommUtil {
         head.setType(MessageEnum.type.PING.getCode());
         head.setStatus(MessageEnum.status.REQ.getCode());
         message.setHead(head);
-        sb.append(gson.toJson(message)).append(MessageEnum.delimiters.ENTER.getCode());
+        sb.append(gson.toJson(message)).append("\r\n");
         return sb.toString();
     }
 

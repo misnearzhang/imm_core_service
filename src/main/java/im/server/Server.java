@@ -5,6 +5,7 @@ import im.config.SystemConfig;
 import im.core.executor.ParseTask;
 import im.core.executor.ThreadPool;
 import im.core.executor.define.Parse;
+import im.protoc.protocolbuf.Protoc;
 import im.server.handler.WorkOutBoundHandler;
 import im.server.handler.WorkerInBoundHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -15,7 +16,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.LineBasedFrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.apache.logging.log4j.LogManager;
@@ -76,30 +80,18 @@ public class Server<T>{
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
                     ByteBuf delimiter = Unpooled.copiedBuffer(delimit.getBytes());
-                    ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
-                    ch.pipeline().addLast(new StringDecoder());
-                    ch.pipeline().addLast(new LineBasedFrameDecoder(1024 * 5));
                     ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
                             idleRead, idleWrite, 0));
+/*                    ch.pipeline().addLast(new StringDecoder());
+                    ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
+                    ch.pipeline().addLast(new LineBasedFrameDecoder(1024 * 5));*/
+                    // 设置protobuf编码器
+                    ch.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
+                    // 设置带长度解码器
+                    ch.pipeline().addLast("protobufDecoder", new ProtobufDecoder(
+                            Protoc.message.getDefaultInstance()));
                     ch.pipeline().addLast(new WorkOutBoundHandler());
                     ch.pipeline().addLast(new WorkerInBoundHandler(threadPool));
-
-//					ByteBuf delimiter=Unpooled.copiedBuffer("".getBytes());
-                    /*// ch.pipeline().addLast(new ValidateUser());
-                    ChannelPipeline pipeline = ch.pipeline();
-					// 设置带长度编码器
-					pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
-					// 设置protobuf编码器
-					pipeline.addLast("protobufEncoder", new ProtobufEncoder());
-					// 设置带长度解码器
-					pipeline.addLast("frameDecoder",
-							new LengthFieldBasedFrameDecoder(10485076, 0, 4, 0, 4));
-					pipeline.addLast("idleStateHandler", new IdleStateHandler(
-							180, 0, 0));
-					// 设置protobufDecoder 解码器
-					pipeline.addLast("protobufDecoder", new ProtobufDecoder(
-							NettyProbuf.Netty.getDefaultInstance()));*/
-                    //pipeline.addLast(new WorkerInBoundHandler());
                 }
             });
             logger.info(port);
