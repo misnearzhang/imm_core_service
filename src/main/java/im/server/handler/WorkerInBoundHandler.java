@@ -104,6 +104,7 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
                         head_builder.setStatus(Protoc.Message.status.REQ);
                         head_builder.setUid(UUID.randomUUID().toString());
                         message_builder.setHead(head_builder);
+                        message_builder.setBody("");
                         Container.sendHeartBeat(message_builder.build(), ctx.channel().id());
                     }
                 } else if (idle.state().equals(IdleState.READER_IDLE)) {
