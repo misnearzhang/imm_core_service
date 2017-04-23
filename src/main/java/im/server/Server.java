@@ -56,7 +56,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
          		佛祖保佑       永无BUG
          			O0o li1
 */
-public class Server<T>{
+public class Server {
 
     private final Logger logger = LogManager.getLogger(Server.class);
 
@@ -68,7 +68,7 @@ public class Server<T>{
     }
 
 
-    public void bind(int port, final String delimit, final int idleRead, final int idleWrite) throws Exception {
+    public void bind(int port, final int idleRead, final int idleWrite) throws Exception {
         EventLoopGroup master = new NioEventLoopGroup();
         EventLoopGroup slaver = new NioEventLoopGroup(4);
         ServerBootstrap bootstrap = new ServerBootstrap();
@@ -79,7 +79,6 @@ public class Server<T>{
             bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
-                    ByteBuf delimiter = Unpooled.copiedBuffer(delimit.getBytes());
                     ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
                             idleRead, idleWrite, 0));
 /*                    ch.pipeline().addLast(new StringDecoder());
@@ -128,7 +127,7 @@ public class Server<T>{
             server.setThreadPool(threadPool);
             System.out.println("test1");
             //server.setParse(new ParseTask());
-            server.bind(3000,"\r\n",205,200);
+            server.bind(3000,205,200);
         } catch (Exception e) {
             e.printStackTrace();
         }

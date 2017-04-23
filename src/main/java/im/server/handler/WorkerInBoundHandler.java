@@ -16,6 +16,8 @@ import io.netty.handler.timeout.IdleStateEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.UUID;
+
 public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
     private final Logger logger = LogManager.getLogger(WorkerInBoundHandler.class);
 
@@ -37,7 +39,6 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
             Protoc.Message message = (Protoc.Message) msg;
             Container.pingPongRest(ctx.channel().id());
             threadPool.parseMessage(message, ctx.channel());
-            logger.info("receive message:{}", (String) msg);
         }
     }
 
@@ -97,7 +98,13 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
                     } else {
                         String sendMsg = CommUtil.createHeartBeatMessage();
                         heartBeatBuf.writeBytes(sendMsg.getBytes());
-                        Container.sendHeartBeat(heartBeatBuf, ctx.channel().id());
+                        Protoc.Message.Builder message_builder = Protoc.Message.newBuilder();
+                        Protoc.Message.Head.Builder head_builder=Protoc.Message.Head.newBuilder();
+                        head_builder.setType(Protoc.Message.type.PING);
+                        head_builder.setStatus(Protoc.Message.status.REQ);
+                        head_builder.setUid(UUID.randomUUID().toString());
+                        message_builder.setHead(head_builder);
+                        Container.sendHeartBeat(message_builder.build(), ctx.channel().id());
                     }
                 } else if (idle.state().equals(IdleState.READER_IDLE)) {
                     Container.pingPongCountAdd(ctx.channel().id());
