@@ -89,7 +89,7 @@ public class Server<T>{
                     ch.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
                     // 设置带长度解码器
                     ch.pipeline().addLast("protobufDecoder", new ProtobufDecoder(
-                            Protoc.message.getDefaultInstance()));
+                            Protoc.Message.getDefaultInstance()));
                     ch.pipeline().addLast(new WorkOutBoundHandler());
                     ch.pipeline().addLast(new WorkerInBoundHandler(threadPool));
                 }

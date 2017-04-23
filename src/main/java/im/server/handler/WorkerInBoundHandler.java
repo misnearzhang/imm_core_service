@@ -33,18 +33,10 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        if (msg instanceof Protoc.message) {
-            Protoc.message.Builder builder = Protoc.message.newBuilder((Protoc.message) msg);
-            logger.info(builder.getBody()+"\t"+builder.getHead().getType().toString());
-        } else if(msg instanceof ByteBuf) {
-            ByteBuf byteBuf=(ByteBuf)msg;
-            logger.info(""+byteBuf);
-        }else if(msg instanceof String) {
-            logger.info("String:"+msg);
-        }else{
-            logger.info("receive message:{}", (String) msg);
+        if (msg instanceof Protoc.Message) {
+            Protoc.Message message = (Protoc.Message) msg;
             Container.pingPongRest(ctx.channel().id());
-            threadPool.parseMessage(msg.toString(), ctx.channel());
+            threadPool.parseMessage(message, ctx.channel());
             logger.info("receive message:{}", (String) msg);
         }
     }

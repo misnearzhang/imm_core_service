@@ -1,6 +1,7 @@
 package im.core.executor;
 
 import im.core.executor.define.AbstractParse;
+import im.protoc.protocolbuf.Protoc;
 import io.netty.channel.Channel;
 import java.util.concurrent.*;
 
@@ -64,7 +65,7 @@ public class ThreadPool {
         parse = (AbstractParse) clazz.newInstance();
     }
 
-    public void parseMessage(String message, Channel channel) {
+    public void parseMessage(Protoc.Message message, Channel channel) {
         parse.initData(message, channel);
         businessExecutor.execute(parse);
     }

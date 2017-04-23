@@ -8,6 +8,7 @@ import im.core.exception.NotOnlineException;
 import im.core.executor.define.AbstractParse;
 import im.protoc.*;
 import im.protoc.db.OfflineMessage;
+import im.protoc.protocolbuf.Protoc;
 import im.support.mq.SendMessage;
 import im.utils.CommUtil;
 import io.netty.channel.Channel;
@@ -30,7 +31,6 @@ public class ParseTask extends AbstractParse {
     SendMessage sender;
     private final Logger logger = LogManager.getLogger(ParseTask.class);
     private Gson gson = new Gson();
-    private Message sendMessage;
     private ThreadPool threadPool;
 
     boolean checkHandShake(String account, String password) {
@@ -39,18 +39,16 @@ public class ParseTask extends AbstractParse {
     }
 
     @Override
-    public void parse(Object object , Channel channel) {
+    public void parse(Protoc.Message message , Channel channel) {
         try {
-            sendMessage = (Message) object;
-            Header header = sendMessage.getHead();
-            String uid = header.getUid();
-            String type = header.getType();
+            Protoc.Message.Head head = message.getHead();
+            Protoc.Message.type type = head.getType();
             switch (type) {
-                case MessageEnum.TYPE_USER:
+                case USER:
                     //解析出发送方
                     String from;
                     String to;
-                    UserMessage userMessage = gson.fromJson(sendMessage.getBody(), UserMessage.class);
+                    UserMessage userMessage = gson.fromJson(message.getBody(), UserMessage.class);
                     to = userMessage.getTo();
                     from = userMessage.getFrom();
                     ChannelId toChannelId = Container.getChannelId(to);
@@ -58,7 +56,7 @@ public class ParseTask extends AbstractParse {
                     logger.info("to:" + to);
                     logger.info("from:" + from);
                     if (toChannelId == null) {
-                        Container.send(CommUtil.createResponse(MessageEnum.status.OFFLINE.getCode(), uid), fromChannelId);
+                        Container.send(CommUtil.createResponse(MessageEnum.status.OFFLINE.getCode(), head.getUid()), fromChannelId);
                         logger.info("this account is offline and we will cache this message utils it online");
                         sender.send2db(new OfflineMessage().
                                 setMessageContent(userMessage.getContent()).
@@ -70,27 +68,27 @@ public class ParseTask extends AbstractParse {
                         //缓存消息
                         //send2mq
                     } else {
-                        Container.send(CommUtil.createResponse(MessageEnum.status.OK.getCode(), uid), fromChannelId);
-                        threadPool.sendMessageNow(new SendTask(gson.toJson(object), ThreadPool.RetransCount.FISRT, toChannelId, uid), uid);
+                        Container.send(CommUtil.createResponse(MessageEnum.status.OK.getCode(), head.getUid()), fromChannelId);
+                        threadPool.sendMessageNow(new SendTask(gson.toJson(message.getBody()), ThreadPool.RetransCount.FISRT, toChannelId, head.getUid()), head.getUid());
                     }
                     break;
-                case MessageEnum.TYPE_SYSTEM:
+                case SYSTEM:
                     //校验
                     //第一类 登录消息  拿到用户的登录信息 然后通过mq与webService通信 这边的公钥对吧webService的秘钥 判断登录情况
                     //第二类消息 登出消息 用户发送登出请求 服务器登出 注销用户链接
                     //。。。。
                     //系统消息 做出相应处理，比如说用户跳出
                     break;
-                case MessageEnum.TYPE_HANDSHAKE:
+                case HANDSHAKE:
                     logger.info("HANDSHAKE start");
-                    String body = sendMessage.getBody();
+                    String body = message.getBody();
                     logger.info("read the HANDSHAKE message:" + body);
                     HandShakeMessage handshakeMessage = gson.fromJson(body, HandShakeMessage.class);
                     //校验握手信息
                     if (!checkHandShake(handshakeMessage.getAccount(), handshakeMessage.getPassword())) {
                         //响应握手失败
                         logger.info("handshake Fail!!");
-                        Container.send(CommUtil.createHandShakeResponse(MessageEnum.status.HANDSHAKEFAIL.getCode(), uid), channel.id());
+                        Container.send(CommUtil.createHandShakeResponse(MessageEnum.status.HANDSHAKEFAIL.getCode(), head.getUid()), channel.id());
                     } else {
                         //此处判断该用户是否已经在线 如已经在线 则发送下线通知 并更新Channel容器
                         String account = handshakeMessage.getAccount();
@@ -107,27 +105,22 @@ public class ParseTask extends AbstractParse {
                         logger.info("handshake Success!!");
                         Container.addChannel(channel);
                         Container.addOrReplace(handshakeMessage.getAccount(), channel.id());
-                        Container.send(CommUtil.createHandShakeResponse(MessageEnum.status.OK.getCode(), uid), channel.id());
+                        Container.send(CommUtil.createHandShakeResponse(MessageEnum.status.OK.getCode(), head.getUid()), channel.id());
                     }
                     break;
-                case MessageEnum.TYPE_RESPONSE:
+                case RESPONSE:
                     //收到响应  判断响应类型  消息响应和心跳响应
                     //retransConcurrentHashMap.remove(header.getUid());
                     logger.info("receive response , remove retrans task");
-                    threadPool.removeFurure(header.getUid());
+                    threadPool.removeFurure(head.getUid());
                     break;
-                case MessageEnum.TYPE_PONG:
+                case PONG:
                     //心跳响应  不做任何事
                     //Container.pingPongRest(ctx.channel().id());
                     break;
                 default:
                     //不支持该协议
             }
-        } catch (JsonSyntaxException e) {
-            //json解析异常 返回用户报错信息
-            logger.error("json parse err！！");
-            //Container.send(CommUtil.createResponse(MessageEnum.status.DECODEERR.getCode(),null), channel.id());//json解码错误 返回报错
-            e.printStackTrace();
         } catch (NullPointerException nullpoint) {
             logger.error("null message");
             //Container.send(CommUtil.createResponse(MessageEnum.status.ERROR.getCode(),null), channel.id());//空消息
@@ -137,10 +130,4 @@ public class ParseTask extends AbstractParse {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public Class setType() {
-        return Message.class;
-    }
-
 }

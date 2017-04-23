@@ -1,5 +1,5 @@
 option java_package = "im.protoc.protocolbuf";
-option java_outer_classname = "Message";
+option java_outer_classname = "Protoc";
 // 关注2：option选项
 
 // 关注3：消息模型
@@ -14,7 +14,6 @@ message Message {
         required status status = 2;
         required string uid = 3;
     }
-
     enum type{
         USER = 1;
         SYSTEM = 2;
@@ -24,16 +23,6 @@ message Message {
         HANDSHAKE = 6;
         HANDSHAKERESPONSE = 7;
     }
-    /*
-    REQ("100","请求消息"),
-        OK( "200", "消息接受成功" ),
-        OFFLINE("201","用户离线"),
-        HANDSHAKEFAIL("401","握手失败"),
-        ERROR( "500", "系统错误" ),
-        DECODEERR("505","解码错误"),
-        DISCARD( "404", "消息丢失" ),
-        OTHERLOGIN("403","用户在其他地方登陆");//消息type为system时使用
-    */
     enum status{
         REQ = 1;
         OK = 2;

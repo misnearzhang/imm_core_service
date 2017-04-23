@@ -5,6 +5,7 @@ import com.google.gson.JsonSyntaxException;
 import im.core.container.Container;
 import im.core.exception.NotOnlineException;
 import im.protoc.MessageEnum;
+import im.protoc.protocolbuf.Protoc;
 import im.utils.CommUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -17,29 +18,16 @@ import java.nio.charset.Charset;
 public abstract class AbstractParse implements Parse , Runnable{
 
     private Gson gson = new Gson();
-    private String message;
+    private Protoc.Message message;
     private Channel channel;
 
     @Override
     public void run() {
-        Class clazz = setType();
-        if (clazz == null) {
-            throw new NullPointerException();
-        }
-        Object object = null;
-        try {
-            object = gson.fromJson(message, clazz);
-            parse(object , channel);
-        } catch (Exception es) {
-            channel.writeAndFlush(Unpooled.copiedBuffer(CommUtil.createErrorResponse(), Charset.defaultCharset()));
-            es.printStackTrace();
-        }
+        parse(message , channel);
     }
-    public abstract void parse(Object object , Channel channel);
+    public abstract void parse(Protoc.Message object , Channel channel);
 
-    public abstract Class setType();
-
-    public void initData(String message, Channel channel){
+    public void initData(Protoc.Message message, Channel channel){
         this.message = message;
         this.channel = channel;
     }

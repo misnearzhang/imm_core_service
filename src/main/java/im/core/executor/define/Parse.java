@@ -1,6 +1,7 @@
 package im.core.executor.define;
 
 import im.core.exception.UnSupportMessageType;
+import im.protoc.protocolbuf.Protoc;
 import io.netty.channel.Channel;
 
 /**
@@ -10,14 +11,7 @@ import io.netty.channel.Channel;
 public interface Parse {
 
     /**
-     * 获取消息类型
-     *
-     * @return
-     */
-    Class setType() throws UnSupportMessageType;
-
-    /**
      * 解析消息
      */
-    void parse(Object message , Channel channel);
+    void parse(Protoc.Message message , Channel channel);
 }

@@ -47,10 +47,10 @@ public class TestTCP {
 		Socket socket = new Socket("127.0.0.1",3000);
 		OutputStream outputStream;
 		outputStream = socket.getOutputStream();
-		Protoc.message.Builder Proto = Protoc.message.newBuilder();
-		Protoc.message.Head.Builder Head = Protoc.message.Head.newBuilder();
-		Head.setType(Protoc.message.type.SYSTEM);
-		Head.setStatus("test");
+		Protoc.Message.Builder Proto = Protoc.Message.newBuilder();
+		Protoc.Message.Head.Builder Head = Protoc.Message.Head.newBuilder();
+		Head.setType(Protoc.Message.type.SYSTEM);
+		Head.setStatus(Protoc.Message.status.REQ);
 		Head.setUid(UUID.randomUUID().toString());
 		Proto.setHead(Head);
 		Proto.setBody("asdasdasdas");
