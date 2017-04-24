@@ -1035,6 +1035,15 @@ public final class Protoc {
      */
     com.google.protobuf.ByteString
         getUidBytes();
+
+    /**
+     * <code>required int64 time = 4;</code>
+     */
+    boolean hasTime();
+    /**
+     * <code>required int64 time = 4;</code>
+     */
+    long getTime();
   }
   /**
    * Protobuf type {@code Head}
@@ -1114,6 +1123,11 @@ public final class Protoc {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
               uid_ = bs;
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
+              time_ = input.readInt64();
               break;
             }
           }
@@ -1228,10 +1242,26 @@ public final class Protoc {
       }
     }
 
+    public static final int TIME_FIELD_NUMBER = 4;
+    private long time_;
+    /**
+     * <code>required int64 time = 4;</code>
+     */
+    public boolean hasTime() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>required int64 time = 4;</code>
+     */
+    public long getTime() {
+      return time_;
+    }
+
     private void initFields() {
       type_ = type.USER;
       status_ = status.REQ;
       uid_ = "";
+      time_ = 0L;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1251,6 +1281,10 @@ public final class Protoc {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (!hasTime()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -1266,6 +1300,9 @@ public final class Protoc {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeBytes(3, getUidBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt64(4, time_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -1287,6 +1324,10 @@ public final class Protoc {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(3, getUidBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(4, time_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1411,6 +1452,8 @@ public final class Protoc {
         bitField0_ = (bitField0_ & ~0x00000002);
         uid_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
+        time_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -1451,6 +1494,10 @@ public final class Protoc {
           to_bitField0_ |= 0x00000004;
         }
         result.uid_ = uid_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.time_ = time_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1478,6 +1525,9 @@ public final class Protoc {
           uid_ = other.uid_;
           onChanged();
         }
+        if (other.hasTime()) {
+          setTime(other.getTime());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -1492,6 +1542,10 @@ public final class Protoc {
           return false;
         }
         if (!hasUid()) {
+          
+          return false;
+        }
+        if (!hasTime()) {
           
           return false;
         }
@@ -1663,6 +1717,38 @@ public final class Protoc {
         return this;
       }
 
+      private long time_ ;
+      /**
+       * <code>required int64 time = 4;</code>
+       */
+      public boolean hasTime() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>required int64 time = 4;</code>
+       */
+      public long getTime() {
+        return time_;
+      }
+      /**
+       * <code>required int64 time = 4;</code>
+       */
+      public Builder setTime(long value) {
+        bitField0_ |= 0x00000008;
+        time_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 time = 4;</code>
+       */
+      public Builder clearTime() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        time_ = 0L;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:Head)
     }
 
@@ -1694,15 +1780,15 @@ public final class Protoc {
   static {
     String[] descriptorData = {
       "\n\020Message.protocol\",\n\007Message\022\023\n\004head\030\001 " +
-      "\002(\0132\005.Head\022\014\n\004body\030\002 \001(\t\"A\n\004Head\022\023\n\004type" +
+      "\002(\0132\005.Head\022\014\n\004body\030\002 \001(\t\"O\n\004Head\022\023\n\004type" +
       "\030\001 \002(\0162\005.type\022\027\n\006status\030\002 \002(\0162\007.status\022\013" +
-      "\n\003uid\030\003 \002(\t*d\n\004type\022\010\n\004USER\020\001\022\n\n\006SYSTEM\020" +
-      "\002\022\014\n\010RESPONSE\020\003\022\010\n\004PING\020\004\022\010\n\004PONG\020\005\022\r\n\tH" +
-      "ANDSHAKE\020\006\022\025\n\021HANDSHAKERESPONSE\020\007*p\n\006sta" +
-      "tus\022\007\n\003REQ\020\001\022\006\n\002OK\020\002\022\013\n\007OFFLINE\020\003\022\021\n\rHAN" +
-      "DSHAKEFAIL\020\004\022\t\n\005ERROR\020\005\022\r\n\tDECODEERR\020\006\022\013" +
-      "\n\007DISCARD\020\007\022\016\n\nOTHERLOGIN\020\010B\037\n\025im.protoc" +
-      ".protocolbufB\006Protoc"
+      "\n\003uid\030\003 \002(\t\022\014\n\004time\030\004 \002(\003*d\n\004type\022\010\n\004USE" +
+      "R\020\001\022\n\n\006SYSTEM\020\002\022\014\n\010RESPONSE\020\003\022\010\n\004PING\020\004\022" +
+      "\010\n\004PONG\020\005\022\r\n\tHANDSHAKE\020\006\022\025\n\021HANDSHAKERES" +
+      "PONSE\020\007*p\n\006status\022\007\n\003REQ\020\001\022\006\n\002OK\020\002\022\013\n\007OF" +
+      "FLINE\020\003\022\021\n\rHANDSHAKEFAIL\020\004\022\t\n\005ERROR\020\005\022\r\n" +
+      "\tDECODEERR\020\006\022\013\n\007DISCARD\020\007\022\016\n\nOTHERLOGIN\020" +
+      "\010B\037\n\025im.protoc.protocolbufB\006Protoc"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1727,7 +1813,7 @@ public final class Protoc {
     internal_static_Head_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Head_descriptor,
-        new String[] { "Type", "Status", "Uid", });
+        new String[] { "Type", "Status", "Uid", "Time", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

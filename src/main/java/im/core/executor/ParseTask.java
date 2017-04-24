@@ -1,7 +1,6 @@
 package im.core.executor;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import im.config.SystemConfig;
 import im.core.container.Container;
 import im.core.exception.NotOnlineException;
@@ -10,7 +9,6 @@ import im.protoc.*;
 import im.protoc.db.OfflineMessage;
 import im.protoc.protocolbuf.Protoc;
 import im.support.mq.SendMessage;
-import im.utils.CommUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * 解析报文 并做处理  用户消息则将消息处理了转发给网络发送线程 系统消息则根据消息类型处理
@@ -56,7 +55,7 @@ public class ParseTask extends AbstractParse {
                     logger.info("to:" + to);
                     logger.info("from:" + from);
                     if (toChannelId == null) {
-                        Container.send(CommUtil.createResponse(MessageEnum.status.OFFLINE.getCode(), head.getUid()), fromChannelId);
+                        //Container.send(CommUtil.createResponse(MessageEnum.status.OFFLINE.getCode(), head.getUid()), fromChannelId);
                         logger.info("this account is offline and we will cache this message utils it online");
                         sender.send2db(new OfflineMessage().
                                 setMessageContent(userMessage.getContent()).
@@ -68,8 +67,8 @@ public class ParseTask extends AbstractParse {
                         //缓存消息
                         //send2mq
                     } else {
-                        Container.send(CommUtil.createResponse(MessageEnum.status.OK.getCode(), head.getUid()), fromChannelId);
-                        threadPool.sendMessageNow(new SendTask(gson.toJson(message.getBody()), ThreadPool.RetransCount.FISRT, toChannelId, head.getUid()), head.getUid());
+                        //Container.send(CommUtil.createResponse(MessageEnum.status.OK.getCode(), head.getUid()), fromChannelId);
+                        threadPool.sendMessageNow(new SendTask(message, ThreadPool.RetransCount.FISRT, toChannelId, head.getUid()), head.getUid());
                     }
                     break;
                 case SYSTEM:
@@ -81,6 +80,11 @@ public class ParseTask extends AbstractParse {
                     break;
                 case HANDSHAKE:
                     logger.info("HANDSHAKE start");
+                    Protoc.Message.Builder handshake_resp = Protoc.Message.newBuilder();
+                    Protoc.Head.Builder handshake_head = Protoc.Head.newBuilder();
+                    handshake_head.setType(Protoc.type.RESPONSE);
+                    handshake_head.setUid(head.getUid());
+                    handshake_head.setTime(System.currentTimeMillis());
                     String body = message.getBody();
                     logger.info("read the HANDSHAKE message:" + body);
                     HandShakeMessage handshakeMessage = gson.fromJson(body, HandShakeMessage.class);
@@ -88,7 +92,7 @@ public class ParseTask extends AbstractParse {
                     if (!checkHandShake(handshakeMessage.getAccount(), handshakeMessage.getPassword())) {
                         //响应握手失败
                         logger.info("handshake Fail!!");
-                        Container.send(CommUtil.createHandShakeResponse(MessageEnum.status.HANDSHAKEFAIL.getCode(), head.getUid()), channel.id());
+                        handshake_head.setStatus(Protoc.status.HANDSHAKEFAIL);
                     } else {
                         //此处判断该用户是否已经在线 如已经在线 则发送下线通知 并更新Channel容器
                         String account = handshakeMessage.getAccount();
@@ -97,16 +101,30 @@ public class ParseTask extends AbstractParse {
                             logger.info("this account already online , going well offline it");
                             ChannelId channelId = Container.getChannelId(account);
                             Channel channel1 = Container.getChannel(channelId);
-                            Container.send(CommUtil.createPush(MessageEnum.status.OTHERLOGIN.getCode()), channelId);//发送下线通知
-                            if(channel1!=null){
-                                Container.removeChannel(channel);
-                            }
+                            //发送通知
+                            Protoc.Message.Builder systemMessage = Protoc.Message.newBuilder();
+                            Protoc.Head.Builder h = Protoc.Head.newBuilder();
+                            h.setStatus(Protoc.status.REQ);
+                            h.setType(Protoc.type.SYSTEM);
+                            h.setUid(UUID.randomUUID().toString());
+                            h.setTime(System.currentTimeMillis());
+                            systemMessage.setHead(h);
+                            SystemMessage offline_push = new SystemMessage();
+                            offline_push.setTo("LLA");
+                            offline_push.setType("LOGGINOTHER");
+                            offline_push.setDesc("在其他地方有登录 请修改密码");
+                            systemMessage.setBody(gson.toJson(offline_push));
+                            Container.send(systemMessage.build(), channelId);//发送下线通知
+                            channel1.close();//直接关闭链路
+                            Container.logOut(channelId);
                         }
                         logger.info("handshake Success!!");
                         Container.addChannel(channel);
                         Container.addOrReplace(handshakeMessage.getAccount(), channel.id());
-                        Container.send(CommUtil.createHandShakeResponse(MessageEnum.status.OK.getCode(), head.getUid()), channel.id());
+                        handshake_head.setStatus(Protoc.status.OK);//handshake successful
                     }
+                    handshake_resp.setHead(handshake_head);
+                    Container.send(handshake_resp.build(),channel.id());
                     break;
                 case RESPONSE:
                     //收到响应  判断响应类型  消息响应和心跳响应
@@ -126,7 +144,6 @@ public class ParseTask extends AbstractParse {
             //Container.send(CommUtil.createResponse(MessageEnum.status.ERROR.getCode(),null), channel.id());//空消息
             nullpoint.printStackTrace();
         } catch (NotOnlineException e) {
-            logger.error(e.getMessage());
             e.printStackTrace();
         }
     }

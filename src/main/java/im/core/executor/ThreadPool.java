@@ -26,7 +26,7 @@ public class ThreadPool {
     }
 
     public void init() {
-        queue = new ArrayBlockingQueue<Runnable>(blockingQueueSize);
+        queue = new ArrayBlockingQueue(blockingQueueSize);
         businessExecutor = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.SECONDS, queue);
         ioExecutor= new ScheduledThreadPoolExecutor(5);
         ioExecutor.setRemoveOnCancelPolicy(true);

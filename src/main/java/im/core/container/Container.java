@@ -7,6 +7,7 @@ import im.config.SystemConfig;
 import im.core.exception.NotOnlineException;
 import im.core.executor.SendTask;
 import im.core.executor.ThreadPool;
+import im.protoc.protocolbuf.Protoc;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -141,22 +142,18 @@ public class Container {
      * @param obj
      * @param channelId
      */
-    public static void send(final String obj, ChannelId channelId) throws NotOnlineException {
-        ByteBuf sendbuf = Unpooled.directBuffer();
-        logger.info(obj);
-        logger.info(channelId);
-        sendbuf.writeBytes(obj.getBytes());
+    public static void send(final Protoc.Message obj, ChannelId channelId) throws NotOnlineException {
         if (isLogin(channelId)) {
             Channel channel = group.find(channelId);
             logger.info(channel);
-            group.writeAndFlush(sendbuf, ChannelMatchers.is(channel));
+            group.writeAndFlush(obj, ChannelMatchers.is(channel));
         } else {
             throw new NotOnlineException();
         }
 
     }
 
-    public static void sendHeartBeat(final Object obj, ChannelId channelId) {
+    public static void sendHeartBeat(final Protoc.Message obj, ChannelId channelId) {
         Channel channel = group.find(channelId);
         group.writeAndFlush(obj, ChannelMatchers.is(channel));
     }

@@ -2,6 +2,7 @@ package im.core.executor;
 
 import im.core.container.Container;
 import im.core.exception.NotOnlineException;
+import im.protoc.protocolbuf.Protoc;
 import io.netty.channel.ChannelId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,11 +14,11 @@ public class SendTask implements Runnable {
     private final Logger logger = LogManager.getLogger(SendTask.class);
     private ChannelId toChannelId;
     private String uid;
-    private String message;
+    private Protoc.Message message;
     private ThreadPool threadPool;
     private ThreadPool.RetransCount count;
 
-    public SendTask(String Message, ThreadPool.RetransCount count, ChannelId channelId, String uid) {
+    public SendTask(Protoc.Message Message, ThreadPool.RetransCount count, ChannelId channelId, String uid) {
         this.message = Message;
         this.count = count;
         this.toChannelId = channelId;
@@ -27,7 +28,7 @@ public class SendTask implements Runnable {
     public void run() {
         logger.info(message + "----" + count.toString());
         try {
-            Container.send(message + "\r\n", toChannelId);  //send message
+            Container.send(message, toChannelId);  //send message
         } catch (NotOnlineException e) {
             e.printStackTrace();
             return;

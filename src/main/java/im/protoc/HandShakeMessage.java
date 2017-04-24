@@ -1,9 +1,11 @@
 package im.protoc;
 
+import java.io.Serializable;
+
 /**
  * Created by Misnearzhang on 2017/3/28.
  */
-public class HandShakeMessage {
+public class HandShakeMessage implements Serializable{
 
     private String account;
     private String password;

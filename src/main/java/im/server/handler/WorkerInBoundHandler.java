@@ -15,6 +15,7 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import sun.plugin2.message.HeartbeatMessage;
 
 import java.util.UUID;
 
@@ -88,7 +89,6 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
         try {
-            ByteBuf heartBeatBuf = Unpooled.directBuffer();
             if (evt instanceof IdleStateEvent) {
                 IdleStateEvent idle = (IdleStateEvent) evt;
                 if (idle.state().equals(IdleState.WRITER_IDLE)) {
@@ -96,15 +96,14 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
                         logger.info("this client had not handshake , close it ");
                         ctx.channel().close();
                     } else {
-                        String sendMsg = CommUtil.createHeartBeatMessage();
-                        heartBeatBuf.writeBytes(sendMsg.getBytes());
+                        logger.info("send a PING heartbeat");
                         Protoc.Message.Builder message_builder = Protoc.Message.newBuilder();
                         Protoc.Head.Builder head_builder=Protoc.Head.newBuilder();
                         head_builder.setType(Protoc.type.PING);
                         head_builder.setStatus(Protoc.status.REQ);
                         head_builder.setUid(UUID.randomUUID().toString());
+                        head_builder.setTime(System.currentTimeMillis());
                         message_builder.setHead(head_builder);
-                        message_builder.setBody("");
                         Container.sendHeartBeat(message_builder.build(), ctx.channel().id());
                     }
                 } else if (idle.state().equals(IdleState.READER_IDLE)) {

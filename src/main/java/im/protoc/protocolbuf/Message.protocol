@@ -10,6 +10,7 @@ message Head {
         required type type = 1;
         required status status = 2;
         required string uid = 3;
+        required int64 time = 4;
     }
     enum type{
         USER = 1;
