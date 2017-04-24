@@ -51,9 +51,9 @@ public class TestTCP {
 		outputStream = socket.getOutputStream();
 		inputStream = socket.getInputStream();
 		Protoc.Message.Builder Proto = Protoc.Message.newBuilder();
-		Protoc.Message.Head.Builder Head = Protoc.Message.Head.newBuilder();
-		Head.setType(Protoc.Message.type.HANDSHAKE);
-		Head.setStatus(Protoc.Message.status.REQ);
+		Protoc.Head.Builder Head = Protoc.Head.newBuilder();
+		Head.setType(Protoc.type.HANDSHAKE);
+		Head.setStatus(Protoc.status.REQ);
 		Head.setUid(UUID.randomUUID().toString());
 		Proto.setHead(Head);
 		HandShakeMessage handShakeMessage1=new HandShakeMessage();

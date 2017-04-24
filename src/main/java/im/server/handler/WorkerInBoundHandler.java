@@ -99,9 +99,9 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
                         String sendMsg = CommUtil.createHeartBeatMessage();
                         heartBeatBuf.writeBytes(sendMsg.getBytes());
                         Protoc.Message.Builder message_builder = Protoc.Message.newBuilder();
-                        Protoc.Message.Head.Builder head_builder=Protoc.Message.Head.newBuilder();
-                        head_builder.setType(Protoc.Message.type.PING);
-                        head_builder.setStatus(Protoc.Message.status.REQ);
+                        Protoc.Head.Builder head_builder=Protoc.Head.newBuilder();
+                        head_builder.setType(Protoc.type.PING);
+                        head_builder.setStatus(Protoc.status.REQ);
                         head_builder.setUid(UUID.randomUUID().toString());
                         message_builder.setHead(head_builder);
                         message_builder.setBody("");

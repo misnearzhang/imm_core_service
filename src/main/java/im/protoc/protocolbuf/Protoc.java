@@ -8,45 +8,314 @@ public final class Protoc {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
+  /**
+   * Protobuf enum {@code type}
+   */
+  public enum type
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>USER = 1;</code>
+     */
+    USER(0, 1),
+    /**
+     * <code>SYSTEM = 2;</code>
+     */
+    SYSTEM(1, 2),
+    /**
+     * <code>RESPONSE = 3;</code>
+     */
+    RESPONSE(2, 3),
+    /**
+     * <code>PING = 4;</code>
+     */
+    PING(3, 4),
+    /**
+     * <code>PONG = 5;</code>
+     */
+    PONG(4, 5),
+    /**
+     * <code>HANDSHAKE = 6;</code>
+     */
+    HANDSHAKE(5, 6),
+    /**
+     * <code>HANDSHAKERESPONSE = 7;</code>
+     */
+    HANDSHAKERESPONSE(6, 7),
+    ;
+
+    /**
+     * <code>USER = 1;</code>
+     */
+    public static final int USER_VALUE = 1;
+    /**
+     * <code>SYSTEM = 2;</code>
+     */
+    public static final int SYSTEM_VALUE = 2;
+    /**
+     * <code>RESPONSE = 3;</code>
+     */
+    public static final int RESPONSE_VALUE = 3;
+    /**
+     * <code>PING = 4;</code>
+     */
+    public static final int PING_VALUE = 4;
+    /**
+     * <code>PONG = 5;</code>
+     */
+    public static final int PONG_VALUE = 5;
+    /**
+     * <code>HANDSHAKE = 6;</code>
+     */
+    public static final int HANDSHAKE_VALUE = 6;
+    /**
+     * <code>HANDSHAKERESPONSE = 7;</code>
+     */
+    public static final int HANDSHAKERESPONSE_VALUE = 7;
+
+
+    public final int getNumber() { return value; }
+
+    public static type valueOf(int value) {
+      switch (value) {
+        case 1: return USER;
+        case 2: return SYSTEM;
+        case 3: return RESPONSE;
+        case 4: return PING;
+        case 5: return PONG;
+        case 6: return HANDSHAKE;
+        case 7: return HANDSHAKERESPONSE;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<type>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<type>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<type>() {
+            public type findValueByNumber(int number) {
+              return type.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return Protoc.getDescriptor().getEnumTypes().get(0);
+    }
+
+    private static final type[] VALUES = values();
+
+    public static type valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private type(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:type)
+  }
+
+  /**
+   * Protobuf enum {@code status}
+   */
+  public enum status
+      implements com.google.protobuf.ProtocolMessageEnum {
+    /**
+     * <code>REQ = 1;</code>
+     */
+    REQ(0, 1),
+    /**
+     * <code>OK = 2;</code>
+     */
+    OK(1, 2),
+    /**
+     * <code>OFFLINE = 3;</code>
+     */
+    OFFLINE(2, 3),
+    /**
+     * <code>HANDSHAKEFAIL = 4;</code>
+     */
+    HANDSHAKEFAIL(3, 4),
+    /**
+     * <code>ERROR = 5;</code>
+     */
+    ERROR(4, 5),
+    /**
+     * <code>DECODEERR = 6;</code>
+     */
+    DECODEERR(5, 6),
+    /**
+     * <code>DISCARD = 7;</code>
+     */
+    DISCARD(6, 7),
+    /**
+     * <code>OTHERLOGIN = 8;</code>
+     */
+    OTHERLOGIN(7, 8),
+    ;
+
+    /**
+     * <code>REQ = 1;</code>
+     */
+    public static final int REQ_VALUE = 1;
+    /**
+     * <code>OK = 2;</code>
+     */
+    public static final int OK_VALUE = 2;
+    /**
+     * <code>OFFLINE = 3;</code>
+     */
+    public static final int OFFLINE_VALUE = 3;
+    /**
+     * <code>HANDSHAKEFAIL = 4;</code>
+     */
+    public static final int HANDSHAKEFAIL_VALUE = 4;
+    /**
+     * <code>ERROR = 5;</code>
+     */
+    public static final int ERROR_VALUE = 5;
+    /**
+     * <code>DECODEERR = 6;</code>
+     */
+    public static final int DECODEERR_VALUE = 6;
+    /**
+     * <code>DISCARD = 7;</code>
+     */
+    public static final int DISCARD_VALUE = 7;
+    /**
+     * <code>OTHERLOGIN = 8;</code>
+     */
+    public static final int OTHERLOGIN_VALUE = 8;
+
+
+    public final int getNumber() { return value; }
+
+    public static status valueOf(int value) {
+      switch (value) {
+        case 1: return REQ;
+        case 2: return OK;
+        case 3: return OFFLINE;
+        case 4: return HANDSHAKEFAIL;
+        case 5: return ERROR;
+        case 6: return DECODEERR;
+        case 7: return DISCARD;
+        case 8: return OTHERLOGIN;
+        default: return null;
+      }
+    }
+
+    public static com.google.protobuf.Internal.EnumLiteMap<status>
+        internalGetValueMap() {
+      return internalValueMap;
+    }
+    private static com.google.protobuf.Internal.EnumLiteMap<status>
+        internalValueMap =
+          new com.google.protobuf.Internal.EnumLiteMap<status>() {
+            public status findValueByNumber(int number) {
+              return status.valueOf(number);
+            }
+          };
+
+    public final com.google.protobuf.Descriptors.EnumValueDescriptor
+        getValueDescriptor() {
+      return getDescriptor().getValues().get(index);
+    }
+    public final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptorForType() {
+      return getDescriptor();
+    }
+    public static final com.google.protobuf.Descriptors.EnumDescriptor
+        getDescriptor() {
+      return Protoc.getDescriptor().getEnumTypes().get(1);
+    }
+
+    private static final status[] VALUES = values();
+
+    public static status valueOf(
+        com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+      if (desc.getType() != getDescriptor()) {
+        throw new IllegalArgumentException(
+          "EnumValueDescriptor is not for this type.");
+      }
+      return VALUES[desc.getIndex()];
+    }
+
+    private final int index;
+    private final int value;
+
+    private status(int index, int value) {
+      this.index = index;
+      this.value = value;
+    }
+
+    // @@protoc_insertion_point(enum_scope:status)
+  }
+
   public interface MessageOrBuilder extends
       // @@protoc_insertion_point(interface_extends:Message)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required .Message.Head head = 1;</code>
+     * <code>required .Head head = 1;</code>
      */
     boolean hasHead();
     /**
-     * <code>required .Message.Head head = 1;</code>
+     * <code>required .Head head = 1;</code>
      */
-    Message.Head getHead();
+    Head getHead();
     /**
-     * <code>required .Message.Head head = 1;</code>
+     * <code>required .Head head = 1;</code>
      */
-    Message.HeadOrBuilder getHeadOrBuilder();
+    HeadOrBuilder getHeadOrBuilder();
 
     /**
-     * <code>required string body = 2;</code>
+     * <code>optional string body = 2;</code>
+     *
+     * <pre>
+     *body optional when i want to send a heartbeat etc.
+     * </pre>
      */
     boolean hasBody();
     /**
-     * <code>required string body = 2;</code>
+     * <code>optional string body = 2;</code>
+     *
+     * <pre>
+     *body optional when i want to send a heartbeat etc.
+     * </pre>
      */
     String getBody();
     /**
-     * <code>required string body = 2;</code>
+     * <code>optional string body = 2;</code>
+     *
+     * <pre>
+     *body optional when i want to send a heartbeat etc.
+     * </pre>
      */
     com.google.protobuf.ByteString
         getBodyBytes();
   }
   /**
    * Protobuf type {@code Message}
-   *
-   * <pre>
-   * 关注3：消息模型
-   * 下面详细说明
-   * 生成 Person 消息对象（包含多个字段，下面详细说明）
-   * </pre>
    */
   public static final class Message extends
       com.google.protobuf.GeneratedMessage implements
@@ -155,960 +424,23 @@ public final class Protoc {
       return PARSER;
     }
 
-    /**
-     * Protobuf enum {@code Message.type}
-     */
-    public enum type
-        implements com.google.protobuf.ProtocolMessageEnum {
-      /**
-       * <code>USER = 1;</code>
-       */
-      USER(0, 1),
-      /**
-       * <code>SYSTEM = 2;</code>
-       */
-      SYSTEM(1, 2),
-      /**
-       * <code>RESPONSE = 3;</code>
-       */
-      RESPONSE(2, 3),
-      /**
-       * <code>PING = 4;</code>
-       */
-      PING(3, 4),
-      /**
-       * <code>PONG = 5;</code>
-       */
-      PONG(4, 5),
-      /**
-       * <code>HANDSHAKE = 6;</code>
-       */
-      HANDSHAKE(5, 6),
-      /**
-       * <code>HANDSHAKERESPONSE = 7;</code>
-       */
-      HANDSHAKERESPONSE(6, 7),
-      ;
-
-      /**
-       * <code>USER = 1;</code>
-       */
-      public static final int USER_VALUE = 1;
-      /**
-       * <code>SYSTEM = 2;</code>
-       */
-      public static final int SYSTEM_VALUE = 2;
-      /**
-       * <code>RESPONSE = 3;</code>
-       */
-      public static final int RESPONSE_VALUE = 3;
-      /**
-       * <code>PING = 4;</code>
-       */
-      public static final int PING_VALUE = 4;
-      /**
-       * <code>PONG = 5;</code>
-       */
-      public static final int PONG_VALUE = 5;
-      /**
-       * <code>HANDSHAKE = 6;</code>
-       */
-      public static final int HANDSHAKE_VALUE = 6;
-      /**
-       * <code>HANDSHAKERESPONSE = 7;</code>
-       */
-      public static final int HANDSHAKERESPONSE_VALUE = 7;
-
-
-      public final int getNumber() { return value; }
-
-      public static type valueOf(int value) {
-        switch (value) {
-          case 1: return USER;
-          case 2: return SYSTEM;
-          case 3: return RESPONSE;
-          case 4: return PING;
-          case 5: return PONG;
-          case 6: return HANDSHAKE;
-          case 7: return HANDSHAKERESPONSE;
-          default: return null;
-        }
-      }
-
-      public static com.google.protobuf.Internal.EnumLiteMap<type>
-          internalGetValueMap() {
-        return internalValueMap;
-      }
-      private static com.google.protobuf.Internal.EnumLiteMap<type>
-          internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<type>() {
-              public type findValueByNumber(int number) {
-                return type.valueOf(number);
-              }
-            };
-
-      public final com.google.protobuf.Descriptors.EnumValueDescriptor
-          getValueDescriptor() {
-        return getDescriptor().getValues().get(index);
-      }
-      public final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptorForType() {
-        return getDescriptor();
-      }
-      public static final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptor() {
-        return Message.getDescriptor().getEnumTypes().get(0);
-      }
-
-      private static final type[] VALUES = values();
-
-      public static type valueOf(
-          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-        if (desc.getType() != getDescriptor()) {
-          throw new IllegalArgumentException(
-            "EnumValueDescriptor is not for this type.");
-        }
-        return VALUES[desc.getIndex()];
-      }
-
-      private final int index;
-      private final int value;
-
-      private type(int index, int value) {
-        this.index = index;
-        this.value = value;
-      }
-
-      // @@protoc_insertion_point(enum_scope:Message.type)
-    }
-
-    /**
-     * Protobuf enum {@code Message.status}
-     */
-    public enum status
-        implements com.google.protobuf.ProtocolMessageEnum {
-      /**
-       * <code>REQ = 1;</code>
-       */
-      REQ(0, 1),
-      /**
-       * <code>OK = 2;</code>
-       */
-      OK(1, 2),
-      /**
-       * <code>OFFLINE = 3;</code>
-       */
-      OFFLINE(2, 3),
-      /**
-       * <code>HANDSHAKEFAIL = 4;</code>
-       */
-      HANDSHAKEFAIL(3, 4),
-      /**
-       * <code>ERROR = 5;</code>
-       */
-      ERROR(4, 5),
-      /**
-       * <code>DECODEERR = 6;</code>
-       */
-      DECODEERR(5, 6),
-      /**
-       * <code>DISCARD = 7;</code>
-       */
-      DISCARD(6, 7),
-      /**
-       * <code>OTHERLOGIN = 8;</code>
-       */
-      OTHERLOGIN(7, 8),
-      ;
-
-      /**
-       * <code>REQ = 1;</code>
-       */
-      public static final int REQ_VALUE = 1;
-      /**
-       * <code>OK = 2;</code>
-       */
-      public static final int OK_VALUE = 2;
-      /**
-       * <code>OFFLINE = 3;</code>
-       */
-      public static final int OFFLINE_VALUE = 3;
-      /**
-       * <code>HANDSHAKEFAIL = 4;</code>
-       */
-      public static final int HANDSHAKEFAIL_VALUE = 4;
-      /**
-       * <code>ERROR = 5;</code>
-       */
-      public static final int ERROR_VALUE = 5;
-      /**
-       * <code>DECODEERR = 6;</code>
-       */
-      public static final int DECODEERR_VALUE = 6;
-      /**
-       * <code>DISCARD = 7;</code>
-       */
-      public static final int DISCARD_VALUE = 7;
-      /**
-       * <code>OTHERLOGIN = 8;</code>
-       */
-      public static final int OTHERLOGIN_VALUE = 8;
-
-
-      public final int getNumber() { return value; }
-
-      public static status valueOf(int value) {
-        switch (value) {
-          case 1: return REQ;
-          case 2: return OK;
-          case 3: return OFFLINE;
-          case 4: return HANDSHAKEFAIL;
-          case 5: return ERROR;
-          case 6: return DECODEERR;
-          case 7: return DISCARD;
-          case 8: return OTHERLOGIN;
-          default: return null;
-        }
-      }
-
-      public static com.google.protobuf.Internal.EnumLiteMap<status>
-          internalGetValueMap() {
-        return internalValueMap;
-      }
-      private static com.google.protobuf.Internal.EnumLiteMap<status>
-          internalValueMap =
-            new com.google.protobuf.Internal.EnumLiteMap<status>() {
-              public status findValueByNumber(int number) {
-                return status.valueOf(number);
-              }
-            };
-
-      public final com.google.protobuf.Descriptors.EnumValueDescriptor
-          getValueDescriptor() {
-        return getDescriptor().getValues().get(index);
-      }
-      public final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptorForType() {
-        return getDescriptor();
-      }
-      public static final com.google.protobuf.Descriptors.EnumDescriptor
-          getDescriptor() {
-        return Message.getDescriptor().getEnumTypes().get(1);
-      }
-
-      private static final status[] VALUES = values();
-
-      public static status valueOf(
-          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
-        if (desc.getType() != getDescriptor()) {
-          throw new IllegalArgumentException(
-            "EnumValueDescriptor is not for this type.");
-        }
-        return VALUES[desc.getIndex()];
-      }
-
-      private final int index;
-      private final int value;
-
-      private status(int index, int value) {
-        this.index = index;
-        this.value = value;
-      }
-
-      // @@protoc_insertion_point(enum_scope:Message.status)
-    }
-
-    public interface HeadOrBuilder extends
-        // @@protoc_insertion_point(interface_extends:Message.Head)
-        com.google.protobuf.MessageOrBuilder {
-
-      /**
-       * <code>required .Message.type type = 1;</code>
-       */
-      boolean hasType();
-      /**
-       * <code>required .Message.type type = 1;</code>
-       */
-      type getType();
-
-      /**
-       * <code>required .Message.status status = 2;</code>
-       */
-      boolean hasStatus();
-      /**
-       * <code>required .Message.status status = 2;</code>
-       */
-      status getStatus();
-
-      /**
-       * <code>required string uid = 3;</code>
-       */
-      boolean hasUid();
-      /**
-       * <code>required string uid = 3;</code>
-       */
-      String getUid();
-      /**
-       * <code>required string uid = 3;</code>
-       */
-      com.google.protobuf.ByteString
-          getUidBytes();
-    }
-    /**
-     * Protobuf type {@code Message.Head}
-     */
-    public static final class Head extends
-        com.google.protobuf.GeneratedMessage implements
-        // @@protoc_insertion_point(message_implements:Message.Head)
-        HeadOrBuilder {
-      // Use Head.newBuilder() to construct.
-      private Head(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
-        super(builder);
-        this.unknownFields = builder.getUnknownFields();
-      }
-      private Head(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
-
-      private static final Head defaultInstance;
-      public static Head getDefaultInstance() {
-        return defaultInstance;
-      }
-
-      public Head getDefaultInstanceForType() {
-        return defaultInstance;
-      }
-
-      private final com.google.protobuf.UnknownFieldSet unknownFields;
-      @Override
-      public final com.google.protobuf.UnknownFieldSet
-          getUnknownFields() {
-        return this.unknownFields;
-      }
-      private Head(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        initFields();
-        int mutable_bitField0_ = 0;
-        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-            com.google.protobuf.UnknownFieldSet.newBuilder();
-        try {
-          boolean done = false;
-          while (!done) {
-            int tag = input.readTag();
-            switch (tag) {
-              case 0:
-                done = true;
-                break;
-              default: {
-                if (!parseUnknownField(input, unknownFields,
-                                       extensionRegistry, tag)) {
-                  done = true;
-                }
-                break;
-              }
-              case 8: {
-                int rawValue = input.readEnum();
-                type value = type.valueOf(rawValue);
-                if (value == null) {
-                  unknownFields.mergeVarintField(1, rawValue);
-                } else {
-                  bitField0_ |= 0x00000001;
-                  type_ = value;
-                }
-                break;
-              }
-              case 16: {
-                int rawValue = input.readEnum();
-                status value = status.valueOf(rawValue);
-                if (value == null) {
-                  unknownFields.mergeVarintField(2, rawValue);
-                } else {
-                  bitField0_ |= 0x00000002;
-                  status_ = value;
-                }
-                break;
-              }
-              case 26: {
-                com.google.protobuf.ByteString bs = input.readBytes();
-                bitField0_ |= 0x00000004;
-                uid_ = bs;
-                break;
-              }
-            }
-          }
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          throw e.setUnfinishedMessage(this);
-        } catch (java.io.IOException e) {
-          throw new com.google.protobuf.InvalidProtocolBufferException(
-              e.getMessage()).setUnfinishedMessage(this);
-        } finally {
-          this.unknownFields = unknownFields.build();
-          makeExtensionsImmutable();
-        }
-      }
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return Protoc.internal_static_Message_Head_descriptor;
-      }
-
-      protected FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return Protoc.internal_static_Message_Head_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                Head.class, Builder.class);
-      }
-
-      public static com.google.protobuf.Parser<Head> PARSER =
-          new com.google.protobuf.AbstractParser<Head>() {
-        public Head parsePartialFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Head(input, extensionRegistry);
-        }
-      };
-
-      @Override
-      public com.google.protobuf.Parser<Head> getParserForType() {
-        return PARSER;
-      }
-
-      private int bitField0_;
-      public static final int TYPE_FIELD_NUMBER = 1;
-      private type type_;
-      /**
-       * <code>required .Message.type type = 1;</code>
-       */
-      public boolean hasType() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required .Message.type type = 1;</code>
-       */
-      public type getType() {
-        return type_;
-      }
-
-      public static final int STATUS_FIELD_NUMBER = 2;
-      private status status_;
-      /**
-       * <code>required .Message.status status = 2;</code>
-       */
-      public boolean hasStatus() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required .Message.status status = 2;</code>
-       */
-      public status getStatus() {
-        return status_;
-      }
-
-      public static final int UID_FIELD_NUMBER = 3;
-      private Object uid_;
-      /**
-       * <code>required string uid = 3;</code>
-       */
-      public boolean hasUid() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>required string uid = 3;</code>
-       */
-      public String getUid() {
-        Object ref = uid_;
-        if (ref instanceof String) {
-          return (String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            uid_ = s;
-          }
-          return s;
-        }
-      }
-      /**
-       * <code>required string uid = 3;</code>
-       */
-      public com.google.protobuf.ByteString
-          getUidBytes() {
-        Object ref = uid_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (String) ref);
-          uid_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      private void initFields() {
-        type_ = type.USER;
-        status_ = status.REQ;
-        uid_ = "";
-      }
-      private byte memoizedIsInitialized = -1;
-      public final boolean isInitialized() {
-        byte isInitialized = memoizedIsInitialized;
-        if (isInitialized == 1) return true;
-        if (isInitialized == 0) return false;
-
-        if (!hasType()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-        if (!hasStatus()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-        if (!hasUid()) {
-          memoizedIsInitialized = 0;
-          return false;
-        }
-        memoizedIsInitialized = 1;
-        return true;
-      }
-
-      public void writeTo(com.google.protobuf.CodedOutputStream output)
-                          throws java.io.IOException {
-        getSerializedSize();
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          output.writeEnum(1, type_.getNumber());
-        }
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          output.writeEnum(2, status_.getNumber());
-        }
-        if (((bitField0_ & 0x00000004) == 0x00000004)) {
-          output.writeBytes(3, getUidBytes());
-        }
-        getUnknownFields().writeTo(output);
-      }
-
-      private int memoizedSerializedSize = -1;
-      public int getSerializedSize() {
-        int size = memoizedSerializedSize;
-        if (size != -1) return size;
-
-        size = 0;
-        if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeEnumSize(1, type_.getNumber());
-        }
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeEnumSize(2, status_.getNumber());
-        }
-        if (((bitField0_ & 0x00000004) == 0x00000004)) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeBytesSize(3, getUidBytes());
-        }
-        size += getUnknownFields().getSerializedSize();
-        memoizedSerializedSize = size;
-        return size;
-      }
-
-      private static final long serialVersionUID = 0L;
-      @Override
-      protected Object writeReplace()
-          throws java.io.ObjectStreamException {
-        return super.writeReplace();
-      }
-
-      public static Head parseFrom(
-          com.google.protobuf.ByteString data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static Head parseFrom(
-          com.google.protobuf.ByteString data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static Head parseFrom(byte[] data)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data);
-      }
-      public static Head parseFrom(
-          byte[] data,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return PARSER.parseFrom(data, extensionRegistry);
-      }
-      public static Head parseFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return PARSER.parseFrom(input);
-      }
-      public static Head parseFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return PARSER.parseFrom(input, extensionRegistry);
-      }
-      public static Head parseDelimitedFrom(java.io.InputStream input)
-          throws java.io.IOException {
-        return PARSER.parseDelimitedFrom(input);
-      }
-      public static Head parseDelimitedFrom(
-          java.io.InputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return PARSER.parseDelimitedFrom(input, extensionRegistry);
-      }
-      public static Head parseFrom(
-          com.google.protobuf.CodedInputStream input)
-          throws java.io.IOException {
-        return PARSER.parseFrom(input);
-      }
-      public static Head parseFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        return PARSER.parseFrom(input, extensionRegistry);
-      }
-
-      public static Builder newBuilder() { return Builder.create(); }
-      public Builder newBuilderForType() { return newBuilder(); }
-      public static Builder newBuilder(Head prototype) {
-        return newBuilder().mergeFrom(prototype);
-      }
-      public Builder toBuilder() { return newBuilder(this); }
-
-      @Override
-      protected Builder newBuilderForType(
-          BuilderParent parent) {
-        Builder builder = new Builder(parent);
-        return builder;
-      }
-      /**
-       * Protobuf type {@code Message.Head}
-       */
-      public static final class Builder extends
-          com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-          // @@protoc_insertion_point(builder_implements:Message.Head)
-          HeadOrBuilder {
-        public static final com.google.protobuf.Descriptors.Descriptor
-            getDescriptor() {
-          return Protoc.internal_static_Message_Head_descriptor;
-        }
-
-        protected FieldAccessorTable
-            internalGetFieldAccessorTable() {
-          return Protoc.internal_static_Message_Head_fieldAccessorTable
-              .ensureFieldAccessorsInitialized(
-                  Head.class, Builder.class);
-        }
-
-        // Construct using im.protoc.protocolbuf.Protoc.Message.Head.newBuilder()
-        private Builder() {
-          maybeForceBuilderInitialization();
-        }
-
-        private Builder(
-            BuilderParent parent) {
-          super(parent);
-          maybeForceBuilderInitialization();
-        }
-        private void maybeForceBuilderInitialization() {
-          if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          }
-        }
-        private static Builder create() {
-          return new Builder();
-        }
-
-        public Builder clear() {
-          super.clear();
-          type_ = type.USER;
-          bitField0_ = (bitField0_ & ~0x00000001);
-          status_ = status.REQ;
-          bitField0_ = (bitField0_ & ~0x00000002);
-          uid_ = "";
-          bitField0_ = (bitField0_ & ~0x00000004);
-          return this;
-        }
-
-        public Builder clone() {
-          return create().mergeFrom(buildPartial());
-        }
-
-        public com.google.protobuf.Descriptors.Descriptor
-            getDescriptorForType() {
-          return Protoc.internal_static_Message_Head_descriptor;
-        }
-
-        public Head getDefaultInstanceForType() {
-          return Head.getDefaultInstance();
-        }
-
-        public Head build() {
-          Head result = buildPartial();
-          if (!result.isInitialized()) {
-            throw newUninitializedMessageException(result);
-          }
-          return result;
-        }
-
-        public Head buildPartial() {
-          Head result = new Head(this);
-          int from_bitField0_ = bitField0_;
-          int to_bitField0_ = 0;
-          if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-            to_bitField0_ |= 0x00000001;
-          }
-          result.type_ = type_;
-          if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-            to_bitField0_ |= 0x00000002;
-          }
-          result.status_ = status_;
-          if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-            to_bitField0_ |= 0x00000004;
-          }
-          result.uid_ = uid_;
-          result.bitField0_ = to_bitField0_;
-          onBuilt();
-          return result;
-        }
-
-        public Builder mergeFrom(com.google.protobuf.Message other) {
-          if (other instanceof Head) {
-            return mergeFrom((Head)other);
-          } else {
-            super.mergeFrom(other);
-            return this;
-          }
-        }
-
-        public Builder mergeFrom(Head other) {
-          if (other == Head.getDefaultInstance()) return this;
-          if (other.hasType()) {
-            setType(other.getType());
-          }
-          if (other.hasStatus()) {
-            setStatus(other.getStatus());
-          }
-          if (other.hasUid()) {
-            bitField0_ |= 0x00000004;
-            uid_ = other.uid_;
-            onChanged();
-          }
-          this.mergeUnknownFields(other.getUnknownFields());
-          return this;
-        }
-
-        public final boolean isInitialized() {
-          if (!hasType()) {
-            
-            return false;
-          }
-          if (!hasStatus()) {
-            
-            return false;
-          }
-          if (!hasUid()) {
-            
-            return false;
-          }
-          return true;
-        }
-
-        public Builder mergeFrom(
-            com.google.protobuf.CodedInputStream input,
-            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-            throws java.io.IOException {
-          Head parsedMessage = null;
-          try {
-            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-            parsedMessage = (Head) e.getUnfinishedMessage();
-            throw e;
-          } finally {
-            if (parsedMessage != null) {
-              mergeFrom(parsedMessage);
-            }
-          }
-          return this;
-        }
-        private int bitField0_;
-
-        private type type_ = type.USER;
-        /**
-         * <code>required .Message.type type = 1;</code>
-         */
-        public boolean hasType() {
-          return ((bitField0_ & 0x00000001) == 0x00000001);
-        }
-        /**
-         * <code>required .Message.type type = 1;</code>
-         */
-        public type getType() {
-          return type_;
-        }
-        /**
-         * <code>required .Message.type type = 1;</code>
-         */
-        public Builder setType(type value) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          bitField0_ |= 0x00000001;
-          type_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required .Message.type type = 1;</code>
-         */
-        public Builder clearType() {
-          bitField0_ = (bitField0_ & ~0x00000001);
-          type_ = type.USER;
-          onChanged();
-          return this;
-        }
-
-        private status status_ = status.REQ;
-        /**
-         * <code>required .Message.status status = 2;</code>
-         */
-        public boolean hasStatus() {
-          return ((bitField0_ & 0x00000002) == 0x00000002);
-        }
-        /**
-         * <code>required .Message.status status = 2;</code>
-         */
-        public status getStatus() {
-          return status_;
-        }
-        /**
-         * <code>required .Message.status status = 2;</code>
-         */
-        public Builder setStatus(status value) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          bitField0_ |= 0x00000002;
-          status_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required .Message.status status = 2;</code>
-         */
-        public Builder clearStatus() {
-          bitField0_ = (bitField0_ & ~0x00000002);
-          status_ = status.REQ;
-          onChanged();
-          return this;
-        }
-
-        private Object uid_ = "";
-        /**
-         * <code>required string uid = 3;</code>
-         */
-        public boolean hasUid() {
-          return ((bitField0_ & 0x00000004) == 0x00000004);
-        }
-        /**
-         * <code>required string uid = 3;</code>
-         */
-        public String getUid() {
-          Object ref = uid_;
-          if (!(ref instanceof String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            String s = bs.toStringUtf8();
-            if (bs.isValidUtf8()) {
-              uid_ = s;
-            }
-            return s;
-          } else {
-            return (String) ref;
-          }
-        }
-        /**
-         * <code>required string uid = 3;</code>
-         */
-        public com.google.protobuf.ByteString
-            getUidBytes() {
-          Object ref = uid_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (String) ref);
-            uid_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>required string uid = 3;</code>
-         */
-        public Builder setUid(
-            String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-          uid_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required string uid = 3;</code>
-         */
-        public Builder clearUid() {
-          bitField0_ = (bitField0_ & ~0x00000004);
-          uid_ = getDefaultInstance().getUid();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>required string uid = 3;</code>
-         */
-        public Builder setUidBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-          uid_ = value;
-          onChanged();
-          return this;
-        }
-
-        // @@protoc_insertion_point(builder_scope:Message.Head)
-      }
-
-      static {
-        defaultInstance = new Head(true);
-        defaultInstance.initFields();
-      }
-
-      // @@protoc_insertion_point(class_scope:Message.Head)
-    }
-
     private int bitField0_;
     public static final int HEAD_FIELD_NUMBER = 1;
     private Head head_;
     /**
-     * <code>required .Message.Head head = 1;</code>
+     * <code>required .Head head = 1;</code>
      */
     public boolean hasHead() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required .Message.Head head = 1;</code>
+     * <code>required .Head head = 1;</code>
      */
     public Head getHead() {
       return head_;
     }
     /**
-     * <code>required .Message.Head head = 1;</code>
+     * <code>required .Head head = 1;</code>
      */
     public HeadOrBuilder getHeadOrBuilder() {
       return head_;
@@ -1117,13 +449,21 @@ public final class Protoc {
     public static final int BODY_FIELD_NUMBER = 2;
     private Object body_;
     /**
-     * <code>required string body = 2;</code>
+     * <code>optional string body = 2;</code>
+     *
+     * <pre>
+     *body optional when i want to send a heartbeat etc.
+     * </pre>
      */
     public boolean hasBody() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>required string body = 2;</code>
+     * <code>optional string body = 2;</code>
+     *
+     * <pre>
+     *body optional when i want to send a heartbeat etc.
+     * </pre>
      */
     public String getBody() {
       Object ref = body_;
@@ -1140,7 +480,11 @@ public final class Protoc {
       }
     }
     /**
-     * <code>required string body = 2;</code>
+     * <code>optional string body = 2;</code>
+     *
+     * <pre>
+     *body optional when i want to send a heartbeat etc.
+     * </pre>
      */
     public com.google.protobuf.ByteString
         getBodyBytes() {
@@ -1167,10 +511,6 @@ public final class Protoc {
       if (isInitialized == 0) return false;
 
       if (!hasHead()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasBody()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -1288,12 +628,6 @@ public final class Protoc {
     }
     /**
      * Protobuf type {@code Message}
-     *
-     * <pre>
-     * 关注3：消息模型
-     * 下面详细说明
-     * 生成 Person 消息对象（包含多个字段，下面详细说明）
-     * </pre>
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
@@ -1413,10 +747,6 @@ public final class Protoc {
           
           return false;
         }
-        if (!hasBody()) {
-          
-          return false;
-        }
         if (!getHead().isInitialized()) {
           
           return false;
@@ -1447,13 +777,13 @@ public final class Protoc {
       private com.google.protobuf.SingleFieldBuilder<
           Head, Head.Builder, HeadOrBuilder> headBuilder_;
       /**
-       * <code>required .Message.Head head = 1;</code>
+       * <code>required .Head head = 1;</code>
        */
       public boolean hasHead() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required .Message.Head head = 1;</code>
+       * <code>required .Head head = 1;</code>
        */
       public Head getHead() {
         if (headBuilder_ == null) {
@@ -1463,7 +793,7 @@ public final class Protoc {
         }
       }
       /**
-       * <code>required .Message.Head head = 1;</code>
+       * <code>required .Head head = 1;</code>
        */
       public Builder setHead(Head value) {
         if (headBuilder_ == null) {
@@ -1479,7 +809,7 @@ public final class Protoc {
         return this;
       }
       /**
-       * <code>required .Message.Head head = 1;</code>
+       * <code>required .Head head = 1;</code>
        */
       public Builder setHead(
           Head.Builder builderForValue) {
@@ -1493,7 +823,7 @@ public final class Protoc {
         return this;
       }
       /**
-       * <code>required .Message.Head head = 1;</code>
+       * <code>required .Head head = 1;</code>
        */
       public Builder mergeHead(Head value) {
         if (headBuilder_ == null) {
@@ -1512,7 +842,7 @@ public final class Protoc {
         return this;
       }
       /**
-       * <code>required .Message.Head head = 1;</code>
+       * <code>required .Head head = 1;</code>
        */
       public Builder clearHead() {
         if (headBuilder_ == null) {
@@ -1525,7 +855,7 @@ public final class Protoc {
         return this;
       }
       /**
-       * <code>required .Message.Head head = 1;</code>
+       * <code>required .Head head = 1;</code>
        */
       public Head.Builder getHeadBuilder() {
         bitField0_ |= 0x00000001;
@@ -1533,7 +863,7 @@ public final class Protoc {
         return getHeadFieldBuilder().getBuilder();
       }
       /**
-       * <code>required .Message.Head head = 1;</code>
+       * <code>required .Head head = 1;</code>
        */
       public HeadOrBuilder getHeadOrBuilder() {
         if (headBuilder_ != null) {
@@ -1543,7 +873,7 @@ public final class Protoc {
         }
       }
       /**
-       * <code>required .Message.Head head = 1;</code>
+       * <code>required .Head head = 1;</code>
        */
       private com.google.protobuf.SingleFieldBuilder<
           Head, Head.Builder, HeadOrBuilder>
@@ -1561,13 +891,21 @@ public final class Protoc {
 
       private Object body_ = "";
       /**
-       * <code>required string body = 2;</code>
+       * <code>optional string body = 2;</code>
+       *
+       * <pre>
+       *body optional when i want to send a heartbeat etc.
+       * </pre>
        */
       public boolean hasBody() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>required string body = 2;</code>
+       * <code>optional string body = 2;</code>
+       *
+       * <pre>
+       *body optional when i want to send a heartbeat etc.
+       * </pre>
        */
       public String getBody() {
         Object ref = body_;
@@ -1584,7 +922,11 @@ public final class Protoc {
         }
       }
       /**
-       * <code>required string body = 2;</code>
+       * <code>optional string body = 2;</code>
+       *
+       * <pre>
+       *body optional when i want to send a heartbeat etc.
+       * </pre>
        */
       public com.google.protobuf.ByteString
           getBodyBytes() {
@@ -1600,7 +942,11 @@ public final class Protoc {
         }
       }
       /**
-       * <code>required string body = 2;</code>
+       * <code>optional string body = 2;</code>
+       *
+       * <pre>
+       *body optional when i want to send a heartbeat etc.
+       * </pre>
        */
       public Builder setBody(
           String value) {
@@ -1613,7 +959,11 @@ public final class Protoc {
         return this;
       }
       /**
-       * <code>required string body = 2;</code>
+       * <code>optional string body = 2;</code>
+       *
+       * <pre>
+       *body optional when i want to send a heartbeat etc.
+       * </pre>
        */
       public Builder clearBody() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -1622,7 +972,11 @@ public final class Protoc {
         return this;
       }
       /**
-       * <code>required string body = 2;</code>
+       * <code>optional string body = 2;</code>
+       *
+       * <pre>
+       *body optional when i want to send a heartbeat etc.
+       * </pre>
        */
       public Builder setBodyBytes(
           com.google.protobuf.ByteString value) {
@@ -1646,16 +1000,690 @@ public final class Protoc {
     // @@protoc_insertion_point(class_scope:Message)
   }
 
+  public interface HeadOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:Head)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required .type type = 1;</code>
+     */
+    boolean hasType();
+    /**
+     * <code>required .type type = 1;</code>
+     */
+    type getType();
+
+    /**
+     * <code>required .status status = 2;</code>
+     */
+    boolean hasStatus();
+    /**
+     * <code>required .status status = 2;</code>
+     */
+    status getStatus();
+
+    /**
+     * <code>required string uid = 3;</code>
+     */
+    boolean hasUid();
+    /**
+     * <code>required string uid = 3;</code>
+     */
+    String getUid();
+    /**
+     * <code>required string uid = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getUidBytes();
+  }
+  /**
+   * Protobuf type {@code Head}
+   */
+  public static final class Head extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:Head)
+      HeadOrBuilder {
+    // Use Head.newBuilder() to construct.
+    private Head(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private Head(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Head defaultInstance;
+    public static Head getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public Head getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Head(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              int rawValue = input.readEnum();
+              type value = type.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                type_ = value;
+              }
+              break;
+            }
+            case 16: {
+              int rawValue = input.readEnum();
+              status value = status.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(2, rawValue);
+              } else {
+                bitField0_ |= 0x00000002;
+                status_ = value;
+              }
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              uid_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return Protoc.internal_static_Head_descriptor;
+    }
+
+    protected FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return Protoc.internal_static_Head_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              Head.class, Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<Head> PARSER =
+        new com.google.protobuf.AbstractParser<Head>() {
+      public Head parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Head(input, extensionRegistry);
+      }
+    };
+
+    @Override
+    public com.google.protobuf.Parser<Head> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private type type_;
+    /**
+     * <code>required .type type = 1;</code>
+     */
+    public boolean hasType() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required .type type = 1;</code>
+     */
+    public type getType() {
+      return type_;
+    }
+
+    public static final int STATUS_FIELD_NUMBER = 2;
+    private status status_;
+    /**
+     * <code>required .status status = 2;</code>
+     */
+    public boolean hasStatus() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required .status status = 2;</code>
+     */
+    public status getStatus() {
+      return status_;
+    }
+
+    public static final int UID_FIELD_NUMBER = 3;
+    private Object uid_;
+    /**
+     * <code>required string uid = 3;</code>
+     */
+    public boolean hasUid() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required string uid = 3;</code>
+     */
+    public String getUid() {
+      Object ref = uid_;
+      if (ref instanceof String) {
+        return (String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          uid_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string uid = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUidBytes() {
+      Object ref = uid_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (String) ref);
+        uid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      type_ = type.USER;
+      status_ = status.REQ;
+      uid_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasStatus()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasUid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeEnum(1, type_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeEnum(2, status_.getNumber());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getUidBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(1, type_.getNumber());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(2, status_.getNumber());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getUidBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @Override
+    protected Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static Head parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Head parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Head parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static Head parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static Head parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static Head parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static Head parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static Head parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static Head parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static Head parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(Head prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @Override
+    protected Builder newBuilderForType(
+        BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code Head}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:Head)
+        HeadOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return Protoc.internal_static_Head_descriptor;
+      }
+
+      protected FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return Protoc.internal_static_Head_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                Head.class, Builder.class);
+      }
+
+      // Construct using im.protoc.protocolbuf.Protoc.Head.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        type_ = type.USER;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        status_ = status.REQ;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        uid_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return Protoc.internal_static_Head_descriptor;
+      }
+
+      public Head getDefaultInstanceForType() {
+        return Head.getDefaultInstance();
+      }
+
+      public Head build() {
+        Head result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public Head buildPartial() {
+        Head result = new Head(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.type_ = type_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.status_ = status_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.uid_ = uid_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof Head) {
+          return mergeFrom((Head)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(Head other) {
+        if (other == Head.getDefaultInstance()) return this;
+        if (other.hasType()) {
+          setType(other.getType());
+        }
+        if (other.hasStatus()) {
+          setStatus(other.getStatus());
+        }
+        if (other.hasUid()) {
+          bitField0_ |= 0x00000004;
+          uid_ = other.uid_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasType()) {
+          
+          return false;
+        }
+        if (!hasStatus()) {
+          
+          return false;
+        }
+        if (!hasUid()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        Head parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (Head) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private type type_ = type.USER;
+      /**
+       * <code>required .type type = 1;</code>
+       */
+      public boolean hasType() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required .type type = 1;</code>
+       */
+      public type getType() {
+        return type_;
+      }
+      /**
+       * <code>required .type type = 1;</code>
+       */
+      public Builder setType(type value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .type type = 1;</code>
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        type_ = type.USER;
+        onChanged();
+        return this;
+      }
+
+      private status status_ = status.REQ;
+      /**
+       * <code>required .status status = 2;</code>
+       */
+      public boolean hasStatus() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required .status status = 2;</code>
+       */
+      public status getStatus() {
+        return status_;
+      }
+      /**
+       * <code>required .status status = 2;</code>
+       */
+      public Builder setStatus(status value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000002;
+        status_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .status status = 2;</code>
+       */
+      public Builder clearStatus() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        status_ = status.REQ;
+        onChanged();
+        return this;
+      }
+
+      private Object uid_ = "";
+      /**
+       * <code>required string uid = 3;</code>
+       */
+      public boolean hasUid() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required string uid = 3;</code>
+       */
+      public String getUid() {
+        Object ref = uid_;
+        if (!(ref instanceof String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            uid_ = s;
+          }
+          return s;
+        } else {
+          return (String) ref;
+        }
+      }
+      /**
+       * <code>required string uid = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUidBytes() {
+        Object ref = uid_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (String) ref);
+          uid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string uid = 3;</code>
+       */
+      public Builder setUid(
+          String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        uid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string uid = 3;</code>
+       */
+      public Builder clearUid() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        uid_ = getDefaultInstance().getUid();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string uid = 3;</code>
+       */
+      public Builder setUidBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        uid_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:Head)
+    }
+
+    static {
+      defaultInstance = new Head(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:Head)
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Message_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_Message_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Message_Head_descriptor;
+    internal_static_Head_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_Message_Head_fieldAccessorTable;
+      internal_static_Head_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1665,17 +1693,16 @@ public final class Protoc {
       descriptor;
   static {
     String[] descriptorData = {
-      "\n\020Message.protocol\"\337\002\n\007Message\022\033\n\004head\030\001" +
-      " \002(\0132\r.Message.Head\022\014\n\004body\030\002 \002(\t\032Q\n\004Hea" +
-      "d\022\033\n\004type\030\001 \002(\0162\r.Message.type\022\037\n\006status" +
-      "\030\002 \002(\0162\017.Message.status\022\013\n\003uid\030\003 \002(\t\"d\n\004" +
-      "type\022\010\n\004USER\020\001\022\n\n\006SYSTEM\020\002\022\014\n\010RESPONSE\020\003" +
-      "\022\010\n\004PING\020\004\022\010\n\004PONG\020\005\022\r\n\tHANDSHAKE\020\006\022\025\n\021H" +
-      "ANDSHAKERESPONSE\020\007\"p\n\006status\022\007\n\003REQ\020\001\022\006\n" +
-      "\002OK\020\002\022\013\n\007OFFLINE\020\003\022\021\n\rHANDSHAKEFAIL\020\004\022\t\n" +
-      "\005ERROR\020\005\022\r\n\tDECODEERR\020\006\022\013\n\007DISCARD\020\007\022\016\n\n" +
-      "OTHERLOGIN\020\010B\037\n\025im.protoc.protocolbufB\006P",
-      "rotoc"
+      "\n\020Message.protocol\",\n\007Message\022\023\n\004head\030\001 " +
+      "\002(\0132\005.Head\022\014\n\004body\030\002 \001(\t\"A\n\004Head\022\023\n\004type" +
+      "\030\001 \002(\0162\005.type\022\027\n\006status\030\002 \002(\0162\007.status\022\013" +
+      "\n\003uid\030\003 \002(\t*d\n\004type\022\010\n\004USER\020\001\022\n\n\006SYSTEM\020" +
+      "\002\022\014\n\010RESPONSE\020\003\022\010\n\004PING\020\004\022\010\n\004PONG\020\005\022\r\n\tH" +
+      "ANDSHAKE\020\006\022\025\n\021HANDSHAKERESPONSE\020\007*p\n\006sta" +
+      "tus\022\007\n\003REQ\020\001\022\006\n\002OK\020\002\022\013\n\007OFFLINE\020\003\022\021\n\rHAN" +
+      "DSHAKEFAIL\020\004\022\t\n\005ERROR\020\005\022\r\n\tDECODEERR\020\006\022\013" +
+      "\n\007DISCARD\020\007\022\016\n\nOTHERLOGIN\020\010B\037\n\025im.protoc" +
+      ".protocolbufB\006Protoc"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1695,11 +1722,11 @@ public final class Protoc {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_Message_descriptor,
         new String[] { "Head", "Body", });
-    internal_static_Message_Head_descriptor =
-      internal_static_Message_descriptor.getNestedTypes().get(0);
-    internal_static_Message_Head_fieldAccessorTable = new
+    internal_static_Head_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_Head_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_Message_Head_descriptor,
+        internal_static_Head_descriptor,
         new String[] { "Type", "Status", "Uid", });
   }
 

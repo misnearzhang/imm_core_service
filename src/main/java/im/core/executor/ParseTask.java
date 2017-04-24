@@ -41,8 +41,8 @@ public class ParseTask extends AbstractParse {
     @Override
     public void parse(Protoc.Message message , Channel channel) {
         try {
-            Protoc.Message.Head head = message.getHead();
-            Protoc.Message.type type = head.getType();
+            Protoc.Head head = message.getHead();
+            Protoc.type type = head.getType();
             switch (type) {
                 case USER:
                     //解析出发送方
