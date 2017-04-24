@@ -94,6 +94,11 @@ public class ThreadPool {
 
     }
 
+    /**
+     * 移除重发队列
+     * @param uid
+     * @return
+     */
     public boolean removeFurure(String uid) {
         ScheduledFuture future = futures.get(uid);
         future.cancel(false);
