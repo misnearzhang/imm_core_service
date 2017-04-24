@@ -1,15 +1,12 @@
 option java_package = "im.protoc.protocolbuf";
 option java_outer_classname = "Protoc";
-// 关注2：option选项
 
-// 关注3：消息模型
-// 下面详细说明
-// 生成 Person 消息对象（包含多个字段，下面详细说明）
 message Message {
     required Head head = 1;
-    required string body = 2;
+    optional string body = 2;//body optional when i want to send a heartbeat etc.
+}
 
-    message Head {
+message Head {
         required type type = 1;
         required status status = 2;
         required string uid = 3;
@@ -33,4 +30,3 @@ message Message {
         DISCARD = 7;
         OTHERLOGIN = 8;
     }
-}
