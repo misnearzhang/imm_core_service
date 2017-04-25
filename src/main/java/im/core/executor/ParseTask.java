@@ -162,6 +162,7 @@ public class ParseTask extends AbstractParse {
                     head1.setType(Protoc.type.PONG);
                     response.setHead(head1);
                     Container.sendHeartBeat(response.build(),channel.id());
+                    logger.info("发送心跳完成");
                     break;
                 default:
                     //不支持该协议
