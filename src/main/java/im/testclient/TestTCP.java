@@ -37,7 +37,7 @@ public class TestTCP {
 		OutputStream outputStream;
 		InputStream inputStream;
 		try {
-			socket = new Socket("127.0.0.1", 3000);
+			socket = new Socket("xcnana.com", 3000);
 			outputStream = socket.getOutputStream();
 			inputStream = socket.getInputStream();
 			Protoc.Message.Builder Proto = Protoc.Message.newBuilder();

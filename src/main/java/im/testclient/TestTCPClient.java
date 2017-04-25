@@ -20,10 +20,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 public class TestTCPClient implements Runnable{
 	public Channel channel;
@@ -40,7 +37,7 @@ public class TestTCPClient implements Runnable{
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
-							210, 205, 0));
+							10, 5, 0));
 					// 设置protobuf编码器
 					ch.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
 					// 设置带长度解码器
@@ -51,7 +48,8 @@ public class TestTCPClient implements Runnable{
 			});
 			ChannelFuture f=b.connect("127.0.0.1", 3000).sync();
 			channel = f.channel();
-			count.countDown();
+			channel.writeAndFlush(SendHandshake());
+			//count.countDown();
 			f.channel().closeFuture().sync();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -62,10 +60,13 @@ public class TestTCPClient implements Runnable{
 	
 	public static void main(String[] args) throws InterruptedException {
 		final TestTCPClient client = new TestTCPClient();
-		ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
-		executor.execute(client);
-		client.count.await();
-		client.channel.writeAndFlush(SendHandshake());
+		ThreadPoolExecutor executor = new ThreadPoolExecutor(100,500,1, TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(10000));
+		for(int i=0;i<10000;i++){
+			Thread.sleep(200);
+			executor.execute(client);
+		}
+		/*client.count.await();
+		client.channel.writeAndFlush(SendHandshake());*/
 	}
 
 	public static Protoc.Message SendHandshake(){
@@ -78,7 +79,7 @@ public class TestTCPClient implements Runnable{
 		Head.setTime(System.currentTimeMillis());
 		Proto.setHead(Head);
 		HandShakeMessage handShakeMessage1 = new HandShakeMessage();
-		handShakeMessage1.setAccount("1065302407");
+		handShakeMessage1.setAccount(System.currentTimeMillis()+"");
 		handShakeMessage1.setPassword("123456");
 		Proto.setBody(gson.toJson(handShakeMessage1));
 		return Proto.build();
