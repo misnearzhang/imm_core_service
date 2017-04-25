@@ -30,6 +30,7 @@ public class ParseTask extends AbstractParse {
     SendMessage sender;
     private final Logger logger = LogManager.getLogger(ParseTask.class);
     private Gson gson = new Gson();
+    @Autowired
     private ThreadPool threadPool;
 
     boolean checkHandShake(String account, String password) {
@@ -64,10 +65,25 @@ public class ParseTask extends AbstractParse {
                                 setAddtime(new Date()).
                                 setUpdatetime(new Date())
                         );
+                        Protoc.Message.Builder response = Protoc.Message.newBuilder();
+                        Protoc.Head.Builder head1= Protoc.Head.newBuilder();
+                        head1.setTime(System.currentTimeMillis());
+                        head1.setUid(head.getUid());
+                        head1.setStatus(Protoc.status.OFFLINE);
+                        head1.setType(Protoc.type.RESPONSE);
+                        response.setHead(head1);
+                        Container.send(response.build(),channel.id());//发送响应用户离线消息
                         //缓存消息
                         //send2mq
                     } else {
-                        //Container.send(CommUtil.createResponse(MessageEnum.status.OK.getCode(), head.getUid()), fromChannelId);
+                        Protoc.Message.Builder response = Protoc.Message.newBuilder();
+                        Protoc.Head.Builder head1= Protoc.Head.newBuilder();
+                        head1.setTime(System.currentTimeMillis());
+                        head1.setUid(head.getUid());
+                        head1.setStatus(Protoc.status.OK);
+                        head1.setType(Protoc.type.RESPONSE);
+                        response.setHead(head1);
+                        Container.send(response.build(),channel.id());//发送响应消息
                         threadPool.sendMessageNow(new SendTask(message, ThreadPool.RetransCount.FISRT, toChannelId, head.getUid()), head.getUid());
                     }
                     break;
@@ -76,7 +92,7 @@ public class ParseTask extends AbstractParse {
                     //第一类 登录消息  拿到用户的登录信息 然后通过mq与webService通信 这边的公钥对吧webService的秘钥 判断登录情况
                     //第二类消息 登出消息 用户发送登出请求 服务器登出 注销用户链接
                     //。。。。
-                    //系统消息 做出相应处理，比如说用户跳出
+                    //系统消息 做出相应处理，比如说用户登出
                     break;
                 case HANDSHAKE:
                     logger.info("HANDSHAKE start");
@@ -130,11 +146,22 @@ public class ParseTask extends AbstractParse {
                     //收到响应  判断响应类型  消息响应和心跳响应
                     //retransConcurrentHashMap.remove(header.getUid());
                     logger.info("receive response , remove retrans task");
-                    threadPool.removeFurure(head.getUid());
+                    threadPool.removeFuture(head.getUid());
                     break;
                 case PONG:
                     //心跳响应  不做任何事
                     //Container.pingPongRest(ctx.channel().id());
+                    break;
+                case PING:
+                    //客户端心跳 响应一个PONG
+                    Protoc.Message.Builder response = Protoc.Message.newBuilder();
+                    Protoc.Head.Builder head1= Protoc.Head.newBuilder();
+                    head1.setTime(System.currentTimeMillis());
+                    head1.setUid(head.getUid());
+                    head1.setStatus(Protoc.status.OK);
+                    head1.setType(Protoc.type.PONG);
+                    response.setHead(head1);
+                    Container.sendHeartBeat(response.build(),channel.id());
                     break;
                 default:
                     //不支持该协议

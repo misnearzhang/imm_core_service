@@ -99,10 +99,13 @@ public class ThreadPool {
      * @param uid
      * @return
      */
-    public boolean removeFurure(String uid) {
-        ScheduledFuture future = futures.get(uid);
-        future.cancel(false);
-        ioExecutor.purge();
+    public boolean removeFuture(String uid) {
+        if(futures.containsKey(uid)){
+            ScheduledFuture future = futures.get(uid);
+            future.cancel(false);
+            ioExecutor.purge();
+            return true;
+        }
         return true;
     }
 
