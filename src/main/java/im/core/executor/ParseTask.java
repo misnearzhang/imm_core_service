@@ -58,13 +58,13 @@ public class ParseTask extends AbstractParse {
                     if (toChannelId == null) {
                         //Container.send(CommUtil.createResponse(MessageEnum.status.OFFLINE.getCode(), head.getUid()), fromChannelId);
                         logger.info("this account is offline and we will cache this message utils it online");
-                        sender.send2db(new OfflineMessage().
+                        /*sender.send2db(new OfflineMessage().
                                 setMessageContent(userMessage.getContent()).
                                 setMessageFrom(userMessage.getFrom()).
                                 setMessageTo(userMessage.getTo()).setMessageStatus("100").
                                 setAddtime(new Date()).
                                 setUpdatetime(new Date())
-                        );
+                        );*/
                         Protoc.Message.Builder response = Protoc.Message.newBuilder();
                         Protoc.Head.Builder head1= Protoc.Head.newBuilder();
                         head1.setTime(System.currentTimeMillis());
