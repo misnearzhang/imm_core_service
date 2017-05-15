@@ -3,7 +3,7 @@
 <Configuration monitorInterval="3600" shutdownHook="disable">
 
     <properties>
-        <property name="LOG_HOME">/home/zhanglong/logs</property>
+        <property name="LOG_HOME">/home/misnearzhang/logs</property>
         <!-- 日志切割的最小单位 -->
         <property name="LOG_FILE_SIZE">100M</property>
         <!-- 日志备份目录 -->

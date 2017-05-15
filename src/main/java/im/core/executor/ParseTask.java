@@ -14,6 +14,10 @@ import io.netty.channel.ChannelId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.Date;
 import java.util.UUID;
@@ -32,7 +36,8 @@ public class ParseTask extends AbstractParse {
     private Gson gson = new Gson();
     @Autowired
     private ThreadPool threadPool;
-
+    @Autowired
+    private RedisTemplate redisTemplate;
     boolean checkHandShake(String account, String password) {
 
         return true;

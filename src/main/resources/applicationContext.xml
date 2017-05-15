@@ -23,6 +23,7 @@
             <list>
                 <value>classpath*:properties/rabbit.properties</value>
                 <value>classpath*:properties/systemconfig.properties</value>
+                <value>classpath*:properties/redis.properties</value>
             </list>
         </property>
     </bean>
@@ -88,5 +89,39 @@
                 <property name="maxInterval" value="10000"/>
             </bean>
         </property>
+    </bean>
+
+    <!--Redis configure-->
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <!--<constructor-arg name="poolConfig" value="org.apache.commons.pool2.impl.GenericObjectPoolConfig"/>-->
+        <constructor-arg name="poolConfig" ref="redisPoolConfig"/>
+        <constructor-arg name="host" value="${redis.host}"/>
+        <constructor-arg name="port" value="${redis.port}"/>
+        <constructor-arg name="timeout" value="${redis.timeout}"/>
+        <!--<constructor-arg name="password" value="${redis.password}"/>-->
+    </bean>
+
+    <bean id="redisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="6"></property>
+        <property name="minEvictableIdleTimeMillis" value="300000"></property>
+        <property name="numTestsPerEvictionRun" value="3"></property>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"></property>
+    </bean>
+
+
+    <bean id="redisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          destroy-method="destroy">
+        <property name="poolConfig" ref="redisPoolConfig"></property>
+        <property name="hostName" value="${redis.host}"></property>
+        <property name="port" value="${redis.port}"></property>
+        <!--<property name="password" value="${redis.password}"/>-->
+        <property name="database" value="0"></property>
+        <property name="timeout" value="15000"></property>
+        <property name="usePool" value="true"></property>
+    </bean>
+
+    <!-- 配置数据操作 -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="redisConnectionFactory"></property>
     </bean>
 </beans>
