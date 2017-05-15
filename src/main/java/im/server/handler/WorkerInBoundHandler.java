@@ -3,6 +3,7 @@ package im.server.handler;
 import im.core.container.Container;
 import im.core.executor.ThreadPool;
 import im.protoc.protocolbuf.Protoc;
+import im.support.pool.PoolUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
@@ -90,7 +91,12 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
                         ctx.channel().close();
                     } else {
                         logger.info("send a PING heartbeat");
-                        Protoc.Message.Builder message_builder = Protoc.Message.newBuilder();
+                        Protoc.Message.Builder message_builder = PoolUtils.getInstance();
+                        logger.info(message_builder.toString());
+                        if(message_builder==null){
+                            logger.info("为空");
+                            message_builder = Protoc.Message.newBuilder();
+                        }
                         Protoc.Head.Builder head_builder=Protoc.Head.newBuilder();
                         head_builder.setType(Protoc.type.PING);
                         head_builder.setStatus(Protoc.status.REQ);
@@ -98,6 +104,8 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
                         head_builder.setTime(System.currentTimeMillis());
                         message_builder.setHead(head_builder);
                         Container.sendHeartBeat(message_builder.build(), ctx.channel().id());
+                        message_builder.clear();
+                        PoolUtils.release(message_builder);
                     }
                 } else if (idle.state().equals(IdleState.READER_IDLE)) {
                     Container.pingPongCountAdd(ctx.channel().id());

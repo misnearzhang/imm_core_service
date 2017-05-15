@@ -12,10 +12,10 @@ import java.util.concurrent.*;
  */
 public class ThreadPool {
 
-    private Integer corePoolSize;
-    private Integer maxPoolSize;
-    private Integer keepAliveTime;
-    private Integer blockingQueueSize;
+    private Integer corePoolSize;//核心线程池大小
+    private Integer maxPoolSize;//最大线程池大小
+    private Integer keepAliveTime;//时间
+    private Integer blockingQueueSize;//阻塞队列长度
 
 
     public ThreadPool(Integer corePoolSize, Integer maxPoolSize, Integer keepAliveTime, Integer blockingQueueSize) {
@@ -52,7 +52,7 @@ public class ThreadPool {
     private ConcurrentHashMap<String, ScheduledFuture> futures;
 
     /**
-     * 业务处理类的全限定名
+     * 业务处理类的全限定名 类似  ： com.xxx.***.ClassName
      *
      * @param name
      * @throws ClassNotFoundException

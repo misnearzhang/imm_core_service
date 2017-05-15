@@ -127,7 +127,7 @@ public class Server {
             server.setThreadPool(threadPool);
             System.out.println("test1");
             //server.setParse(new ParseTask());
-            server.bind(3000,250,245);
+            server.bind(3000,25,23);
         } catch (Exception e) {
             e.printStackTrace();
         }

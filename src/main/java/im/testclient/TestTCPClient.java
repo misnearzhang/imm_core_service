@@ -37,7 +37,7 @@ public class TestTCPClient implements Runnable{
 				@Override
 				protected void initChannel(SocketChannel ch) throws Exception {
 					ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
-							10, 5, 0));
+							1000, 999, 0));
 					// 设置protobuf编码器
 					ch.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
 					// 设置带长度解码器
@@ -61,12 +61,10 @@ public class TestTCPClient implements Runnable{
 	public static void main(String[] args) throws InterruptedException {
 		final TestTCPClient client = new TestTCPClient();
 		ThreadPoolExecutor executor = new ThreadPoolExecutor(100,500,1, TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(10000));
-		for(int i=0;i<10000;i++){
+		for(int i=0;i<1;i++){
 			Thread.sleep(200);
 			executor.execute(client);
 		}
-		/*client.count.await();
-		client.channel.writeAndFlush(SendHandshake());*/
 	}
 
 	public static Protoc.Message SendHandshake(){

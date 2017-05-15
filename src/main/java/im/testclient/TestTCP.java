@@ -70,6 +70,30 @@ public class TestTCP {
 		}
 
 	}
+
+
+
+	public class recevicer implements Runnable{
+
+		Socket socket;
+
+		public recevicer(Socket socket) {
+			this.socket = socket;
+		}
+
+		@Override
+		public void run() {
+			try {
+				InputStream in = socket.getInputStream();
+				while(in.available()>0){
+					in.read(new byte[in.available()]);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public byte[] getSendBlock(short length,byte[] data){
 		return null;
 	}
