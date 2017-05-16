@@ -1,6 +1,6 @@
 package im.process;
 
-import im.core.executor.define.AbstractParse;
+import im.core.define.AbstractParse;
 import im.protoc.protocolbuf.Protoc;
 import io.netty.channel.Channel;
 import java.util.concurrent.*;

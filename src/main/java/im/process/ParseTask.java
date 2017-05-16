@@ -1,19 +1,16 @@
 package im.process;
 
 import com.google.gson.Gson;
-import im.config.SystemConfig;
 import im.core.container.Container;
 import im.core.exception.NotOnlineException;
-import im.core.executor.define.AbstractParse;
+import im.core.define.AbstractParse;
 import im.protoc.*;
 import im.protoc.protocolbuf.Protoc;
-import im.support.mq.SendMessage;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import java.util.UUID;
 

@@ -1,6 +1,5 @@
-package im.core.executor.define;
+package im.core.define;
 
-import com.google.gson.Gson;
 import im.protoc.protocolbuf.Protoc;
 import io.netty.channel.Channel;
 

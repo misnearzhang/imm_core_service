@@ -1,4 +1,4 @@
-package im.core.executor.define;
+package im.core.define;
 
 import im.core.exception.UnSupportMessageType;
 import im.protoc.protocolbuf.Protoc;
