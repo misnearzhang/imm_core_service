@@ -113,7 +113,8 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
                     Container.pingPongCountAdd(ctx.channel().id());
                     if (Container.getPingPongCount(ctx.channel().id()) == 4) {
                         Container.logOut(ctx.channel().id());
-                        ctx.channel().close();
+                        ctx.channel().disconnect();
+                        //ctx.channel().close();
                     }
                 }
             }

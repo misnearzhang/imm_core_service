@@ -12,6 +12,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -71,11 +73,11 @@ public class Server {
 /*                    ch.pipeline().addLast(new StringDecoder());
                     ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
                     ch.pipeline().addLast(new LineBasedFrameDecoder(1024 * 5));*/
-                    // 设置protobuf编码器
-                    ch.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
-                    // 设置带长度解码器
+                    ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
                     ch.pipeline().addLast("protobufDecoder", new ProtobufDecoder(
                             Protoc.Message.getDefaultInstance()));
+                    ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
+                    ch.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
                     ch.pipeline().addLast(new WorkOutBoundHandler());
                     ch.pipeline().addLast(new WorkerInBoundHandler(threadPool));
                 }
