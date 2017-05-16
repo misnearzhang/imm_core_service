@@ -30,16 +30,16 @@
 
     <!--线程池初始化-->
 
-    <!--<bean id="threadPool" class="im.core.executor.ThreadPool" init-method="init">
+    <bean id="threadPool" class="im.process.ThreadPool" init-method="init">
         <constructor-arg name="corePoolSize" value="${threadpool-corepoolsize}"/>
         <constructor-arg name="maxPoolSize" value="${threadpool-maximumpoolsize}"/>
         <constructor-arg name="keepAliveTime" value="${threadpool-keepalivetime}"/>
         <constructor-arg name="blockingQueueSize" value="${threadpool-blockingqueue}"/>
-    </bean>-->
+    </bean>
     <bean id="systemConfig" class="im.config.SystemConfig">
         <property name="delimiter" value="${delimiter}"/>
         <property name="idleReadTime" value="${idle-read}"/>
-        <property name="idleWriteTime" value="${idle-read}"/>
+        <property name="idleWriteTime" value="${idle-write}"/>
         <property name="tcpPort" value="${tcp-port}"/>
         <property name="threadCorePoolSize" value="${sender-threadpool-poolsize}"/>
         <property name="threadKeepAliveTime" value="${threadpool-keepalivetime}"/>

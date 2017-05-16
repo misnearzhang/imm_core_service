@@ -1,4 +1,4 @@
-package im.core.executor;
+package im.process;
 
 import com.google.gson.Gson;
 import im.config.SystemConfig;
@@ -6,7 +6,6 @@ import im.core.container.Container;
 import im.core.exception.NotOnlineException;
 import im.core.executor.define.AbstractParse;
 import im.protoc.*;
-import im.protoc.db.OfflineMessage;
 import im.protoc.protocolbuf.Protoc;
 import im.support.mq.SendMessage;
 import io.netty.channel.Channel;
@@ -14,12 +13,8 @@ import io.netty.channel.ChannelId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -28,16 +23,10 @@ import java.util.UUID;
  */
 
 public class ParseTask extends AbstractParse {
-    @Autowired
-    SystemConfig systemConfig;
-    @Autowired
-    SendMessage sender;
     private final Logger logger = LogManager.getLogger(ParseTask.class);
     private Gson gson = new Gson();
     @Autowired
     private ThreadPool threadPool;
-    @Autowired
-    private RedisTemplate redisTemplate;
     boolean checkHandShake(String account, String password) {
 
         return true;
@@ -156,6 +145,7 @@ public class ParseTask extends AbstractParse {
                 case PONG:
                     //心跳响应  不做任何事
                     //Container.pingPongRest(ctx.channel().id());
+                    logger.info("receive a PONG");
                     break;
                 case PING:
                     //客户端心跳 响应一个PONG

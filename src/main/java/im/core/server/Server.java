@@ -1,30 +1,20 @@
-package im.server;
+package im.core.server;
 
 
-import im.config.SystemConfig;
-import im.core.executor.ParseTask;
-import im.core.executor.ThreadPool;
-import im.core.executor.define.Parse;
+import im.process.ThreadPool;
 import im.protoc.protocolbuf.Protoc;
-import im.server.handler.WorkOutBoundHandler;
-import im.server.handler.WorkerInBoundHandler;
+import im.core.server.handler.WorkOutBoundHandler;
+import im.core.server.handler.WorkerInBoundHandler;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldPrepender;
-import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
-import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -59,9 +49,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class Server {
 
     private final Logger logger = LogManager.getLogger(Server.class);
-
-    private ApplicationContext springContext;
-
     private ThreadPool threadPool;
     public void setThreadPool(ThreadPool threadPool){
         this.threadPool = threadPool;
@@ -103,33 +90,6 @@ public class Server {
         } finally {
             master.shutdownGracefully();
             slaver.shutdownGracefully();
-        }
-    }
-
-    public void init(){
-        SpringInit();
-    }
-
-    private void SpringInit() {
-        //初始化spring
-        springContext=new ClassPathXmlApplicationContext("applicationContext.xml");
-    }
-
-
-    public static void main(String[] args) {
-        try {
-            Server server=new Server();
-            System.out.println("test");
-            server.init();
-            ThreadPool threadPool = new ThreadPool(5,10,5,1000);
-            threadPool.init();
-            threadPool.reflectParse("im.core.executor.ParseTask");
-            server.setThreadPool(threadPool);
-            System.out.println("test1");
-            //server.setParse(new ParseTask());
-            server.bind(3000,25,23);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

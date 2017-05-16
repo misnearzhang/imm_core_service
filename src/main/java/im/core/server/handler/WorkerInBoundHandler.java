@@ -1,7 +1,7 @@
-package im.server.handler;
+package im.core.server.handler;
 
 import im.core.container.Container;
-import im.core.executor.ThreadPool;
+import im.process.ThreadPool;
 import im.protoc.protocolbuf.Protoc;
 import im.support.pool.PoolUtils;
 import io.netty.channel.ChannelHandlerContext;
@@ -73,8 +73,10 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
 
 
     /**
-     * heartbeat : when WRITE_IDLE is detect then send a PING message, while 3 times not receive PONG message then close this channel
-     * if the client is not had a handshake so in the first WRITE_IDLE close it.
+     * heartbeat : when WRITE_IDLE is detect then send a PING message,
+     * while 3 times not receive PONG message then close this channel
+     * if the client is not had a handshake so in the first WRITE_IDLE
+     * then close it.
      *
      * @param ctx
      * @param evt

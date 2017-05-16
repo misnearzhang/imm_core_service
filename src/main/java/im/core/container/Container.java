@@ -1,26 +1,16 @@
 package im.core.container;
 
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
-import im.config.SystemConfig;
 import im.core.exception.NotOnlineException;
-import im.core.executor.SendTask;
-import im.core.executor.ThreadPool;
 import im.protoc.protocolbuf.Protoc;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import io.netty.channel.group.*;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import javax.swing.plaf.basic.BasicMenuUI;
 
 /**
  * 用户容器 存储所有在线用户  可以抽取出来用redis等nosql实现

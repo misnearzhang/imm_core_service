@@ -34,6 +34,7 @@ public class TestTCPHandler extends ChannelInboundHandlerAdapter {
                     head1.setStatus(Protoc.status.OK);
                     head1.setType(Protoc.type.PONG);
                     response.setHead(head1);
+                    ctx.writeAndFlush(response);
                     break;
                 case PONG:
                     System.out.println(message.toString());

@@ -1,4 +1,4 @@
-package im.core.executor;
+package im.process;
 
 import im.core.executor.define.AbstractParse;
 import im.protoc.protocolbuf.Protoc;
@@ -54,14 +54,13 @@ public class ThreadPool {
     /**
      * 业务处理类的全限定名 类似  ： com.xxx.***.ClassName
      *
-     * @param name
+     * @param clazz
      * @throws ClassNotFoundException
      * @throws NoSuchMethodException
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    public void reflectParse(String name) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException {
-        Class clazz = Class.forName(name);
+    public void reflectParse(Class clazz) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException {
         parse = (AbstractParse) clazz.newInstance();
     }
 

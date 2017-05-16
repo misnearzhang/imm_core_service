@@ -43,9 +43,6 @@ public class SystemConfig {
     private int threadRetransSecondTime;
     private int threadRetransThirdTime;
 
-    static {
-
-    }
     public String getDelimiter() {
         return delimiter;
     }

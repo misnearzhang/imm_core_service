@@ -1,9 +1,12 @@
 package im.testclient;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.UUID;
+import im.process.ParseTask;
+
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 import static java.lang.Long.BYTES;
@@ -21,7 +24,7 @@ public class Test {
         }
         long end = System.currentTimeMillis();
         System.out.println(end - start);*/
-        int m=4323;
+        /*int m=4323;
         System.out.println(m&0xffffffff);
         System.out.println((byte)(m>>24)&0xff);
         System.out.println((byte)(m>>16)&0xff);
@@ -36,9 +39,24 @@ public class Test {
             message.setPassword("");
             message.setSex("");
             list.add(message);
+        }*/
+        /*String inedxUID= "";
+        ArrayList<Message> userList = new ArrayList<Message>(1000000);
+        for (int i = 0; i < 1000000; i++) {
+            Message message = new Message(i);
+            userList.add(message);
+            if(i==50000){
+                inedxUID = message.getUuid();
+            }
         }
+        Long start = System.currentTimeMillis();
+        String finalInedxUID = inedxUID;
+        List<Message> collect = userList.stream().filter(p->p.getUuid().equals(finalInedxUID)).collect(Collectors.toList());
+        System.out.println(collect);
+        System.out.println(System.currentTimeMillis()-start);*/
 
-
+        String Parse_String  = ParseTask.class.getName();
+        System.out.println(Parse_String);
     }
 
 
@@ -48,6 +66,14 @@ public class Test {
         private String password;
         private String sex;
         private Integer age;
+
+        public Message(int index) {
+            this.uuid = UUID.randomUUID().toString();
+            this.userName = "zhanglong"+index;
+            this.password = "";
+            this.sex = "";
+            this.age = index;
+        }
 
         public String getUuid() {
             return uuid;
@@ -88,6 +114,16 @@ public class Test {
         public void setAge(Integer age) {
             this.age = age;
         }
-    }
 
+        @Override
+        public String toString() {
+            return "Message{" +
+                    "uuid='" + uuid + '\'' +
+                    ", userName='" + userName + '\'' +
+                    ", password='" + password + '\'' +
+                    ", sex='" + sex + '\'' +
+                    ", age=" + age +
+                    '}';
+        }
+    }
 }
