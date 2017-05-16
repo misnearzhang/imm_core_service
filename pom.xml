@@ -204,7 +204,7 @@
                                 <manifest>
                                     <addClasspath>true</addClasspath>
                                     <classpathPrefix>lib/</classpathPrefix>
-                                    <mainClass>im.core.server.Server</mainClass>
+                                    <mainClass>im.process.BootStramp</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>
