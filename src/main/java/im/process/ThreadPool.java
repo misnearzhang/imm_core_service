@@ -62,10 +62,11 @@ public class ThreadPool {
      */
     public void reflectParse(Class clazz) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException {
         parse = (AbstractParse) clazz.newInstance();
+
     }
 
     public void parseMessage(Protoc.Message message, Channel channel) {
-        parse.initData(message, channel);
+        parse.initData(message, channel,this);
         businessExecutor.execute(parse);
     }
 

@@ -1,5 +1,6 @@
 package im.core.define;
 
+import im.process.ThreadPool;
 import im.protoc.protocolbuf.Protoc;
 import io.netty.channel.Channel;
 
@@ -10,6 +11,7 @@ public abstract class AbstractParse implements Parse , Runnable{
 
     private Protoc.Message message;
     private Channel channel;
+    public ThreadPool threadPool;
 
     @Override
     public void run() {
@@ -17,8 +19,9 @@ public abstract class AbstractParse implements Parse , Runnable{
     }
     public abstract void parse(Protoc.Message object , Channel channel);
 
-    public void initData(Protoc.Message message, Channel channel){
+    public void initData(Protoc.Message message, Channel channel, ThreadPool threadPool){
         this.message = message;
         this.channel = channel;
+        this.threadPool = threadPool;
     }
 }

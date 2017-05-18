@@ -1,6 +1,5 @@
-package im.testclient;
+package im.testclient.client;
 
-import im.core.container.Container;
 import im.protoc.protocolbuf.Protoc;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

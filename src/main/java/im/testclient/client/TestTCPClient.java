@@ -1,4 +1,4 @@
-package im.testclient;
+package im.testclient.client;
 
 import com.google.gson.Gson;
 import im.protoc.HandShakeMessage;
@@ -16,10 +16,14 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class TestTCPClient implements Runnable{
 	public Channel channel;
+	CountDownLatch count =new CountDownLatch(1);
 	@Override
 	public void run(){
 		EventLoopGroup group=new NioEventLoopGroup();
@@ -44,6 +48,7 @@ public class TestTCPClient implements Runnable{
 			ChannelFuture f=b.connect("127.0.0.1", 3000).sync();
 			channel = f.channel();
 			channel.writeAndFlush(SendHandshake());
+			count.countDown();
 			f.channel().closeFuture().sync();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,25 +61,8 @@ public class TestTCPClient implements Runnable{
 		Gson gson = new Gson();
 		final TestTCPClient client = new TestTCPClient();
 		ThreadPoolExecutor executor = new ThreadPoolExecutor(100,500,1, TimeUnit.SECONDS,new ArrayBlockingQueue<Runnable>(10000));
+		Thread.sleep(200);
 		executor.execute(client);
-		Protoc.Message.Builder build = Protoc.Message.newBuilder();
-		Protoc.Head.Builder headBuild = Protoc.Head.newBuilder();
-		headBuild.setUid(UUID.randomUUID().toString());
-		headBuild.setType(Protoc.type.USER);
-		headBuild.setTime(System.currentTimeMillis());
-		headBuild.setStatus(Protoc.status.REQ);
-		UserMessage userMessage = new UserMessage();
-		userMessage.setContent("hello");
-		userMessage.setFrom("1065302407");
-		userMessage.setTo("2296480526");
-		userMessage.setType("TEXT");
-		userMessage.setSign("");
-		build.setHead(headBuild);
-		build.setBody(gson.toJson(userMessage));
-		Thread.sleep(1000);
-		if(client.channel!=null){
-			client.channel.writeAndFlush(build.build());
-		}
 	}
 
 	public static Protoc.Message SendHandshake(){
@@ -87,7 +75,7 @@ public class TestTCPClient implements Runnable{
 		Head.setTime(System.currentTimeMillis());
 		Proto.setHead(Head);
 		HandShakeMessage handShakeMessage1 = new HandShakeMessage();
-		handShakeMessage1.setAccount("1065302407");
+		handShakeMessage1.setAccount("2296480526");
 		handShakeMessage1.setPassword("123456");
 		Proto.setBody(gson.toJson(handShakeMessage1));
 		return Proto.build();

@@ -22,8 +22,6 @@ import java.util.UUID;
 public class ParseTask extends AbstractParse {
     private final Logger logger = LogManager.getLogger(ParseTask.class);
     private Gson gson = new Gson();
-    @Autowired
-    private ThreadPool threadPool;
     boolean checkHandShake(String account, String password) {
 
         return true;

@@ -11,7 +11,7 @@
 		http://www.springframework.org/schema/task
 		http://www.springframework.org/schema/task/spring-task.xsd">
 
-    <context:component-scan base-package="im.core"/>
+    <context:component-scan base-package="im"/>
 
     <!--<bean id="publisher" class="im.support.mq.Publisher"/>-->
 
@@ -37,7 +37,6 @@
         <constructor-arg name="blockingQueueSize" value="${threadpool-blockingqueue}"/>
     </bean>
     <bean id="systemConfig" class="im.config.SystemConfig">
-        <property name="delimiter" value="${delimiter}"/>
         <property name="idleReadTime" value="${idle-read}"/>
         <property name="idleWriteTime" value="${idle-write}"/>
         <property name="tcpPort" value="${tcp-port}"/>
