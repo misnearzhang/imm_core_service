@@ -73,7 +73,7 @@ public class ParseTask extends AbstractParse {
                         head1.setType(Protoc.type.RESPONSE);
                         response.setHead(head1);
                         Container.send(response.build(),channel.id());//发送响应消息
-                        threadPool.sendMessageNow(new SendTask(message, ThreadPool.RetransCount.FISRT, toChannelId, head.getUid()), head.getUid());
+                        threadPool.sendMessageNow(new SendTask(threadPool,message, ThreadPool.RetransCount.FISRT, toChannelId, head.getUid()), head.getUid());
                     }
                     break;
                 case SYSTEM:

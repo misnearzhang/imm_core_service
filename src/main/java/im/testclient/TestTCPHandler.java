@@ -2,6 +2,7 @@ package im.testclient;
 
 import im.core.container.Container;
 import im.protoc.protocolbuf.Protoc;
+import im.support.pool.PoolUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
@@ -34,7 +35,7 @@ public class TestTCPHandler extends ChannelInboundHandlerAdapter {
                     head1.setStatus(Protoc.status.OK);
                     head1.setType(Protoc.type.PONG);
                     response.setHead(head1);
-                    ctx.writeAndFlush(response);
+                    ctx.writeAndFlush(response.build());
                     break;
                 case PONG:
                     System.out.println(message.toString());
@@ -44,7 +45,15 @@ public class TestTCPHandler extends ChannelInboundHandlerAdapter {
                     System.out.println(message.toString());
                     break;
                 case USER:
-                    System.out.println("receive message"+message.getBody());
+                    Protoc.Message.Builder builder = PoolUtils.getInstance();
+                    Protoc.Head.Builder head = Protoc.Head.newBuilder();
+                    head.setStatus(Protoc.status.OK);
+                    head.setTime(System.currentTimeMillis());
+                    head.setType(Protoc.type.RESPONSE);
+                    head.setUid(message.getHead().getUid());
+                    builder.setHead(head);
+                    ctx.writeAndFlush(builder.build());
+                    System.out.println(builder.toString());
                 default:
                     System.out.println(message.toString());
             }

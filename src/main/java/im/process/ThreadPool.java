@@ -89,7 +89,7 @@ public class ThreadPool {
      * @param uid
      */
     public void sendMessage(SendTask task, String uid) {
-        ScheduledFuture future = ioExecutor.schedule(task, 3, TimeUnit.SECONDS);
+        ScheduledFuture future = ioExecutor.schedule(task, 5, TimeUnit.SECONDS);
         futures.put(uid, future);
 
     }

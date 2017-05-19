@@ -18,7 +18,8 @@ public class SendTask implements Runnable {
     private ThreadPool threadPool;
     private ThreadPool.RetransCount count;
 
-    public SendTask(Protoc.Message Message, ThreadPool.RetransCount count, ChannelId channelId, String uid) {
+    public SendTask(ThreadPool threadPool, Protoc.Message Message, ThreadPool.RetransCount count, ChannelId channelId, String uid) {
+        this.threadPool = threadPool;
         this.message = Message;
         this.count = count;
         this.toChannelId = channelId;
