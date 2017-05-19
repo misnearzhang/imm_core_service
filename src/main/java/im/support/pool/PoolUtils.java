@@ -11,7 +11,7 @@ public class PoolUtils {
 
     private static GenericObjectPool<Protoc.Message.Builder> pool;
     static {
-        PoolFactory factory = new PoolFactory();
+        MessagePoolFactory factory = new MessagePoolFactory();
         //资源池配置
         GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
         poolConfig.setMinIdle(2);

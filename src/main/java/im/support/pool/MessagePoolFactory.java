@@ -8,7 +8,7 @@ import org.apache.commons.pool2.impl.DefaultPooledObject;
 /**
  * Created by misnearzhang on 2017/5/9.
  */
-public class PoolFactory implements PooledObjectFactory {
+public class MessagePoolFactory implements PooledObjectFactory {
     @Override
     public PooledObject makeObject() throws Exception {
         Protoc.Message.Builder message = Protoc.Message.newBuilder();
