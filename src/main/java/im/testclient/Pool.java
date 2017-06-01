@@ -11,7 +11,7 @@ import java.util.UUID;
 public class Pool {
     public static void main(String[] args) {
         while(true){
-            Protoc.Message.Builder builder = PoolUtils.getInstance();
+            Protoc.Message.Builder builder = PoolUtils.getMessageInstance();
             Protoc.Head.Builder head = Protoc.Head.newBuilder();
             head.setStatus(Protoc.status.DECODEERR);
             head.setTime(System.currentTimeMillis());
@@ -21,7 +21,7 @@ public class Pool {
             builder.setBody("im zhanglong");
             System.out.println(builder.build().toString());
             builder.clear();
-            PoolUtils.release(builder);
+            PoolUtils.releaseMessage(builder);
 
         }
     }

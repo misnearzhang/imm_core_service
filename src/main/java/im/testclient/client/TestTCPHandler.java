@@ -44,7 +44,7 @@ public class TestTCPHandler extends ChannelInboundHandlerAdapter {
                     System.out.println(message.toString());
                     break;
                 case USER:
-                    Protoc.Message.Builder builder = PoolUtils.getInstance();
+                    Protoc.Message.Builder builder = PoolUtils.getMessageInstance();
                     Protoc.Head.Builder head = Protoc.Head.newBuilder();
                     head.setStatus(Protoc.status.OK);
                     head.setTime(System.currentTimeMillis());

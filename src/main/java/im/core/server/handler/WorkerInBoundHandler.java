@@ -93,13 +93,13 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
                         ctx.channel().close();
                     } else {
                         logger.info("send a PING heartbeat");
-                        Protoc.Message.Builder message_builder = PoolUtils.getInstance();
+                        Protoc.Message.Builder message_builder = PoolUtils.getMessageInstance();
                         logger.info(message_builder.toString());
                         if(message_builder==null){
                             logger.info("为空");
                             message_builder = Protoc.Message.newBuilder();
                         }
-                        Protoc.Head.Builder head_builder=Protoc.Head.newBuilder();
+                        Protoc.Head.Builder head_builder=PoolUtils.getHeaderInstance();
                         head_builder.setType(Protoc.type.PING);
                         head_builder.setStatus(Protoc.status.REQ);
                         head_builder.setUid(UUID.randomUUID().toString());
@@ -107,7 +107,8 @@ public class WorkerInBoundHandler extends ChannelInboundHandlerAdapter {
                         message_builder.setHead(head_builder);
                         Container.sendHeartBeat(message_builder.build(), ctx.channel().id());
                         message_builder.clear();
-                        PoolUtils.release(message_builder);
+                        PoolUtils.releaseMessage(message_builder);
+                        PoolUtils.releaseHeader(head_builder);
                     }
                 } else if (idle.state().equals(IdleState.READER_IDLE)) {
                     Container.pingPongCountAdd(ctx.channel().id());

@@ -45,8 +45,8 @@ public class TestTCPHandler extends ChannelInboundHandlerAdapter {
                     System.out.println(message.toString());
                     break;
                 case USER:
-                    Protoc.Message.Builder builder = PoolUtils.getInstance();
-                    Protoc.Head.Builder head = Protoc.Head.newBuilder();
+                    Protoc.Message.Builder builder = PoolUtils.getMessageInstance();
+                    Protoc.Head.Builder head = PoolUtils.getHeaderInstance();
                     head.setStatus(Protoc.status.OK);
                     head.setTime(System.currentTimeMillis());
                     head.setType(Protoc.type.RESPONSE);
@@ -54,6 +54,8 @@ public class TestTCPHandler extends ChannelInboundHandlerAdapter {
                     builder.setHead(head);
                     ctx.writeAndFlush(builder.build());
                     System.out.println(builder.toString());
+                    PoolUtils.releaseMessage(builder);
+                    PoolUtils.releaseHeader(head);
                 default:
                     System.out.println(message.toString());
             }
