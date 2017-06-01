@@ -12,13 +12,14 @@ public class PoolUtils {
     private static GenericObjectPool<Protoc.Message.Builder> pool;
     private static GenericObjectPool<Protoc.Head.Builder> head_pool;
     static {
-        MessagePoolFactory factory = new MessagePoolFactory();
+        MessagePoolFactory messagePoolFactory = new MessagePoolFactory();
+        HeaderPoolFactory headerPoolFactory = new HeaderPoolFactory();
         //资源池配置
         GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
-        poolConfig.setMinIdle(2);
+        poolConfig.setMinIdle(100);
         //创建资源池
-        pool= new GenericObjectPool<Protoc.Message.Builder>(factory,poolConfig);
-        head_pool = new GenericObjectPool<Protoc.Head.Builder>(factory,poolConfig);
+        pool= new GenericObjectPool<Protoc.Message.Builder>(messagePoolFactory,poolConfig);
+        head_pool = new GenericObjectPool<Protoc.Head.Builder>(headerPoolFactory,poolConfig);
     }
     public static Protoc.Message.Builder getMessageInstance() {
         try {

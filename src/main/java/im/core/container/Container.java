@@ -34,7 +34,7 @@ public class Container {
      * @return
      */
     public static ChannelId getChannelId(String userAccount) {
-        logger.info("当前用户数"+accountConcurrentHashMap.containsKey(userAccount));
+        logger.info(accountConcurrentHashMap.containsKey(userAccount));
         if (accountConcurrentHashMap.containsKey(userAccount)) {
             logger.info(userAccount);
             return accountConcurrentHashMap.get(userAccount).getChannelId();
