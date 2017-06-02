@@ -2,14 +2,14 @@ package im.process;
 
 import im.config.SystemConfig;
 import im.core.server.Server;
-import org.springframework.beans.factory.annotation.Autowired;
+import im.core.server.ThreadPool;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Created by misnearzhang on 5/16/17.
  */
-public class BootStramp {
+public class Bootstrap {
     private static SystemConfig systemConfig;
     public static void main(String[] args) {
         try {

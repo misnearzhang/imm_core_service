@@ -30,7 +30,7 @@
 
     <!--线程池初始化-->
 
-    <bean id="threadPool" class="im.process.ThreadPool" init-method="init">
+    <bean id="threadPool" class="im.core.server.ThreadPool" init-method="init">
         <constructor-arg name="corePoolSize" value="${threadpool-corepoolsize}"/>
         <constructor-arg name="maxPoolSize" value="${threadpool-maximumpoolsize}"/>
         <constructor-arg name="keepAliveTime" value="${threadpool-keepalivetime}"/>

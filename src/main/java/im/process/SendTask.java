@@ -2,6 +2,7 @@ package im.process;
 
 import im.core.container.Container;
 import im.core.exception.NotOnlineException;
+import im.core.server.ThreadPool;
 import im.protoc.protocolbuf.Protoc;
 import io.netty.channel.ChannelId;
 import org.apache.logging.log4j.LogManager;

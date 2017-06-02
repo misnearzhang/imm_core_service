@@ -1,6 +1,6 @@
 package im.core.define;
 
-import im.process.ThreadPool;
+import im.core.server.ThreadPool;
 import im.protoc.protocolbuf.Protoc;
 import io.netty.channel.Channel;
 

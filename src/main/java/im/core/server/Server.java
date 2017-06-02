@@ -1,7 +1,6 @@
 package im.core.server;
 
 
-import im.process.ThreadPool;
 import im.protoc.protocolbuf.Protoc;
 import im.core.server.handler.WorkOutBoundHandler;
 import im.core.server.handler.WorkerInBoundHandler;
@@ -17,11 +16,9 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * bootstramp 类 开启线程池 加载主服务
+ * bootstrap 类 开启线程池 加载主服务
  *
  * @author Misnearzhang
  */

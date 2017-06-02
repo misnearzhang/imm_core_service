@@ -210,7 +210,7 @@
                                 <manifest>
                                     <addClasspath>true</addClasspath>
                                     <classpathPrefix>lib/</classpathPrefix>
-                                    <mainClass>im.process.BootStramp</mainClass>
+                                    <mainClass>im.process.Bootstrap</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>

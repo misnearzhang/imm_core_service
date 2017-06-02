@@ -4,13 +4,13 @@ import com.google.gson.Gson;
 import im.core.container.Container;
 import im.core.exception.NotOnlineException;
 import im.core.define.AbstractParse;
+import im.core.server.ThreadPool;
 import im.protoc.*;
 import im.protoc.protocolbuf.Protoc;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
