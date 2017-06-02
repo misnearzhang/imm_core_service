@@ -2,7 +2,6 @@ package im.core.server;
 
 
 import im.protoc.protocolbuf.Protoc;
-import im.core.server.handler.WorkOutBoundHandler;
 import im.core.server.handler.WorkerInBoundHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -62,21 +61,18 @@ public class Server {
             bootstrap.group(master, slaver);
             bootstrap.channel(NioServerSocketChannel.class);
             bootstrap.option(ChannelOption.SO_BACKLOG, 1024);
+            bootstrap.option(ChannelOption.WRITE_BUFFER_WATER_MARK,new WriteBufferWaterMark(100*1024*1024,1000*1024*1024));
             bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
                     ch.pipeline().addLast("idleStateHandler", new IdleStateHandler(
                             idleRead, idleWrite, 0));
-/*                    ch.pipeline().addLast(new StringDecoder());
-                    ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiter));
-                    ch.pipeline().addLast(new LineBasedFrameDecoder(1024 * 5));*/
                     ch.pipeline().addLast(new ProtobufVarint32FrameDecoder());
-                    ch.pipeline().addLast("protobufDecoder", new ProtobufDecoder(
-                            Protoc.Message.getDefaultInstance()));
+                    ch.pipeline().addLast("protobufDecoder", new ProtobufDecoder(Protoc.Message.getDefaultInstance()));
+                    ch.pipeline().addLast(new WorkerInBoundHandler(threadPool));
+
                     ch.pipeline().addLast(new ProtobufVarint32LengthFieldPrepender());
                     ch.pipeline().addLast("protobufEncoder", new ProtobufEncoder());
-                    ch.pipeline().addLast(new WorkOutBoundHandler());
-                    ch.pipeline().addLast(new WorkerInBoundHandler(threadPool));
                 }
             });
             logger.info(port);

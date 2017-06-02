@@ -10,15 +10,18 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 public class PoolUtils {
 
     private static GenericObjectPool<Protoc.Message.Builder> pool;
+    private static GenericObjectPool<Protoc.Head.Builder> head_pool;
     static {
-        MessagePoolFactory factory = new MessagePoolFactory();
+        MessagePoolFactory messagePoolFactory = new MessagePoolFactory();
+        HeaderPoolFactory headerPoolFactory = new HeaderPoolFactory();
         //资源池配置
         GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
-        poolConfig.setMinIdle(2);
+        poolConfig.setMinIdle(100);
         //创建资源池
-        pool= new GenericObjectPool<Protoc.Message.Builder>(factory,poolConfig);
+        pool= new GenericObjectPool<Protoc.Message.Builder>(messagePoolFactory,poolConfig);
+        head_pool = new GenericObjectPool<Protoc.Head.Builder>(headerPoolFactory,poolConfig);
     }
-    public static Protoc.Message.Builder getInstance() {
+    public static Protoc.Message.Builder getMessageInstance() {
         try {
             return pool.borrowObject();
         } catch (Exception e) {
@@ -26,8 +29,20 @@ public class PoolUtils {
             return null;
         }
     }
-    public static void release(Protoc.Message.Builder message){
+
+    public static Protoc.Head.Builder getHeaderInstance() {
+        try {
+            return head_pool.borrowObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static void releaseMessage(Protoc.Message.Builder message){
         pool.returnObject(message);
+    }
+    public static void releaseHeader(Protoc.Head.Builder header){
+        head_pool.returnObject(header);
     }
 
 }
