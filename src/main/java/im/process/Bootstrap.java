@@ -1,6 +1,7 @@
 package im.process;
 
 import im.config.SystemConfig;
+import im.core.define.ParseReal;
 import im.core.server.Server;
 import im.core.server.ThreadPool;
 import org.springframework.context.ApplicationContext;
@@ -17,7 +18,7 @@ public class Bootstrap {
             ApplicationContext springContext = new ClassPathXmlApplicationContext("applicationContext.xml");
             systemConfig = springContext.getBean(SystemConfig.class);
             ThreadPool threadPool = springContext.getBean(ThreadPool.class);
-            threadPool.reflectParse(ParseTask.class);
+            threadPool.reflectParse(HandMessage.class);
             server.setThreadPool(threadPool);
             server.bind(systemConfig.getTcpPort(),systemConfig.getIdleReadTime(),systemConfig.getIdleWriteTime());
         } catch (Exception e) {

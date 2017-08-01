@@ -1,9 +1,12 @@
 package im.core.server;
 
 import im.core.define.AbstractParse;
+import im.process.HandMessage;
 import im.process.SendTask;
 import im.protoc.protocolbuf.Protoc;
 import io.netty.channel.Channel;
+
+import java.io.IOException;
 import java.util.concurrent.*;
 
 /**
@@ -32,6 +35,17 @@ public class ThreadPool {
         ioExecutor= new ScheduledThreadPoolExecutor(5);
         ioExecutor.setRemoveOnCancelPolicy(true);
         futures = new ConcurrentHashMap<String, ScheduledFuture>(100);
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                close();
+            }
+        });
+    }
+
+    private void start() throws IOException {
+
+
     }
 
     public enum RetransCount {
@@ -62,7 +76,7 @@ public class ThreadPool {
      * @throws InstantiationException
      */
     public void reflectParse(Class clazz) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException {
-        parse = (AbstractParse) clazz.newInstance();
+        parse = (HandMessage) clazz.newInstance();
 
     }
 
@@ -111,6 +125,7 @@ public class ThreadPool {
     }
 
     public void close(){
+        System.out.println("shutdown hook revoke!!!!!");
         this.ioExecutor.shutdown();
         this.businessExecutor.shutdown();
     }
