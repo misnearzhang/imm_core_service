@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>imm</groupId>
-    <artifactId>core-server</artifactId>
+    <groupId>misnearzhang</groupId>
+    <artifactId>imm_core_server</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <dependencies>
