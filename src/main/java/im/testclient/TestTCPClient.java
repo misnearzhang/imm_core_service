@@ -1,8 +1,6 @@
 package im.testclient;
 
 import com.google.gson.Gson;
-import im.protoc.HandShakeMessage;
-import im.protoc.UserMessage;
 import im.protoc.protocolbuf.Protoc;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -14,13 +12,16 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class TestTCPClient implements Runnable{
+	private final Logger logger = LogManager.getLogger(TestTCPClient.class);
 	public Channel channel;
-	@Override
 	public void run(){
 		EventLoopGroup group=new NioEventLoopGroup();
 		try {
@@ -41,8 +42,12 @@ public class TestTCPClient implements Runnable{
 					ch.pipeline().addLast(new TestTCPHandler());
 				}
 			});
-			ChannelFuture f=b.connect("127.0.0.1", 3000).sync();
+
+			ChannelFuture f=b.connect("127.0.0.1", 22222).sync();
 			channel = f.channel();
+			if(channel!=null&&channel.isActive()){
+				logger.debug("connecting successful");
+			}
 			channel.writeAndFlush(SendHandshake());
 			f.channel().closeFuture().sync();
 		} catch (Exception e) {
@@ -59,8 +64,9 @@ public class TestTCPClient implements Runnable{
 		executor.execute(client);
 	}
 
-	public static Protoc.Message SendHandshake(){
-		Gson gson = new Gson();
+	public static byte[] SendHandshake(){
+		String hello = "0501helahekrhfaeohwehhasjdsjjshdh----------------------";
+		/*Gson gson = new Gson();
 		Protoc.Message.Builder Proto = Protoc.Message.newBuilder();
 		Protoc.Head.Builder Head = Protoc.Head.newBuilder();
 		Head.setType(Protoc.type.HANDSHAKE);
@@ -72,7 +78,8 @@ public class TestTCPClient implements Runnable{
 		handShakeMessage1.setAccount("1065302407");
 		handShakeMessage1.setPassword("123456");
 		Proto.setBody(gson.toJson(handShakeMessage1));
-		return Proto.build();
+		return Proto.build();*/
+		return hello.getBytes();
 	}
 
 }
