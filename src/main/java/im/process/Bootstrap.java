@@ -15,7 +15,7 @@ public class Bootstrap {
     public static void main(String[] args) {
         try {
             Server server=new Server();
-            ApplicationContext springContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+            ApplicationContext springContext = new ClassPathXmlApplicationContext("/applicationContext.xml");
             systemConfig = springContext.getBean(SystemConfig.class);
             ThreadPool threadPool = springContext.getBean(ThreadPool.class);
             threadPool.reflectParse(HandMessage.class);
