@@ -213,6 +213,7 @@
                                     <mainClass>im.process.Bootstrap</mainClass>
                                 </manifest>
                             </archive>
+                          <outputDirectory>/root/core-server</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
